@@ -1,0 +1,6 @@
+statics/test_img/*
+statics/test_json/*
+statics/test_xml/*
+statics/temp_img/*
+
+test/
