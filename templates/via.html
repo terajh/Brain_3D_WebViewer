@@ -507,14 +507,15 @@
       <br>
       <div id="image_panel" class="display_area_content display_none">
         <!-- buffer images using <img> element will be added here -->
-        <canvas id="region_canvas1" class="current_image" width="1" height="1" tabindex="1"></canvas>
+        
         <!-- @todo: in future versions, this canvas will be replaced by a <svg> element -->
         <canvas id="region_canvas" width="1" height="1" tabindex="1" data-zoom="3">Sorry, your browser does not support HTML5 Canvas
         functionality which is required for this application.</canvas>
         
         <div id="other_canvas" class="display_none">
+          <!-- <canvas id="region_canvas1" class="current_image" width="1" height="1" tabindex="1"></canvas>
           <canvas id="region_canvas2"  width="1" height="1" tabindex="2"></canvas>
-          <canvas id="region_canvas3"  width="1" height="1" tabindex="3"></canvas>
+          <canvas id="region_canvas3"  width="1" height="1" tabindex="3"></canvas> -->
           
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeX">
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeY">
@@ -855,17 +856,17 @@
     // image canvas
     var _via_display_area = document.getElementById('display_area');
     var _via_img_panel = document.getElementById('image_panel');
-    var _via_reg_canvas = document.getElementById('region_canvas');
+    var _via_reg_canvas = document.getElementById('region_canvas'); // for draw rectangle
 
-    var _via_reg_canvas1 = document.getElementsByClassName('current_image')[0];
-    var _via_reg_canvas2 = document.getElementById('region_canvas2');
-    var _via_reg_canvas3 = document.getElementById('region_canvas3');
+    // var _via_reg_canvas1 = document.getElementsByClassName('current_image')[0];
+    // var _via_reg_canvas2 = document.getElementById('region_canvas2');
+    // var _via_reg_canvas3 = document.getElementById('region_canvas3');
 
-    var _via_reg_sliderX = document.getElementById('myRangeX');
-    var _via_reg_sliderY = document.getElementById('myRangeY');
-    var _via_reg_sliderZ = document.getElementById('myRangeZ');
+    var sliderX = document.getElementById('myRangeX');
+    var sliderY = document.getElementById('myRangeY');
+    var sliderZ = document.getElementById('myRangeZ');
 
-    var _via_reg_position = {'x':0,'y':0,'z':0};
+    var _via_reg_position = {'x':0,'y':0,'z':0}; // for show NIFTI images
 
     
 
@@ -1056,11 +1057,6 @@
 
 
 
-  
-
-    var sliderX = document.getElementById('myRangeX');
-    var sliderY = document.getElementById('myRangeY');
-    var sliderZ = document.getElementById('myRangeZ');
 
     var niftiHeader, niftiImage;
     
@@ -1169,45 +1165,46 @@
     }
 
     function via_canvas_toggle(){
-      var current_element = document.getElementsByClassName('current_image')[0];
-      var canvas2_element = document.getElementById('region_canvas2');
-      var canvas3_element = document.getElementById('region_canvas3');
+      var current_id = get_current_index();
+      var current_element = document.getElementById('bim'+current_id);
+      var canvas2_element = document.getElementById('region_canvas2_'+current_id);
+      var canvas3_element = document.getElementById('region_canvas3_'+current_id);
 
       var id1 = current_element.getAttribute('id');
       var width1 = current_element.getAttribute('width');
       var height1 = current_element.getAttribute('height');
-      var class_list = new Array();
-      class_list = current_element.className;
+      var class1 = current_element.className;
 
       var id2 = canvas2_element.getAttribute('id');
       var width2 = canvas2_element.getAttribute('width');
       var height2 = canvas2_element.getAttribute('height');
+      var class2 = canvas2_element.className;
       
       var id3 = canvas3_element.getAttribute('id');
       var width3 = canvas3_element.getAttribute('width');
       var height3 = canvas3_element.getAttribute('height');
+      var class3 = canvas3_element.className;
 
 
       current_element.setAttribute('id',id2);
-      current_element.setAttribute('class',"");
+      current_element.setAttribute('class',class2);
       current_element.setAttribute('width',width2);
       current_element.setAttribute('height',height2);
-
+      
       canvas2_element.setAttribute('id',id3);
-      canvas2_element.setAttribute('class','');
+      canvas2_element.setAttribute('class',class3);
       canvas2_element.setAttribute('width',width3);
       canvas2_element.setAttribute('height',height3);
 
-
       canvas3_element.setAttribute('id',id1); 
-      canvas3_element.setAttribute('class',class_list);
+      canvas3_element.setAttribute('class',class1);
       canvas3_element.setAttribute('width',width1);
       canvas3_element.setAttribute('height',height1);
 
       // trans location
 
-      $('#'+id2).insertBefore('#'+id3);
-      $('#'+id1).insertBefore('#region_canvas');
+      // $('#'+id2).insertBefore('#'+id3);
+      // $('#'+id1).insertBefore('#'+id2);
 
       // for show rotated images
       $('#myRangeX').trigger('input');
@@ -2530,10 +2527,14 @@
     }
 
     function set_all_canvas_size(w, h) {
+      var _via_reg_canvas1 = document.getElementsByClassName('current_image')[0];
       _via_reg_canvas.height = h;
       _via_reg_canvas.width = w;
-      _via_reg_canvas1.style.height = h;
-      _via_reg_canvas1.style.width = w;
+      if(_via_reg_canvas1){
+        _via_reg_canvas1.style.height = h;
+        _via_reg_canvas1.style.width = w;
+      }
+      
       image_panel.style.height = h + 'px';
       image_panel.style.width = w + 'px';
     }
@@ -2552,6 +2553,8 @@
 
     function jump_to_image(image_index) {
       global_index = image_index
+      var display_area = document.getElementById('display_area');
+      display_area.setAttribute('class','display_none');
       if (_via_img_count <= 0) {
         return;
       }
@@ -2570,6 +2573,7 @@
           }
           break;
       }
+      display_area.setAttribute('class','');
     }
 
     function count_missing_region_attr(img_id) {
@@ -8387,8 +8391,10 @@
         //
         //
         var bim = document.getElementById("bim0");
-        if(bim){
+        if(bim && bim.tagName != "CANVAS"){
+          
           _via_img_panel.removeChild(bim); 
+
         }
         // display on canvas 1,2,3
         if (new_img_index_list.length) {
@@ -8398,7 +8404,10 @@
           // show original image
           _via_show_img(_via_image_index);
         }
-        
+        debugger;
+        var current_id = get_current_index();
+        var _via_reg_canvas2 = document.getElementById('region_canvas2_'+current_id);
+        var _via_reg_canvas3 = document.getElementById('region_canvas3_'+current_id);
         _via_reg_canvas2.classList.remove('display_none');
         _via_reg_canvas3.classList.remove('display_none');
 
@@ -8416,6 +8425,9 @@
       }
       //
       invisible_submit.click();
+    }
+    function get_current_index(){
+      return _via_image_id_list.indexOf(_via_image_id);
     }
 
     function project_file_add_abs_path_with_input() {
@@ -10247,9 +10259,25 @@
           //
           var tmp_file_object_url = URL.createObjectURL(_via_img_fileref[img_id]);
           var img_id = _via_image_id_list[img_index];
-          var bimg;
+          var bimg, canvas_container;
           if(img_id.indexOf("gz")!=-1){
-            bimg = document.getElementsByClassName('current_image')[0];
+            canvas_container = document.createElement('div');
+            canvas_container.setAttribute('id','canvas_container'+img_index);
+            var canvas2 = document.createElement('canvas');
+            var canvas3 = document.createElement('canvas');
+            canvas2.setAttribute('id','region_canvas2_'+img_index);
+            canvas2.setAttribute('class','canvas_2');
+            canvas3.setAttribute('id','region_canvas3_'+img_index);
+            canvas3.setAttribute('class','canvas_3');
+
+            bimg = document.createElement('canvas');
+
+            canvas_container.appendChild(canvas2);
+            canvas_container.appendChild(canvas3);
+            _via_img_panel.insertBefore(bimg,_via_reg_canvas);
+            _via_img_panel.appendChild(canvas_container);
+
+            bimg.setAttribute('class','current_image');
             bimg.setAttribute('id', _via_img_buffer_get_html_id(img_index));
             bimg.classList.add('show_imgs');
             bimg.setAttribute('alt', 'Image loaded from base64 data of a local file selected by user.');
@@ -10268,6 +10296,8 @@
             err_callback(img_index);
           });
           bimg.addEventListener('load', function () {
+            console.log('load event');
+            debugger;
             URL.revokeObjectURL(tmp_file_object_url);
             img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
             _via_img_panel.insertBefore(bimg, _via_reg_canvas);
@@ -10282,15 +10312,15 @@
           });
           bimg.addEventListener('click', function () {
             URL.revokeObjectURL(tmp_file_object_url);
-
             console.log('click event');
             if(bimg.tagName === "CANVAS"){
               img_stat_set(img_index, [bimg.width, bimg.height]);
             }else{
               img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
+              _via_img_panel.insertBefore(bimg, _via_reg_canvas);
             }
             
-            _via_img_panel.insertBefore(bimg, _via_reg_canvas);
+           
             project_file_load_on_success(img_index);
             img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
             // add timestamp so that we can apply Least Recently Used (LRU)
@@ -10310,7 +10340,23 @@
           var img_id = _via_image_id_list[img_index];
           var bimg;
           if(img_id.indexOf("gz")!=-1){
-            bimg = document.getElementsByClassName('current_image')[0];
+            canvas_container = document.createElement('div');
+            canvas_container.setAttribute('id','canvas_container'+img_index);
+            var canvas2 = document.createElement('canvas');
+            var canvas3 = document.createElement('canvas');
+            canvas2.setAttribute('id','region_canvas2_'+img_index);
+            canvas2.setAttribute('class','canvas_2');
+            canvas3.setAttribute('id','region_canvas3_'+img_index);
+            canvas3.setAttribute('class','canvas_3');
+
+            bimg = document.createElement('canvas');
+
+            canvas_container.appendChild(canvas2);
+            canvas_container.appendChild(canvas3);
+            _via_img_panel.insertBefore(bimg,_via_reg_canvas);
+            _via_img_panel.appendChild(canvas_container);
+
+            bimg.setAttribute('class','current_image');
             bimg.setAttribute('id', _via_img_buffer_get_html_id(img_index));
             bimg.classList.add('show_imgs');
             bimg.setAttribute('alt', 'Image loaded from base64 data of a local file selected by user.');
@@ -10340,7 +10386,7 @@
           // Note: _via_current_image.{naturalWidth,naturalHeight} is only accessible after
           // the "load" event. Therefore, all processing must happen inside this event handler.
           bimg.addEventListener('load', function () {
-            //
+            console.log('load event');
             img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
             _via_img_panel.insertBefore(bimg, _via_reg_canvas);
 
@@ -10361,8 +10407,8 @@
               img_stat_set(img_index, [bimg.width, bimg.height]);
             }else{
               img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
+              _via_img_panel.insertBefore(bimg, _via_reg_canvas);
             }
-            _via_img_panel.insertBefore(bimg, _via_reg_canvas);
             project_file_load_on_success(img_index);
             img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
             // add timestamp so that we can apply Least Recently Used (LRU)
@@ -10479,7 +10525,11 @@
       if (bimg) {
         _via_buffer_img_index_list.splice(buffer_index, 1);
         _via_buffer_img_shown_timestamp.splice(buffer_index, 1);
-        _via_img_panel.removeChild(bimg);
+        if(bimg.tagName === "CANVAS"){
+          _via_img_panel.removeChild(document.getElementById('canvas_container'+img_index));
+        }else{
+          _via_img_panel.removeChild(bimg);
+        }
 
         img_fn_list_ith_entry_remove_css_class(img_index, 'buffered')
       }
@@ -10493,7 +10543,11 @@
         var bimg_html_id = _via_img_buffer_get_html_id(img_index);
         var bimg = document.getElementById(bimg_html_id);
         if (bimg) {
-          _via_img_panel.removeChild(bimg);
+          if(bimg.tagName === "CANVAS"){
+            _via_img_panel.removeChild(document.getElementById('canvas_container'+img_index));
+          }else{
+            _via_img_panel.removeChild(bimg);
+          }
         }
       }
       _via_buffer_img_index_list = [];
@@ -11138,10 +11192,12 @@
             niftiHeader = nifti.readHeader(data);
             niftiImage = nifti.readImage(niftiHeader, data);
         }
+        var current_id = get_current_index();
 
-        
+        var _via_reg_canvas1 = document.getElementById('bim'+current_id);
+        var _via_reg_canvas2 = document.getElementById('region_canvas2_'+current_id);
+        var _via_reg_canvas3 = document.getElementById('region_canvas3_'+current_id);
 
-        console.log(_via_reg_position);
         // set up slider
         var slicesX = niftiHeader.dims[1];
         console.log(niftiHeader.dims);
@@ -11150,7 +11206,6 @@
         _via_reg_position['x']=sliderX.value;
         sliderX.oninput = function() {
           _via_reg_position['x']=sliderX.value;
-          console.log(_via_reg_position);
 
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
@@ -11163,7 +11218,6 @@
         _via_reg_position['y']=sliderY.value;
         sliderY.oninput = function() {
           _via_reg_position['y']=sliderY.value;
-          console.log(_via_reg_position['y']);
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11176,7 +11230,6 @@
         _via_reg_position['z']=sliderZ.value;
         sliderZ.oninput = function() {
           _via_reg_position['z']=sliderZ.value;
-          console.log(_via_reg_position);
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11325,8 +11378,9 @@
               document.getElementById('image_panel').classList.remove('display_none');
               //
               console.log('bim click');
-              //
-              $('#bim0').trigger('click');
+              debugger;
+              var current_id = get_current_index();
+              $('#bim'+current_id).trigger('click');
 
               
             }
