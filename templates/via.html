@@ -865,6 +865,10 @@
     var _via_reg_sliderY = document.getElementById('myRangeY');
     var _via_reg_sliderZ = document.getElementById('myRangeZ');
 
+    var _via_reg_position = {'x':0,'y':0,'z':0};
+
+    
+
 
     
     var _via_reg_ctx; // initialized in _via_init()
@@ -1454,7 +1458,7 @@
         return;
       } else {
         var c = document.createElement('canvas');
-        debugger;
+        //
         // ensures that downloaded image is scaled at current zoom level
         c.width = _via_reg_canvas.width;
         c.height = _via_reg_canvas.height;
@@ -3146,7 +3150,6 @@
       mousePosition.x = e.offsetX;
       mousePosition.y = e.offsetY;
       _via_current_x = e.offsetX; _via_current_y = e.offsetY;
-
       // display the cursor coordinates
       var rf = document.getElementById('region_info');
       if (rf != null && _via_is_region_info_visible) {
@@ -8276,6 +8279,7 @@
     }
 
     function project_file_add_local(event) {
+      //
       var user_selected_images = event.target.files;
       var original_image_count = _via_img_count;
       var pattern_eng = /[a-zA-Z]/;
@@ -8354,7 +8358,7 @@
       }
 
       if (_via_img_metadata && filetype === 'image') {
-        var status_msg = 'Loaded ' + new_img_index_list.length + ' images.';
+        var status_msg = 'Loading ' + new_img_index_list.length + ' images.';
         if (discarded_file_count) {
           status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
         }
@@ -8375,11 +8379,12 @@
         }
         update_img_fn_list();
       }else if(filetype != 'image'){
-        var status_msg = 'Loaded ' + new_img_index_list.length + ' NIFTI images.';
+        var status_msg = 'Loading ' + new_img_index_list.length + ' NIFTI images.';
         if (discarded_file_count) {
           status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
         }
         show_message(status_msg);
+        //
         //
         var bim = document.getElementById("bim0");
         if(bim){
@@ -11136,36 +11141,51 @@
 
         
 
-
+        console.log(_via_reg_position);
         // set up slider
         var slicesX = niftiHeader.dims[1];
         console.log(niftiHeader.dims);
         sliderX.max = slicesX - 1;
         sliderX.value = Math.round(slicesX / 2);
+        _via_reg_position['x']=sliderX.value;
         sliderX.oninput = function() {
-            drawCanvas(_via_reg_canvas1, sliderX.value, niftiHeader, niftiImage, 'x');
+          _via_reg_position['x']=sliderX.value;
+          console.log(_via_reg_position);
+
+          drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
+          drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
+          drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
         };
 
         var slicesY = niftiHeader.dims[2];
-        console.log(niftiHeader.dims);
         sliderY.max = slicesY - 1;
         sliderY.value = Math.round(slicesY / 2);
+        _via_reg_position['y']=sliderY.value;
         sliderY.oninput = function() {
-            drawCanvas(_via_reg_canvas2, sliderY.value, niftiHeader, niftiImage, 'y');
+          _via_reg_position['y']=sliderY.value;
+          console.log(_via_reg_position['y']);
+          drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
+          drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
+          drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
         };
 
         var slicesZ = niftiHeader.dims[3];
         console.log(niftiHeader.dims);
         sliderZ.max = slicesZ - 1;
         sliderZ.value = Math.round(slicesZ / 2);
+        _via_reg_position['z']=sliderZ.value;
         sliderZ.oninput = function() {
-            drawCanvas(_via_reg_canvas3, sliderZ.value, niftiHeader, niftiImage, 'z');
+          _via_reg_position['z']=sliderZ.value;
+          console.log(_via_reg_position);
+          drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
+          drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
+          drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
         };
 
         // draw slice
-        drawCanvas(_via_reg_canvas1, sliderX.value, niftiHeader, niftiImage, 'x');
-        drawCanvas(_via_reg_canvas2, sliderY.value, niftiHeader, niftiImage, 'y');
-        drawCanvas(_via_reg_canvas3, sliderZ.value, niftiHeader, niftiImage, 'z');
+        drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
+        drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
+        drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
 
     }
 
@@ -11216,7 +11236,6 @@
         } else {
             return;
         }
-
         // offset to specified slice
         switch(direction){
             case 'x':
@@ -11224,7 +11243,7 @@
                 for (var row = 0; row < rows; row++) {
                     var rowOffset = (rows-row)*cols*cols;
                     for (var col = 0; col < cols; col++) {
-                        var offset = Number(slice) + Number(rowOffset) + Number(col*512);
+                        var offset = Number(slice[direction]) + Number(rowOffset) + Number(col*512);
                         var value = typedData[offset];
                         canvasImageData.data[(row*cols + col) * 4] = value & 0xFF; // R
                         canvasImageData.data[(row*cols + col) * 4 + 1] = value & 0xFF; // G
@@ -11238,7 +11257,7 @@
                 for (var row = 0; row < rows; row++) {
                     var rowOffset = (rows - row) * cols * cols;
                     for (var col = 0; col < cols; col++) {
-                        var offset = Number(slice * 512) + Number(rowOffset) + col;
+                        var offset = Number(Number(slice[direction]) * 512) + Number(rowOffset) + col;
                         var value = typedData[offset];
                         canvasImageData.data[(row*cols + col) * 4] = value & 0xFF;
                         canvasImageData.data[(row*cols + col) * 4 + 1] = value & 0xFF;
@@ -11249,8 +11268,7 @@
                 break;
             case 'z':
                 var sliceSize = cols * rows;
-                var sliceOffset = sliceSize * slice;
-                
+                var sliceOffset = sliceSize * Number(slice[direction]);
                 // draw pixels => slice : z축
                 for (var row = 0; row < rows; row++) {
                     var rowOffset = row * cols;
@@ -11307,7 +11325,7 @@
               document.getElementById('image_panel').classList.remove('display_none');
               //
               console.log('bim click');
-              debugger;
+              //
               $('#bim0').trigger('click');
 
               

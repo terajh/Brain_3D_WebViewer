@@ -2316,12 +2316,14 @@
    }
 
    function _via_reg_canvas_mouseover_handler(e) {
+     debugger;
      // change the mouse cursor icon
      _via_redraw_reg_canvas();
      _via_reg_canvas.focus();
    }
 
    function _via_reg_canvas_mousemove_handler(e) {
+     debugger;
      if (!_via_current_image_loaded) {
        return;
      }
@@ -2399,6 +2401,7 @@
      }
 
      if (_via_is_user_drawing_region) {
+       debugger;
        // draw region as the user drags the mouse cursor
        if (_via_canvas_regions.length) {
          _via_redraw_reg_canvas(); // clear old intermediate rectangle
@@ -2409,7 +2412,7 @@
 
        var region_x0 = _via_click_x0;
        var region_y0 = _via_click_y0;
-
+       debugger;
        var dx = Math.round(Math.abs(_via_current_x - _via_click_x0));
        var dy = Math.round(Math.abs(_via_current_y - _via_click_y0));
        _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
