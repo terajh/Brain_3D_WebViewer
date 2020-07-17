@@ -9,15 +9,15 @@ from xml.etree.ElementTree import Element,SubElement, dump, ElementTree
 from werkzeug.utils import secure_filename
 import codecs
 from PIL import Image
-import lib.transform_to_xml
+import transform_to_xml
 from datetime import datetime
 from flaskext.mysql import MySQL
 from contextlib import closing
 from flask_bcrypt import Bcrypt
 import distutils.core
 import re
-import lib.json_seperator
-import lib.fill_json
+import json_seperator
+import fill_json
 import scipy, numpy, shutil, os, nibabel
 import sys, getopt
 
@@ -159,7 +159,7 @@ def sel_project():
     filename = request.args.get('filename', type=str, default="None")
     with open("./statics/test_json/" +_userId + "/" + filename, "r") as json_file:
         js_file = json_file.readline()
-
+    
     fname = os.path.splitext("./statics/test_json/" + _userId + "/" +filename)
     fname = os.path.split(fname[0])
     _fname = fname[1] #확장자 없는 load할 파일명
@@ -169,13 +169,16 @@ def sel_project():
             with closing(conn.cursor()) as cursor:
                 cursor.execute("SELECT project_type FROM user_info WHERE email = '" + session['user'] +"' and project_name = '" +str(_fname) +".json';")
                 data = cursor.fetchall()
-
+                print(data)
                 direc = "./statics/test_img/" + _userId + "/" + filename.split(".")[0] + "/"
 
                 if data[0][0] == 'Fracture':   # select a fracture project
                     first = 1
                 elif data[0][0] == 'Knee OA':  # select a KneeOA project
                     first = 4
+                elif data[0][0] == 'Brain': # select a Brain project
+                    first = 6
+
     else:    # select a fracture or kneeOA image(ex)32_A1.json)
         direc = "./statics/test_img/" + _userId + "/" + filename.split("/")[0] + "/"
         first = 2
@@ -285,7 +288,7 @@ def save_project():
                         _db_scaphoid_list.append([data[0], data[5]])
 
                 # knee oa 프로젝트 저장시
-                else:
+                elif project_type == "Knee OA":
                     cursor.execute("SELECT img_name, age, gender FROM kl_info WHERE email = '" + session[
                         'user'] + "' AND project_img = '" + _project_name.split('.')[0] + "';")
                     study_data = cursor.fetchall()
@@ -293,7 +296,15 @@ def save_project():
                         _study_num=data[0].split(".")[0][0:5]
                         _db_age_list.append([_study_num, data[1]])
                         _db_gender_list.append([_study_num, data[2]])
-
+                # brain 프로젝트 저장시
+                else:
+                    cursor.execute("SELECT img_name, age, gender FROM brain_info WHERE email = '" + session[
+                        'user'] + "' AND project_img = '" + _project_name.split('.')[0] + "';")
+                    study_data = cursor.fetchall()
+                    for idx, data in enumerate(study_data):
+                        _study_num=data[0].split(".")[0][0:5]
+                        _db_age_list.append([_study_num, data[1]])
+                        _db_gender_list.append([_study_num, data[2]])
                 # save project.json
                 with open(_dic_json + str(_filename), "w") as json_file:
                     _sep_project_name = _project_name.split(".")[0]
@@ -346,22 +357,6 @@ def save_project():
                             _radius = 0
                             _styloid = 0
                             _scaphoid = 0
-                            # _region = project_content['_via_img_metadata'][img]['file_attributes']['Fx_region']
-                            # 선택되어진 값(true)만 json에 저장되어, key만 추출하여 배열에 저장
-
-                            # for key in _region:
-                            #     _db_region_list.append(str(key))
-                            # # json에서 fx_region 항목에 값이 있다면 값(1,true) 저장
-                            # for index in _db_region_list:
-                            #     if index =='radius':
-                            #         _radius = int(_region['radius'])
-                            #     if index=='styloid':
-                            #         _styloid = int(_region['styloid'])
-                            #     if index=='scaphoid':
-                            #         _scaphoid = int(_region['scaphoid'])
-
-
-                            # json_info 의 조건에 해당하는 값 loading
 
                             cursor.execute("SELECT * FROM json_info WHERE email = '" + session[
                                 'user'] + "' AND project_name = '" + _sep_project_name + "' AND filename = '" + json_name + "';")
@@ -386,7 +381,8 @@ def save_project():
                                 conn.commit()
 
                         # save KneeOA project on DB
-                        else:
+                        elif project_type == 'Knee OA':
+                            print( project_content['_via_img_metadata'][img])
                             _kl = project_content['_via_img_metadata'][img]['file_attributes']['KL-grade']
                             _sc = project_content['_via_img_metadata'][img]['file_attributes']['Sclerosis']
                             _jsw = project_content['_via_img_metadata'][img]['file_attributes']['Joint Space Width']
@@ -407,14 +403,34 @@ def save_project():
                                     _sep_project_name) + "' AND img_name = '" + str(json_name) + "';")
                                 json_data = cursor.fetchall()
                                 conn.commit()
+                        # save brain project on DB
+                        else:
+                            print(project_content['_via_img_metadata'])
+                            cursor.execute("SELECT * FROM brain_info WHERE email = '" + session[
+                                'user'] + "' AND project_img = '" + _sep_project_name + "' AND img_name = '" + json_name + "';")
+                            json_data = cursor.fetchall()
+
+                            # 기존 data가 없을 때
+                            if len(json_data) == 0:
+                                cursor.execute(
+                                    "INSERT INTO brain_info(email, img_name, project_img, age, gender) VALUES('" + _email + "', '" + json_name + "', '" + str(_sep_project_name) + "', '" + str(_age) + "', '" + str(_gender) + "');")
+                                json_data = cursor.fetchall()
+                                conn.commit()
+                            else:
+                                cursor.execute("UPDATE brain_info SET" + " age = '" + str(_age) + "', gender = '" + str(_gender) + "' WHERE email = '" + session['user'] + "' AND project_img = '" + str(_sep_project_name) + "' AND img_name = '" + str(json_name) + "';")
+                                json_data = cursor.fetchall()
+                                conn.commit()
+
 
                 # 이미지 리스트에서 삭제한 이미지에 대한 DB와 서버에 있는 파일들을 삭제 (DB 삭제전 서버파일 먼저 삭제시 오류 발생)
                 for filename in _filenames:
                     if filename not in _image_filename_list:
                         if project_type == 'Fracture':
                             cursor.execute("DELETE FROM json_info WHERE project_name= '"+_fname+"' AND filename LIKE '" + filename.split(".")[0] + ".json';")
-                        else:
+                        elif project_type == 'Knee OA':
                             cursor.execute("DELETE FROM kl_info WHERE project_img='"+_fname+"' AND img_name LIKE '" + filename.split(".")[0] + ".json';")
+                        else:
+                            cursor.execute("DELETE FROM brain_info WHERE project_img='"+_fname+"' AND img_name LIKE '" + filename.split(".")[0] + ".json';")
 
                         json_data = cursor.fetchall()
                         conn.commit()

@@ -30,12 +30,18 @@ def create_xml(content, x, _dic_img, _dic_xml, _first):
 
     # img의 width와 heignt삽입, depth=?,
     # 아래는 size태그 내부 / segmented 값을 필요시 조정
-    i = Image.open(_dic_img + c['_via_img_metadata'][x]['filename'])
-    img_size = i.size
-    SubElement(size, 'width').text = str(img_size[0])
-    SubElement(size, 'heigth').text = str(img_size[1])
-    SubElement(size, 'depth').text = '3'
-    SubElement(anote, 'segmented').text = '0'
+    try:
+        i = Image.open(_dic_img + c['_via_img_metadata'][x]['filename'])
+        img_size = i.size
+        SubElement(size, 'width').text = str(img_size[0])
+        SubElement(size, 'heigth').text = str(img_size[1])
+        SubElement(size, 'depth').text = '3'
+        SubElement(anote, 'segmented').text = '0'
+    except:
+        SubElement(size, 'width').text = "512"
+        SubElement(size, 'heigth').text = "590"
+        SubElement(size, 'depth').text = '3'
+        SubElement(anote, 'segmented').text = '0'
 
     # 사각형이 여러개 일때 object 태그도 여러개 생성 -> json의 regions와 대칭
     # 아래는 object 태그 내부 / 0으로 설정한 값은 필요시 조정

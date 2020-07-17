@@ -513,9 +513,6 @@
         functionality which is required for this application.</canvas>
         
         <div id="other_canvas" class="display_none">
-          <!-- <canvas id="region_canvas1" class="current_image" width="1" height="1" tabindex="1"></canvas>
-          <canvas id="region_canvas2"  width="1" height="1" tabindex="2"></canvas>
-          <canvas id="region_canvas3"  width="1" height="1" tabindex="3"></canvas> -->
           
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeX">
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeY">
@@ -692,18 +689,8 @@
       </div> <!-- end of file not found panel -->
 
       <div id="page_start_info" class="display_area_content display_none narrow_page_content"></div>
-      <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file()"></button>
+      <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
 
-      <!--<div id="page_load_ongoing" class="display_area_content narrow_page_content">-->
-      <!--<div style="text-align:center">-->
-      <!--<a href="http://www.robots.ox.ac.uk/~vgg/software/via/">-->
-      <!--<svg height="160" viewbox="0 0 400 160" style="background-color:#212121;">-->
-      <!--<use xlink:href="#via_logo"></use>-->
-      <!--</svg>-->
-      <!--</a>-->
-      <!--<div style="margin-top:4rem">Loading ...</div>-->
-      <!--</div>-->
-      <!--</div>-->
     </div> <!-- end of display_area -->
   </div> <!-- end of middle_panel -->
 
@@ -1048,7 +1035,7 @@
     var VIA_POLYGON_SEGMENT_SUBTENDED_ANGLE = 5;   // in degree (used to approximate shapes using polygon)
     var VIA_FLOAT_PRECISION = 3; // number of decimal places to include in float values
 
-    var firstTry = 5 ;
+    var firstTry = {{first}} ;
     console.log("first=", firstTry);
     var wrong_img_list = [];
     var global_index = 0;
@@ -1062,7 +1049,7 @@
     
 
     (function () {
-      if (firstTry == 1 || firstTry == 4) {
+      if (firstTry == 1 || firstTry == 4 || firstTry == 6) {
         // load json file if project is selected
         document.getElementById("hidden01").click();
       }
@@ -2394,6 +2381,7 @@
 
       _via_message_clear_timer = setTimeout(function () {
         document.getElementById('message_panel').style.display = 'none';
+        $('#myRangeX').trigger('input');
       }, timeout);
     }
 
@@ -2553,7 +2541,6 @@
 
     function jump_to_image(image_index) {
       global_index = image_index
-      var display_area = document.getElementById('display_area');
       display_area.setAttribute('class','display_none');
       if (_via_img_count <= 0) {
         return;
@@ -5993,7 +5980,8 @@
     //
     function attribute_update_panel_set_active_button() {
       console.log('attribute update panel set active button');
-      if (firstTry === 0 || firstTry === 3 || firstTry === 5) {   // new project 일때만 attributes 추가, 프로젝트 저장하면 입력한 attrs들이 json 파일에 추가되므로 프로젝트 로드할 때는 함수를 다시 호출할 필요 없음
+      if (firstTry === 0 || firstTry === 3 || firstTry === 5) {
+        // new project 일때만 attributes 추가, 프로젝트 저장하면 입력한 attrs들이 json 파일에 추가되므로 프로젝트 로드할 때는 함수를 다시 호출할 필요 없음
         _set_attributes();
       }
 
@@ -8082,7 +8070,6 @@
     }
 
     function project_open_parse_json_file(project_file_data) {
-      //
       var d = project_file_data;
       if (d['_via_settings'] && d['_via_img_metadata'] && d['_via_attributes']) {
         // import settings
@@ -8392,9 +8379,7 @@
         //
         var bim = document.getElementById("bim0");
         if(bim && bim.tagName != "CANVAS"){
-          
           _via_img_panel.removeChild(bim); 
-
         }
         // display on canvas 1,2,3
         if (new_img_index_list.length) {
@@ -8404,13 +8389,14 @@
           // show original image
           _via_show_img(_via_image_index);
         }
-        debugger;
         var current_id = get_current_index();
         var _via_reg_canvas2 = document.getElementById('region_canvas2_'+current_id);
         var _via_reg_canvas3 = document.getElementById('region_canvas3_'+current_id);
-        _via_reg_canvas2.classList.remove('display_none');
-        _via_reg_canvas3.classList.remove('display_none');
-
+        if(_via_reg_canvas2 && _via_reg_canvas3){
+          _via_reg_canvas2.classList.remove('display_none');
+          _via_reg_canvas3.classList.remove('display_none');
+        }
+        
         // _via_reg_sliderX.classList.remove('display_none');
         // _via_reg_sliderY.classList.remove('display_none');
         // _via_reg_sliderZ.classList.remove('display_none');
@@ -8423,7 +8409,6 @@
       else {
         show_message("Please upload some image files!");
       }
-      //
       invisible_submit.click();
     }
     function get_current_index(){
@@ -10068,6 +10053,7 @@
       }
 
       if (_via_buffer_img_index_list.includes(img_index)) {
+        debugger;
         _via_current_image_loaded = false;
          // 여기서 region 그려진다. 헌데 NIFTI 파일은 여기를 들어오질 않는다.
           _via_show_img_from_buffer(img_index).then(function (ok_img_index) {
@@ -10091,6 +10077,7 @@
           _via_is_loading_current_image = false;
           img_loading_spinbar(img_index, false);
           _via_show_img(img_index);
+          
         }, function (err_img_index) {
           _via_is_loading_current_image = false;
           img_loading_spinbar(img_index, false);
@@ -10177,7 +10164,7 @@
 
         _via_canvas_width = _via_current_image_width;
         _via_canvas_height = _via_current_image_height;
-
+        
         if (_via_canvas_width > image_panel_width) {
           // resize image to match the panel width
           var scale_width;
@@ -10203,12 +10190,16 @@
         }
         _via_canvas_width = Math.round(_via_canvas_width);
         _via_canvas_height = Math.round(_via_canvas_height);
+
+
         if(_via_current_image.tagName === "CANVAS"){
           _via_canvas_scale = _via_current_image.width / _via_canvas_width;
         }else{
           _via_canvas_scale = _via_current_image.naturalWidth / _via_canvas_width;
         }
         _via_canvas_scale_without_zoom = _via_canvas_scale;
+        
+
         set_all_canvas_size(_via_canvas_width, _via_canvas_height);
         //set_all_canvas_scale(_via_canvas_scale_without_zoom);
 
@@ -10297,7 +10288,6 @@
           });
           bimg.addEventListener('load', function () {
             console.log('load event');
-            debugger;
             URL.revokeObjectURL(tmp_file_object_url);
             img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
             _via_img_panel.insertBefore(bimg, _via_reg_canvas);
@@ -10328,6 +10318,7 @@
             var arr_index = _via_buffer_img_index_list.length;
             _via_buffer_img_index_list.push(img_index);
             _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
+            
             ok_callback(img_index);
           });
 
@@ -10461,6 +10452,7 @@
         }
 
         _via_img_buffer_add_image(preload_img_index).then(function (ok_img_index) {
+          $('myRangeX').trigger('input');
           if (_via_image_index !== _via_buffer_preload_img_index) {
             ok_callback([ok_img_index]);
             return;
@@ -11378,11 +11370,8 @@
               document.getElementById('image_panel').classList.remove('display_none');
               //
               console.log('bim click');
-              debugger;
               var current_id = get_current_index();
-              $('#bim'+current_id).trigger('click');
-
-              
+              $('#bim'+current_id).trigger('click');              
             }
         };
         reader.readAsArrayBuffer(blob);
