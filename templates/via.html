@@ -509,16 +509,16 @@
         <!-- buffer images using <img> element will be added here -->
         
         <!-- @todo: in future versions, this canvas will be replaced by a <svg> element -->
-        <canvas id="region_canvas" width="1" height="1" tabindex="1" data-zoom="3">Sorry, your browser does not support HTML5 Canvas
+        <canvas id="region_canvas" width="1" height="1" tabindex="1" data-zoom="3" slice="x" class="draw_region_canvas1">Sorry, your browser does not support HTML5 Canvas
         functionality which is required for this application.</canvas>
         
-        <div id="other_canvas" class="display_none">
+        <!-- <div id="other_canvas" class="display_none">
           
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeX">
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeY">
           <input type="range" min="1" max="100" value="50" class="slider" id="myRangeZ">
           <input type="button" value="button" onclick="via_canvas_toggle(this)">
-        </div>
+        </div> -->
         
 
         <!-- here, a child div with id="annotation_editor" is added by javascript -->
@@ -1041,8 +1041,8 @@
     var global_index = 0;
     var removed_filename = '';
     var mousePosition = {x:0, y:0};
-
-
+    var VIA_CANVAS_POSITION = false;
+    var mouse_down = false;
 
 
     var niftiHeader, niftiImage;
@@ -1156,6 +1156,16 @@
       var current_element = document.getElementById('bim'+current_id);
       var canvas2_element = document.getElementById('region_canvas2_'+current_id);
       var canvas3_element = document.getElementById('region_canvas3_'+current_id);
+      var draw_canvas1 = document.getElementById('region_canvas');
+      var draw_canvas2 = document.getElementById('draw_region_canvas2_'+current_id);
+      var draw_canvas3 = document.getElementById('draw_region_canvas3_'+current_id);
+
+      $('#region_canvas3_'+current_id).insertBefore('#bim'+current_id);
+      $('#bim'+current_id).insertBefore('#region_canvas2_'+current_id);
+
+      $('#draw_region_canvas3_'+current_id).insertBefore('#region_canvas');
+      $('#region_canvas').insertBefore('#draw_region_canvas2_'+current_id);
+      // $('#region_canvas2_'+current_id).insertBefore('#region_canvas3_'+current_id);
 
       var id1 = current_element.getAttribute('id');
       var width1 = current_element.getAttribute('width');
@@ -1173,6 +1183,25 @@
       var class3 = canvas3_element.className;
 
 
+      var id1_1 = draw_canvas1.getAttribute('id');
+      var width1_1 = draw_canvas1.getAttribute('width');
+      var height1_1 = draw_canvas1.getAttribute('height');
+      var style1_1 = draw_canvas1.getAttribute('style');
+      var class1_1 = draw_canvas1.getAttribute('class');
+
+      var id2_1 = draw_canvas2.getAttribute('id');
+      var width2_1 = draw_canvas2.getAttribute('width');
+      var height2_1 = draw_canvas2.getAttribute('height');
+      var style2_1 = draw_canvas2.getAttribute('style');
+      var class2_1 = draw_canvas2.getAttribute('class');
+      
+      var id3_1 = draw_canvas3.getAttribute('id');
+      var width3_1 = draw_canvas3.getAttribute('width');
+      var height3_1 = draw_canvas3.getAttribute('height');
+      var style3_1 = draw_canvas3.getAttribute('style');
+      var class3_1 = draw_canvas3.getAttribute('class');
+
+
       current_element.setAttribute('id',id2);
       current_element.setAttribute('class',class2);
       current_element.setAttribute('width',width2);
@@ -1188,15 +1217,33 @@
       canvas3_element.setAttribute('width',width1);
       canvas3_element.setAttribute('height',height1);
 
+      draw_canvas1.setAttribute('id',id2_1);
+      draw_canvas1.setAttribute('style',style2_1);
+      draw_canvas1.setAttribute('width',width2_1);
+      draw_canvas1.setAttribute('height',height2_1);
+      draw_canvas1.setAttribute('class',class2_1);
+      
+      draw_canvas2.setAttribute('id',id3_1);
+      draw_canvas2.setAttribute('style',style3_1);
+      draw_canvas2.setAttribute('width',width3_1);
+      draw_canvas2.setAttribute('height',height3_1);
+      draw_canvas2.setAttribute('class',class3_1);
+
+      draw_canvas3.setAttribute('id',id1_1); 
+      draw_canvas3.setAttribute('style',style1_1);
+      draw_canvas3.setAttribute('width',width1_1);
+      draw_canvas3.setAttribute('height',height1_1);
+      draw_canvas3.setAttribute('class',class1_1);
+
       // trans location
 
-      // $('#'+id2).insertBefore('#'+id3);
-      // $('#'+id1).insertBefore('#'+id2);
+      _via_reg_canvas = draw_canvas3;
 
       // for show rotated images
-      $('#myRangeX').trigger('input');
-      $('#myRangeY').trigger('input');
-      $('#myRangeZ').trigger('input');
+      var cid = get_current_index();
+      $('#myRangeX_'+cid).trigger('input');
+      $('#myRangeY_'+cid).trigger('input');
+      $('#myRangeZ_'+cid).trigger('input');
 
       // _via_reg_sliderX.value = String(Number(_via_reg_sliderX.value)+1);
       // _via_reg_sliderY.value = String(Number(_via_reg_sliderY.value)+1);
@@ -2378,10 +2425,10 @@
       }
       document.getElementById('message_panel_content').innerHTML = msg;
       document.getElementById('message_panel').style.display = 'block';
-
+      var cid = get_current_index();
       _via_message_clear_timer = setTimeout(function () {
         document.getElementById('message_panel').style.display = 'none';
-        $('#myRangeX').trigger('input');
+        $('#myRangeX_'+cid).trigger('input');
       }, timeout);
     }
 
@@ -2542,6 +2589,12 @@
     function jump_to_image(image_index) {
       global_index = image_index
       display_area.setAttribute('class','display_none');
+      var cid = get_current_index();
+      var container = document.getElementById('canvas_container'+cid);
+      if(container) container.setAttribute('class','display_none');
+      var cimage = document.getElementById('bim'+cid);
+      if(cimage) cimage.classList.add('display_none');
+
       if (_via_img_count <= 0) {
         return;
       }
@@ -2560,7 +2613,13 @@
           }
           break;
       }
+      cid = get_current_index();
       display_area.setAttribute('class','');
+      var newcontainer = document.getElementById('canvas_container'+image_index);
+      if(newcontainer) newcontainer.setAttribute('class','');
+      var cimage = document.getElementById('bim'+image_index);
+      if(cimage) cimage.classList.remove('display_none');
+
     }
 
     function count_missing_region_attr(img_id) {
@@ -2628,6 +2687,10 @@
     // user clicks on the canvas
     function _via_reg_canvas_mousedown_handler(e) {
       e.stopPropagation();
+      if(VIA_CANVAS_POSITION) {
+        mouse_down = true;
+        return;
+      }
       _via_click_x0 = e.offsetX; _via_click_y0 = e.offsetY;
       _via_region_edge = is_on_region_corner(_via_click_x0, _via_click_y0);
       var region_id = is_inside_region(_via_click_x0, _via_click_y0);
@@ -2639,6 +2702,7 @@
             if (_via_region_edge[0] !== _via_user_sel_region_id) {
               _via_user_sel_region_id = _via_region_edge[0];
             }
+            if (VIA_CANVAS_POSITION) console.log(_via_click_x0,_via_click_x1);
             // resize region
             _via_is_user_resizing_region = true;
           }
@@ -2684,7 +2748,7 @@
     //  - moving/resizing/select/unselect existing region
     function _via_reg_canvas_mouseup_handler(e) {
       e.stopPropagation();
-      
+      mouse_down = false;
       _via_click_x1 = e.offsetX; _via_click_y1 = e.offsetY;
 
       var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
@@ -3143,18 +3207,59 @@
       _via_current_x = e.offsetX; _via_current_y = e.offsetY;
       // display the cursor coordinates
       var rf = document.getElementById('region_info');
+      
+      
       if (rf != null && _via_is_region_info_visible) {
         var img_x = Math.round(_via_current_x * _via_canvas_scale);
         var img_y = Math.round(_via_current_y * _via_canvas_scale);
         rf.innerHTML = 'X:' + img_x + ',' + ' Y:' + img_y;
       }
+      if (VIA_CANVAS_POSITION && mouse_down) {
+          var cid = get_current_index();
+          var canvas = document.getElementById(e.currentTarget.id);
+          var ctx = canvas.getContext("2d");
+          ctx.fillStyle='red';
+          ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.beginPath();
+          ctx.moveTo(mousePosition.x, 0);
+          ctx.lineTo(mousePosition.x, canvas.height);
+          ctx.moveTo(0, mousePosition.y);
+          ctx.lineTo(canvas.width, mousePosition.y);
+          ctx.stroke();
+          ctx.arc(mousePosition.x, mousePosition.y,5,0,Math.PI*2);
+          ctx.fill();
+          var rangeX = $('#myRangeX_'+cid);
+          var rangeY = $('#myRangeY_'+cid);
+          var rangeZ = $('#myRangeZ_'+cid);
+          // debugger;
+          var case_slice = canvas.getAttribute('slice');
+          if(case_slice === "x"){
+            _via_reg_position['y'] = mousePosition.x;
+            _via_reg_position['z'] = mousePosition.y;
+            rangeY.trigger('input');
 
-      if (_via_is_region_selected) {
+          }else if(case_slice === "y"){
+            _via_reg_position['x'] = mousePosition.x;
+            _via_reg_position['z'] = mousePosition.y;
+            rangeY.trigger('input');
+
+          }else if(case_slice === "z"){
+            _via_reg_position['x'] = mousePosition.x;
+            _via_reg_position['y'] = mousePosition.y;
+            rangeY.trigger('input');
+
+          }
+          // console.log('trigger!!');
+
+        }
+
+      else if (_via_is_region_selected) {
         if (!_via_is_user_resizing_region) {
           // check if user moved mouse cursor to region boundary
           // which indicates an intention to resize the region
           _via_region_edge = is_on_region_corner(_via_current_x, _via_current_y);
-
+          
           if (_via_region_edge[0] === _via_user_sel_region_id) {
             switch (_via_region_edge[1]) {
               // rect
@@ -4649,6 +4754,11 @@
           zoom_in();
           return;
         }
+        
+        if (e.key === "q"){
+          VIA_CANVAS_POSITION = true;
+          return;
+        }
 
         if (e.key === "=") {
           reset_zoom_level();
@@ -4775,8 +4885,13 @@
     }
 
     function _via_reg_canvas_keyup_handler(e) {
+      // debugger;
+      VIA_CANVAS_POSITION = false;
+      var ctx = _via_reg_canvas.getContext("2d");
+      ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
       if (e.ctrlKey) {
         _via_is_ctrl_pressed = false;
+        
       }
     }
 
@@ -4841,6 +4956,11 @@
           return;
         }
 
+        if (e.key === 'q'){
+          e.preventDefault();
+          VIA_CANVAS_POSITION = true;
+        }
+
         if (_via_is_region_selected) {
           if (e.key === 'ArrowRight' ||
             e.key === 'ArrowLeft' ||
@@ -4877,45 +4997,14 @@
     }
 
     function _via_reg_canvas_keypress_handler(e) {
-      
+      debugger;
       if (e.ctrlKey) {
         _via_is_ctrl_pressed = true;
       }
-
+      
       if (_via_current_image_loaded) {
-        if (e.key === 'q') {
-          ////
-          var mouseX = mousePosition.x - $('#bim0').offset().left;
-          var mouseY = mousePosition.y - $('#bim0').offset().top;
-          console.log($('#bim0').offset().left);
-          console.log($('#bim0').width());
-          // 컨테이너 밖으로 마우스가 벗어나면 돋보기를 없앤다.
-          if (mouseX < $('#bim0').width() && mouseY < $('#bim0').height() && mouseX > 0 && mouseY > 0) {
-              magnifier.fadeIn(100);
-          } else {
-              magnifier.fadeOut(100);
-          }
-
-          //돋보기가 존재할 때
-          if (magnifier.is(":visible")) {
-
-              // 3
-              var rx = -(mouseX * zoom - magnifier.width() /2 );
-              var ry = -(mouseY * zoom - magnifier.height() /2 );
-
-              //돋보기를 마우스 위치에 따라 움직인다.
-              //돋보기의 width, height 절반을 마우스 좌표에서 차감해 마우스와 돋보기 위치를 일치시킨다.
-              var px = mouseX - magnifier.width() / 2;
-              var py = mouseY - magnifier.height() / 2;
-
-              //적용
-              magnifier.css({
-                  left: px,
-                  top: py,
-                  backgroundPosition: rx + "px " + ry + "px"
-              });
-          }
-
+        if(e.key === "q"){
+          VIA_CANVAS_POSITION = true;
         }
         //_via_handle_global_keydown_event(e);
       }
@@ -8074,7 +8163,7 @@
       if (d['_via_settings'] && d['_via_img_metadata'] && d['_via_attributes']) {
         // import settings
         project_import_settings(d['_via_settings']);
-
+        
         // clear existing data (if any)
         _via_image_id_list = [];
         _via_image_filename_list = [];
@@ -8120,6 +8209,20 @@
         show_message('Imported project [' + _via_settings['project'].name + '] with ' + _via_img_count + ' files.');
 
         if (_via_img_count > 0) {
+          console.log(_via_image_filename_list[0]);
+          if(_via_image_filename_list[0].indexOf("gz")!=-1){
+            var rawFile = new XMLHttpRequest();
+            
+            rawFile.open("GET",'statics/test_img/'+_via_image_filename_list[0],false);
+            rawFile.onreadystatechange = function(){
+              if(rawFile.readyState === 4){
+                if(rawFile.status === 200 || rawFile.status == 0){
+                  var allText = rawFile.responseText;
+                  readFile(allText);
+                }
+              }
+            }
+          }
           _via_show_img(0);
           update_img_fn_list();
           _via_reload_img_fn_list_table = true;
@@ -8358,7 +8461,7 @@
         // _via_reg_sliderX.classList.add('display_none');
         // _via_reg_sliderY.classList.add('display_none');
         // _via_reg_sliderZ.classList.add('display_none');
-        document.getElementById('other_canvas').classList.add("display_none");
+        // document.getElementById('other_canvas').classList.add("display_none");
 
 
         if (new_img_index_list.length) {
@@ -8369,7 +8472,7 @@
           _via_show_img(_via_image_index);
         }
         update_img_fn_list();
-      }else if(filetype != 'image'){
+      }else if(filetype && filetype != 'image'){
         var status_msg = 'Loading ' + new_img_index_list.length + ' NIFTI images.';
         if (discarded_file_count) {
           status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
@@ -8377,7 +8480,8 @@
         show_message(status_msg);
         //
         //
-        var bim = document.getElementById("bim0");
+        var cid = get_current_index();
+        var bim = document.getElementById("bim"+cid);
         if(bim && bim.tagName != "CANVAS"){
           _via_img_panel.removeChild(bim); 
         }
@@ -10053,7 +10157,7 @@
       }
 
       if (_via_buffer_img_index_list.includes(img_index)) {
-        debugger;
+        
         _via_current_image_loaded = false;
          // 여기서 region 그려진다. 헌데 NIFTI 파일은 여기를 들어오질 않는다.
           _via_show_img_from_buffer(img_index).then(function (ok_img_index) {
@@ -10100,8 +10204,11 @@
     function _via_buffer_hide_current_image() {
       img_fn_list_ith_entry_selected(_via_image_index, false);
       _via_clear_reg_canvas(); // clear old region shapes
+      var cid = get_current_index();
       if (_via_current_image) {
         _via_current_image.classList.remove('visible');
+        var container = document.getElementById('canvas_container'+cid);
+        if(container) container.classList.add('display_none');
       }
     }
 
@@ -10118,8 +10225,10 @@
           err_callback(img_index);
           return;
         }
+        
         _via_current_image.classList.add('visible'); // now show the new image
-
+        var container = document.getElementById('canvas_container'+img_index);
+        if(container) container.classList.remove('display_none');
         _via_image_index = img_index;
         //_via_image_id = _via_image_id_list[_via_image_index];
         _via_current_image_filename = _via_img_metadata[_via_image_id].filename;
@@ -10190,12 +10299,13 @@
         }
         _via_canvas_width = Math.round(_via_canvas_width);
         _via_canvas_height = Math.round(_via_canvas_height);
-
+        _via_current_image_height = _via_canvas_height;
+        _via_current_image_width = _via_canvas_width;
 
         if(_via_current_image.tagName === "CANVAS"){
           _via_canvas_scale = _via_current_image.width / _via_canvas_width;
         }else{
-          _via_canvas_scale = _via_current_image.naturalWidth / _via_canvas_width;
+          _via_canvas_scale = _via_current_image_width / _via_canvas_width;
         }
         _via_canvas_scale_without_zoom = _via_canvas_scale;
         
@@ -10254,23 +10364,93 @@
           if(img_id.indexOf("gz")!=-1){
             canvas_container = document.createElement('div');
             canvas_container.setAttribute('id','canvas_container'+img_index);
+            canvas_container.setAttribute('class','canvas_container');
+
             var canvas2 = document.createElement('canvas');
+            var draw_canvas2 = document.createElement('canvas');
             var canvas3 = document.createElement('canvas');
+            var draw_canvas3 = document.createElement('canvas');
+            var rangeX = document.createElement('input');
+            var rangeY = document.createElement('input');
+            var rangeZ = document.createElement('input');
+            var button = document.createElement('input');
+
+            rangeX.setAttribute('id','myRangeX_'+img_index);
+            rangeX.setAttribute('class','sliderX');
+            rangeX.setAttribute('type','range');
+            rangeX.setAttribute('min','1');
+            rangeX.setAttribute('max','100');
+            rangeX.setAttribute('value','50');
+
+
+            rangeY.setAttribute('id','myRangeY_'+img_index);
+            rangeY.setAttribute('class','sliderY');
+            rangeY.setAttribute('type','range');
+            rangeY.setAttribute('min','1');
+            rangeY.setAttribute('max','100');
+            rangeY.setAttribute('value','50');
+
+            rangeZ.setAttribute('id','myRangeZ_'+img_index);
+            rangeZ.setAttribute('class','sliderZ');
+            rangeZ.setAttribute('type','range');
+            rangeZ.setAttribute('min','1');
+            rangeZ.setAttribute('max','100');
+            rangeZ.setAttribute('value','50');
+
+            button.setAttribute('type','button');
+            button.setAttribute('class','Tbutton');
+            button.setAttribute('value','Rot');
+            button.setAttribute('onclick',"via_canvas_toggle()");
+
             canvas2.setAttribute('id','region_canvas2_'+img_index);
             canvas2.setAttribute('class','canvas_2');
+            canvas2.setAttribute('slice','y');
+
+            draw_canvas2.setAttribute('id','draw_region_canvas2_'+img_index);
+            draw_canvas2.setAttribute('width','505');
+            draw_canvas2.setAttribute('class','draw_region_canvas2');
+            draw_canvas2.setAttribute('height','582');
+            draw_canvas2.setAttribute('style','cursor: default;');
+            draw_canvas2.setAttribute('slice','y');
+            draw_canvas2.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
+            draw_canvas2.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
+            draw_canvas2.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
+            draw_canvas2.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
+
             canvas3.setAttribute('id','region_canvas3_'+img_index);
             canvas3.setAttribute('class','canvas_3');
+            canvas3.setAttribute('slice','z');
+
+            draw_canvas3.setAttribute('id','draw_region_canvas3_'+img_index);
+            draw_canvas3.setAttribute('width','505');
+            draw_canvas3.setAttribute('class','draw_region_canvas3');
+            draw_canvas3.setAttribute('height','582');
+            draw_canvas3.setAttribute('style','cursor: default;');
+            draw_canvas2.setAttribute('slice','z');
+            draw_canvas3.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
+            draw_canvas3.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
+            draw_canvas3.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
+            draw_canvas3.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
 
             bimg = document.createElement('canvas');
 
             canvas_container.appendChild(canvas2);
+            canvas_container.appendChild(draw_canvas2);
             canvas_container.appendChild(canvas3);
+            canvas_container.appendChild(draw_canvas3);
+
+            canvas_container.appendChild(rangeX);
+            canvas_container.appendChild(rangeY);
+            canvas_container.appendChild(rangeZ);
+            canvas_container.appendChild(button);
+
             _via_img_panel.insertBefore(bimg,_via_reg_canvas);
             _via_img_panel.appendChild(canvas_container);
 
             bimg.setAttribute('class','current_image');
             bimg.setAttribute('id', _via_img_buffer_get_html_id(img_index));
             bimg.classList.add('show_imgs');
+            bimg.setAttribute('slice','x');
             bimg.setAttribute('alt', 'Image loaded from base64 data of a local file selected by user.');
           }
           else {
@@ -11190,6 +11370,11 @@
         var _via_reg_canvas2 = document.getElementById('region_canvas2_'+current_id);
         var _via_reg_canvas3 = document.getElementById('region_canvas3_'+current_id);
 
+        var cid = get_current_index();
+        var sliderX = document.getElementById('myRangeX_'+cid);
+        var sliderY = document.getElementById('myRangeY_'+cid);
+        var sliderZ = document.getElementById('myRangeZ_'+cid);
+
         // set up slider
         var slicesX = niftiHeader.dims[1];
         console.log(niftiHeader.dims);
@@ -11197,8 +11382,7 @@
         sliderX.value = Math.round(slicesX / 2);
         _via_reg_position['x']=sliderX.value;
         sliderX.oninput = function() {
-          _via_reg_position['x']=sliderX.value;
-
+          if(!VIA_CANVAS_POSITION) _via_reg_position['x']=sliderX.value;
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11209,7 +11393,7 @@
         sliderY.value = Math.round(slicesY / 2);
         _via_reg_position['y']=sliderY.value;
         sliderY.oninput = function() {
-          _via_reg_position['y']=sliderY.value;
+          if(!VIA_CANVAS_POSITION) _via_reg_position['y']=sliderY.value;
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11221,7 +11405,7 @@
         sliderZ.value = Math.round(slicesZ / 2);
         _via_reg_position['z']=sliderZ.value;
         sliderZ.oninput = function() {
-          _via_reg_position['z']=sliderZ.value;
+          if(!VIA_CANVAS_POSITION) _via_reg_position['z']=sliderZ.value;
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11366,7 +11550,7 @@
             if (evt.target.readyState === FileReader.DONE) {
               readNIFTI(file.name, evt.target.result)
               
-              document.getElementById('other_canvas').classList.remove("display_none");
+              // document.getElementById('other_canvas').classList.remove("display_none");
               document.getElementById('image_panel').classList.remove('display_none');
               //
               console.log('bim click');

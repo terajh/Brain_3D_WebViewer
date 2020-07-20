@@ -182,7 +182,7 @@ def sel_project():
     else:    # select a fracture or kneeOA image(ex)32_A1.json)
         direc = "./statics/test_img/" + _userId + "/" + filename.split("/")[0] + "/"
         first = 2
-    
+    print(str(js_file), _fname, direc, first)
     return render_template('via.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
 
 #Save project
