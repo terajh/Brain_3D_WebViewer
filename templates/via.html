@@ -1432,6 +1432,7 @@
     // mouse events
     function _via_init_keyboard_handlers() {
       window.addEventListener('keydown', _via_window_keydown_handler, false);
+      window.addEventListener('keyup',_via_window_keyup_handler, false);
       _via_reg_canvas.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
       // _via_reg_canvas2.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
       // _via_reg_canvas3.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
@@ -3217,36 +3218,64 @@
       if (VIA_CANVAS_POSITION && mouse_down) {
           var cid = get_current_index();
           var canvas = document.getElementById(e.currentTarget.id);
-          var ctx = canvas.getContext("2d");
-          ctx.fillStyle='red';
-          ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.beginPath();
-          ctx.moveTo(mousePosition.x, 0);
-          ctx.lineTo(mousePosition.x, canvas.height);
-          ctx.moveTo(0, mousePosition.y);
-          ctx.lineTo(canvas.width, mousePosition.y);
-          ctx.stroke();
-          ctx.arc(mousePosition.x, mousePosition.y,5,0,Math.PI*2);
-          ctx.fill();
+          
           var rangeX = $('#myRangeX_'+cid);
           var rangeY = $('#myRangeY_'+cid);
           var rangeZ = $('#myRangeZ_'+cid);
-          // debugger;
           var case_slice = canvas.getAttribute('slice');
           if(case_slice === "x"){
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle='red';
+            ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(mousePosition.x, 0);
+            ctx.lineTo(mousePosition.x, canvas.height);
+            ctx.moveTo(0, mousePosition.y);
+            ctx.lineTo(canvas.width, mousePosition.y);
+            ctx.stroke();
+            ctx.arc(mousePosition.x, mousePosition.y,5,0,Math.PI*2);
+            ctx.fill();
             _via_reg_position['y'] = mousePosition.x;
-            _via_reg_position['z'] = mousePosition.y;
+            _via_reg_position['z'] = canvas.height - mousePosition.y;
             rangeY.trigger('input');
 
           }else if(case_slice === "y"){
-            _via_reg_position['x'] = mousePosition.x;
-            _via_reg_position['z'] = mousePosition.y;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle='red';
+            var x = mousePosition.x * 2;
+            var y = mousePosition.y * 2;
+            ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
+            ctx.clearRect(0, 0, e.currentTarget.width, e.currentTarget.height);
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, e.currentTarget.height);
+            ctx.moveTo(0, y);
+            ctx.lineTo(e.currentTarget.width, y);
+            ctx.stroke();
+            ctx.arc(x, y, 5, 0, Math.PI*2);
+            ctx.fill();
+            _via_reg_position['x'] = x;
+            _via_reg_position['z'] = e.currentTarget.height - y;
             rangeY.trigger('input');
 
           }else if(case_slice === "z"){
-            _via_reg_position['x'] = mousePosition.x;
-            _via_reg_position['y'] = mousePosition.y;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle='red';
+            var x = mousePosition.x * 2;
+            var y = mousePosition.y * 2;
+            ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
+            ctx.clearRect(0, 0,  e.currentTarget.width, e.currentTarget.height);
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, e.currentTarget.height);
+            ctx.moveTo(0, y);
+            ctx.lineTo(e.currentTarget.width, y);
+            ctx.stroke();
+            ctx.arc(x, y,5,0,Math.PI*2);
+            ctx.fill();
+            _via_reg_position['x'] = x;
+            _via_reg_position['y'] = y;
             rangeY.trigger('input');
 
           }
@@ -4738,6 +4767,9 @@
     //
     // Shortcut key handlers
     //
+    function _via_window_keyup_handler(e){
+      if(VIA_CANVAS_POSITION) VIA_CANVAS_POSITION=false;
+    }
     function _via_window_keydown_handler(e) {
       if (e.target === document.body) {
         // process the keyboard event
@@ -4887,8 +4919,8 @@
     function _via_reg_canvas_keyup_handler(e) {
       // debugger;
       VIA_CANVAS_POSITION = false;
-      var ctx = _via_reg_canvas.getContext("2d");
-      ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
+      // var ctx = e.currentTarget.getContext("2d");
+      // ctx.clearRect(0, 0, e.currentTarget.clientWidth, e.currentTarget.clientHeight);
       if (e.ctrlKey) {
         _via_is_ctrl_pressed = false;
         
@@ -4957,8 +4989,9 @@
         }
 
         if (e.key === 'q'){
-          e.preventDefault();
           VIA_CANVAS_POSITION = true;
+          e.preventDefault();
+          return;
         }
 
         if (_via_is_region_selected) {
@@ -4997,7 +5030,6 @@
     }
 
     function _via_reg_canvas_keypress_handler(e) {
-      debugger;
       if (e.ctrlKey) {
         _via_is_ctrl_pressed = true;
       }
@@ -10416,6 +10448,11 @@
             draw_canvas2.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
             draw_canvas2.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
             draw_canvas2.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
+            draw_canvas2.addEventListener('keyup', _via_reg_canvas_keyup_handler, false);
+            draw_canvas2.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
+            draw_canvas2.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
+
+
 
             canvas3.setAttribute('id','region_canvas3_'+img_index);
             canvas3.setAttribute('class','canvas_3');
@@ -10425,12 +10462,15 @@
             draw_canvas3.setAttribute('width','505');
             draw_canvas3.setAttribute('class','draw_region_canvas3');
             draw_canvas3.setAttribute('height','582');
-            draw_canvas3.setAttribute('style','cursor: default;');
-            draw_canvas2.setAttribute('slice','z');
+            draw_canvas3.setAttribute('style','cursor: defqault;');
+            draw_canvas3.setAttribute('slice','z');
             draw_canvas3.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
             draw_canvas3.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
             draw_canvas3.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
             draw_canvas3.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
+            draw_canvas3.addEventListener('keyup', _via_reg_canvas_keyup_handler, false);
+            draw_canvas3.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
+            draw_canvas3.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
 
             bimg = document.createElement('canvas');
 
