@@ -1037,12 +1037,15 @@
 
     var firstTry = {{first}} ;
     console.log("first=", firstTry);
-    var wrong_img_list = [];
-    var global_index = 0;
-    var removed_filename = '';
-    var mousePosition = {x:0, y:0};
-    var VIA_CANVAS_POSITION = false;
-    var mouse_down = false;
+    var _via_wrong_img_list = [];
+    var _via_global_index = 0;
+    var _via_mouse_position = {x:0, y:0};
+    var _via_canvas_position = false;
+    var _via_mouse_down = false;
+    var _via_draw1_mouse_position = {x:250, y:290};
+    var _via_draw2_mouse_position = {x:250, y:290};
+    var _via_draw3_mouse_position = {x:250, y:290};
+
 
 
     var niftiHeader, niftiImage;
@@ -1137,8 +1140,8 @@
     function uploadImg() {
       var form = $('#img_form')[0];
       var formData = new FormData(form);
-      formData.append('wrong_img_list[]', wrong_img_list);
-
+      formData.append('_via_wrong_img_list[]', _via_wrong_img_list);
+      
       $.ajax({
         url: 'upload_img',
         type: 'POST',
@@ -1156,88 +1159,111 @@
       var current_element = document.getElementById('bim'+current_id);
       var canvas2_element = document.getElementById('region_canvas2_'+current_id);
       var canvas3_element = document.getElementById('region_canvas3_'+current_id);
-      var draw_canvas1 = document.getElementById('region_canvas');
+
+      var draw_canvas1 = document.getElementById('draw_region_canvas1_'+current_id);
       var draw_canvas2 = document.getElementById('draw_region_canvas2_'+current_id);
       var draw_canvas3 = document.getElementById('draw_region_canvas3_'+current_id);
 
       $('#region_canvas3_'+current_id).insertBefore('#bim'+current_id);
       $('#bim'+current_id).insertBefore('#region_canvas2_'+current_id);
 
-      $('#draw_region_canvas3_'+current_id).insertBefore('#region_canvas');
-      $('#region_canvas').insertBefore('#draw_region_canvas2_'+current_id);
-      // $('#region_canvas2_'+current_id).insertBefore('#region_canvas3_'+current_id);
+      $('#draw_region_canvas3_'+current_id).insertBefore('#draw_region_canvas1_'+current_id);
+      $('#draw_region_canvas1_'+current_id).insertBefore('#draw_region_canvas2_'+current_id);
+
+
+/*********************************************************************************************************/
 
       var id1 = current_element.getAttribute('id');
       var width1 = current_element.getAttribute('width');
       var height1 = current_element.getAttribute('height');
       var class1 = current_element.className;
+      var slice1 = current_element.getAttribute('slice');
 
       var id2 = canvas2_element.getAttribute('id');
       var width2 = canvas2_element.getAttribute('width');
       var height2 = canvas2_element.getAttribute('height');
       var class2 = canvas2_element.className;
+      var slice2 = canvas2_element.getAttribute('slice');
       
       var id3 = canvas3_element.getAttribute('id');
       var width3 = canvas3_element.getAttribute('width');
       var height3 = canvas3_element.getAttribute('height');
       var class3 = canvas3_element.className;
+      var slice3 = canvas3_element.getAttribute('slice');
 
+/*********************************************************************************************************/
 
       var id1_1 = draw_canvas1.getAttribute('id');
       var width1_1 = draw_canvas1.getAttribute('width');
       var height1_1 = draw_canvas1.getAttribute('height');
       var style1_1 = draw_canvas1.getAttribute('style');
       var class1_1 = draw_canvas1.getAttribute('class');
+      var slice1_1 = draw_canvas1.getAttribute('slice');
+
 
       var id2_1 = draw_canvas2.getAttribute('id');
       var width2_1 = draw_canvas2.getAttribute('width');
       var height2_1 = draw_canvas2.getAttribute('height');
       var style2_1 = draw_canvas2.getAttribute('style');
       var class2_1 = draw_canvas2.getAttribute('class');
+      var slice2_1 = draw_canvas2.getAttribute('slice');
+
       
       var id3_1 = draw_canvas3.getAttribute('id');
       var width3_1 = draw_canvas3.getAttribute('width');
       var height3_1 = draw_canvas3.getAttribute('height');
       var style3_1 = draw_canvas3.getAttribute('style');
       var class3_1 = draw_canvas3.getAttribute('class');
+      var slice3_1 = draw_canvas3.getAttribute('slice');
 
+/*********************************************************************************************************/
 
       current_element.setAttribute('id',id2);
       current_element.setAttribute('class',class2);
       current_element.setAttribute('width',width2);
-      current_element.setAttribute('height',height2);
+      // current_element.setAttribute('slice',slice2);
       
       canvas2_element.setAttribute('id',id3);
       canvas2_element.setAttribute('class',class3);
       canvas2_element.setAttribute('width',width3);
-      canvas2_element.setAttribute('height',height3);
+      // canvas2_element.setAttribute('slice',slice3);
 
       canvas3_element.setAttribute('id',id1); 
       canvas3_element.setAttribute('class',class1);
       canvas3_element.setAttribute('width',width1);
-      canvas3_element.setAttribute('height',height1);
+      // canvas3_element.setAttribute('slice',slice1);
+
+/*********************************************************************************************************/
 
       draw_canvas1.setAttribute('id',id2_1);
       draw_canvas1.setAttribute('style',style2_1);
       draw_canvas1.setAttribute('width',width2_1);
-      draw_canvas1.setAttribute('height',height2_1);
+      // draw_canvas1.setAttribute('height',height2_1);
       draw_canvas1.setAttribute('class',class2_1);
+      // draw_canvas1.setAttribute('slice',slice2_1);
+
       
       draw_canvas2.setAttribute('id',id3_1);
       draw_canvas2.setAttribute('style',style3_1);
       draw_canvas2.setAttribute('width',width3_1);
-      draw_canvas2.setAttribute('height',height3_1);
+      // draw_canvas2.setAttribute('height',height3_1);
       draw_canvas2.setAttribute('class',class3_1);
+      // draw_canvas2.setAttribute('slice',slice3_1);
+
 
       draw_canvas3.setAttribute('id',id1_1); 
       draw_canvas3.setAttribute('style',style1_1);
       draw_canvas3.setAttribute('width',width1_1);
-      draw_canvas3.setAttribute('height',height1_1);
+      // draw_canvas3.setAttribute('height',height1_1);
       draw_canvas3.setAttribute('class',class1_1);
+      // draw_canvas3.setAttribute('slice',slice1_1);
+
 
       // trans location
+      _via_reg_canvas.setAttribute('width',width1_1);
+      _via_reg_canvas.setAttribute('height',height3_1);
+      _via_reg_canvas.setAttribute('slice',slice3_1);
 
-      _via_reg_canvas = draw_canvas3;
 
       // for show rotated images
       var cid = get_current_index();
@@ -1245,9 +1271,6 @@
       $('#myRangeY_'+cid).trigger('input');
       $('#myRangeZ_'+cid).trigger('input');
 
-      // _via_reg_sliderX.value = String(Number(_via_reg_sliderX.value)+1);
-      // _via_reg_sliderY.value = String(Number(_via_reg_sliderY.value)+1);
-      // _via_reg_sliderZ.value = String(Number(_via_reg_sliderZ.value)+1);
     }
     // 2019su // Region attributes, File Annotation 수정
     function _set_attributes() {
@@ -2588,7 +2611,7 @@
     }
 
     function jump_to_image(image_index) {
-      global_index = image_index
+      _via_global_index = image_index
       display_area.setAttribute('class','display_none');
       var cid = get_current_index();
       var container = document.getElementById('canvas_container'+cid);
@@ -2688,8 +2711,8 @@
     // user clicks on the canvas
     function _via_reg_canvas_mousedown_handler(e) {
       e.stopPropagation();
-      if(VIA_CANVAS_POSITION) {
-        mouse_down = true;
+      if(_via_canvas_position) {
+        _via_mouse_down = true;
         return;
       }
       _via_click_x0 = e.offsetX; _via_click_y0 = e.offsetY;
@@ -2703,7 +2726,7 @@
             if (_via_region_edge[0] !== _via_user_sel_region_id) {
               _via_user_sel_region_id = _via_region_edge[0];
             }
-            if (VIA_CANVAS_POSITION) console.log(_via_click_x0,_via_click_x1);
+            if (_via_canvas_position) console.log(_via_click_x0,_via_click_x1);
             // resize region
             _via_is_user_resizing_region = true;
           }
@@ -2749,7 +2772,7 @@
     //  - moving/resizing/select/unselect existing region
     function _via_reg_canvas_mouseup_handler(e) {
       e.stopPropagation();
-      mouse_down = false;
+      _via_mouse_down = false;
       _via_click_x1 = e.offsetX; _via_click_y1 = e.offsetY;
 
       var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
@@ -3192,19 +3215,50 @@
         return;
       }
     }
-
+    
     function _via_reg_canvas_mouseover_handler(e) {
       // change the mouse cursor icon
       _via_redraw_reg_canvas();
       _via_reg_canvas.focus();
     }
+    function _via_reg_canvas_draw(canvas, x, y, slice){
+      var double_case = canvas.getAttribute('id');
+      if(double_case != "region_canvas"){
+        x = x*2;
+        y = y*2;
+      }
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle='red';
+      ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+      ctx.arc(x, y, 5, 0, Math.PI*2);
+      ctx.fill();
 
+      if (slice === 'x'){
+        _via_reg_position['y'] = x;
+        _via_reg_position['z'] = canvas.height - y;
+      }else if (slice === 'y'){
+        _via_reg_position['x'] = x;
+        _via_reg_position['z'] = canvas.height - y;
+      }else if (slice === 'z'){
+        _via_reg_position['x'] = x;
+        _via_reg_position['y'] = y;
+      }
+      
+    }
+    
     function _via_reg_canvas_mousemove_handler(e) {
       if (!_via_current_image_loaded) {
         return;
       }
-      mousePosition.x = e.offsetX;
-      mousePosition.y = e.offsetY;
+      _via_mouse_position.x = e.offsetX;
+      _via_mouse_position.y = e.offsetY;
       _via_current_x = e.offsetX; _via_current_y = e.offsetY;
       // display the cursor coordinates
       var rf = document.getElementById('region_info');
@@ -3215,75 +3269,23 @@
         var img_y = Math.round(_via_current_y * _via_canvas_scale);
         rf.innerHTML = 'X:' + img_x + ',' + ' Y:' + img_y;
       }
-      if (VIA_CANVAS_POSITION && mouse_down) {
-          var cid = get_current_index();
-          var canvas = document.getElementById(e.currentTarget.id);
-          
-          var rangeX = $('#myRangeX_'+cid);
-          var rangeY = $('#myRangeY_'+cid);
-          var rangeZ = $('#myRangeZ_'+cid);
-          var case_slice = canvas.getAttribute('slice');
-          if(case_slice === "x"){
-            var ctx = canvas.getContext("2d");
-            ctx.fillStyle='red';
-            ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.moveTo(mousePosition.x, 0);
-            ctx.lineTo(mousePosition.x, canvas.height);
-            ctx.moveTo(0, mousePosition.y);
-            ctx.lineTo(canvas.width, mousePosition.y);
-            ctx.stroke();
-            ctx.arc(mousePosition.x, mousePosition.y,5,0,Math.PI*2);
-            ctx.fill();
-            _via_reg_position['y'] = mousePosition.x;
-            _via_reg_position['z'] = canvas.height - mousePosition.y;
-            rangeY.trigger('input');
+      var case_name = e.currentTarget.getAttribute('id');
 
-          }else if(case_slice === "y"){
-            var ctx = canvas.getContext("2d");
-            ctx.fillStyle='red';
-            var x = mousePosition.x * 2;
-            var y = mousePosition.y * 2;
-            ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
-            ctx.clearRect(0, 0, e.currentTarget.width, e.currentTarget.height);
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, e.currentTarget.height);
-            ctx.moveTo(0, y);
-            ctx.lineTo(e.currentTarget.width, y);
-            ctx.stroke();
-            ctx.arc(x, y, 5, 0, Math.PI*2);
-            ctx.fill();
-            _via_reg_position['x'] = x;
-            _via_reg_position['z'] = e.currentTarget.height - y;
-            rangeY.trigger('input');
+      var cid = get_current_index();
+      var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
+      var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
+      var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
 
-          }else if(case_slice === "z"){
-            var ctx = canvas.getContext("2d");
-            ctx.fillStyle='red';
-            var x = mousePosition.x * 2;
-            var y = mousePosition.y * 2;
-            ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
-            ctx.clearRect(0, 0,  e.currentTarget.width, e.currentTarget.height);
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, e.currentTarget.height);
-            ctx.moveTo(0, y);
-            ctx.lineTo(e.currentTarget.width, y);
-            ctx.stroke();
-            ctx.arc(x, y,5,0,Math.PI*2);
-            ctx.fill();
-            _via_reg_position['x'] = x;
-            _via_reg_position['y'] = y;
-            rangeY.trigger('input');
+      var rangeX = $('#myRangeX_'+cid);
 
-          }
-          // console.log('trigger!!');
-
-        }
-
-      else if (_via_is_region_selected) {
+      if (_via_canvas_position && _via_mouse_down && firstTry === 5) {
+          // x slice
+          var canvas = e.currentTarget;
+          var slices = canvas.getAttribute('slice');
+          _via_reg_canvas_draw(canvas, _via_mouse_position.x, _via_mouse_position.y, slices);
+          rangeX.trigger('input');
+      }
+      if (_via_is_region_selected) {
         if (!_via_is_user_resizing_region) {
           // check if user moved mouse cursor to region boundary
           // which indicates an intention to resize the region
@@ -4768,7 +4770,17 @@
     // Shortcut key handlers
     //
     function _via_window_keyup_handler(e){
-      if(VIA_CANVAS_POSITION) VIA_CANVAS_POSITION=false;
+      if(_via_canvas_position) _via_canvas_position=false;
+      var cid = get_current_index();
+      var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
+      var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
+      var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
+
+
+      dcanvas1.classList.add('display_none');
+      dcanvas2.classList.add('display_none');
+      dcanvas3.classList.add('display_none');        
+
     }
     function _via_window_keydown_handler(e) {
       if (e.target === document.body) {
@@ -4788,7 +4800,16 @@
         }
         
         if (e.key === "q"){
-          VIA_CANVAS_POSITION = true;
+          _via_canvas_position = true;
+          var cid = get_current_index();
+
+          var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
+          var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
+          var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
+          
+          dcanvas1.classList.remove('display_none');
+          dcanvas2.classList.remove('display_none');
+          dcanvas3.classList.remove('display_none');
           return;
         }
 
@@ -4918,7 +4939,17 @@
 
     function _via_reg_canvas_keyup_handler(e) {
       // debugger;
-      VIA_CANVAS_POSITION = false;
+      _via_canvas_position = false;
+      var cid = get_current_index();
+
+      var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
+      var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
+      var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
+
+      dcanvas1.classList.add('display_none');
+      dcanvas2.classList.add('display_none');
+      dcanvas3.classList.add('display_none');
+
       // var ctx = e.currentTarget.getContext("2d");
       // ctx.clearRect(0, 0, e.currentTarget.clientWidth, e.currentTarget.clientHeight);
       if (e.ctrlKey) {
@@ -4989,7 +5020,16 @@
         }
 
         if (e.key === 'q'){
-          VIA_CANVAS_POSITION = true;
+          _via_canvas_position = true;
+          var cid = get_current_index();
+          var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
+          var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
+          var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
+
+          dcanvas1.classList.remove('display_none');
+          dcanvas2.classList.remove('display_none');
+          dcanvas3.classList.remove('display_none');
+
           e.preventDefault();
           return;
         }
@@ -5036,7 +5076,7 @@
       
       if (_via_current_image_loaded) {
         if(e.key === "q"){
-          VIA_CANVAS_POSITION = true;
+          _via_canvas_position = true;
         }
         //_via_handle_global_keydown_event(e);
       }
@@ -8473,13 +8513,13 @@
           else {
             alert(' Wrong file name pattern,\n Change file name Please.');
             discarded_file_count += 1;
-            wrong_img_list.push(user_selected_images[i].name);
+            _via_wrong_img_list.push(user_selected_images[i].name);
           }
         }
         catch (error) {
           alert(' Wrong file name pattern,\n Change file name Please.');
           discarded_file_count += 1;
-          wrong_img_list.push(user_selected_images[i].name);
+          _via_wrong_img_list.push(user_selected_images[i].name);
         }
       }
 
@@ -10398,10 +10438,11 @@
             canvas_container.setAttribute('id','canvas_container'+img_index);
             canvas_container.setAttribute('class','canvas_container');
 
-            var canvas2 = document.createElement('canvas');
+            var draw_canvas1 = document.createElement('canvas');
             var draw_canvas2 = document.createElement('canvas');
-            var canvas3 = document.createElement('canvas');
             var draw_canvas3 = document.createElement('canvas');
+            var canvas2 = document.createElement('canvas');
+            var canvas3 = document.createElement('canvas');
             var rangeX = document.createElement('input');
             var rangeY = document.createElement('input');
             var rangeZ = document.createElement('input');
@@ -10434,13 +10475,27 @@
             button.setAttribute('value','Rot');
             button.setAttribute('onclick',"via_canvas_toggle()");
 
+            draw_canvas1.setAttribute('id','draw_region_canvas1_'+img_index);
+            draw_canvas1.setAttribute('class','draw_region_canvas1');
+            draw_canvas1.setAttribute('width','505');
+            draw_canvas1.setAttribute('height','582');
+            draw_canvas1.setAttribute('style','cursor: default;');
+            draw_canvas1.setAttribute('slice','x');
+            draw_canvas1.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
+            draw_canvas1.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
+            draw_canvas1.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
+            draw_canvas1.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
+            draw_canvas1.addEventListener('keyup', _via_reg_canvas_keyup_handler, false);
+            draw_canvas1.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
+            draw_canvas1.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
+
             canvas2.setAttribute('id','region_canvas2_'+img_index);
             canvas2.setAttribute('class','canvas_2');
             canvas2.setAttribute('slice','y');
 
             draw_canvas2.setAttribute('id','draw_region_canvas2_'+img_index);
-            draw_canvas2.setAttribute('width','505');
             draw_canvas2.setAttribute('class','draw_region_canvas2');
+            draw_canvas2.setAttribute('width','505');
             draw_canvas2.setAttribute('height','582');
             draw_canvas2.setAttribute('style','cursor: default;');
             draw_canvas2.setAttribute('slice','y');
@@ -10452,16 +10507,14 @@
             draw_canvas2.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
             draw_canvas2.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
 
-
-
             canvas3.setAttribute('id','region_canvas3_'+img_index);
             canvas3.setAttribute('class','canvas_3');
             canvas3.setAttribute('slice','z');
 
             draw_canvas3.setAttribute('id','draw_region_canvas3_'+img_index);
-            draw_canvas3.setAttribute('width','505');
             draw_canvas3.setAttribute('class','draw_region_canvas3');
-            draw_canvas3.setAttribute('height','582');
+            draw_canvas3.setAttribute('width','505');
+            draw_canvas3.setAttribute('height','512');
             draw_canvas3.setAttribute('style','cursor: defqault;');
             draw_canvas3.setAttribute('slice','z');
             draw_canvas3.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
@@ -10485,13 +10538,19 @@
             canvas_container.appendChild(button);
 
             _via_img_panel.insertBefore(bimg,_via_reg_canvas);
+            _via_img_panel.insertBefore(draw_canvas1,_via_reg_canvas);
             _via_img_panel.appendChild(canvas_container);
 
-            bimg.setAttribute('class','current_image');
             bimg.setAttribute('id', _via_img_buffer_get_html_id(img_index));
+            bimg.setAttribute('class','current_image');
             bimg.classList.add('show_imgs');
             bimg.setAttribute('slice','x');
             bimg.setAttribute('alt', 'Image loaded from base64 data of a local file selected by user.');
+
+            _via_reg_canvas_draw(draw_canvas1, 250, 290, 'x');
+            _via_reg_canvas_draw(draw_canvas2, 250, 290, 'y');
+            _via_reg_canvas_draw(draw_canvas3, 250, 290, 'z');
+
           }
           else {
             bimg = document.createElement('img');
@@ -10529,8 +10588,6 @@
               img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
               _via_img_panel.insertBefore(bimg, _via_reg_canvas);
             }
-            
-           
             project_file_load_on_success(img_index);
             img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
             // add timestamp so that we can apply Least Recently Used (LRU)
@@ -11422,7 +11479,7 @@
         sliderX.value = Math.round(slicesX / 2);
         _via_reg_position['x']=sliderX.value;
         sliderX.oninput = function() {
-          if(!VIA_CANVAS_POSITION) _via_reg_position['x']=sliderX.value;
+          if(!_via_canvas_position) _via_reg_position['x']=sliderX.value;
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11433,7 +11490,7 @@
         sliderY.value = Math.round(slicesY / 2);
         _via_reg_position['y']=sliderY.value;
         sliderY.oninput = function() {
-          if(!VIA_CANVAS_POSITION) _via_reg_position['y']=sliderY.value;
+          if(!_via_canvas_position) _via_reg_position['y']=sliderY.value;
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');
@@ -11445,7 +11502,7 @@
         sliderZ.value = Math.round(slicesZ / 2);
         _via_reg_position['z']=sliderZ.value;
         sliderZ.oninput = function() {
-          if(!VIA_CANVAS_POSITION) _via_reg_position['z']=sliderZ.value;
+          if(!_via_canvas_position) _via_reg_position['z']=sliderZ.value;
           drawCanvas(_via_reg_canvas2, _via_reg_position, niftiHeader, niftiImage, 'y');
           drawCanvas(_via_reg_canvas1, _via_reg_position, niftiHeader, niftiImage, 'x');
           drawCanvas(_via_reg_canvas3, _via_reg_position, niftiHeader, niftiImage, 'z');

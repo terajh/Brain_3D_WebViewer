@@ -479,13 +479,11 @@ def get_image_data():
 def upload_img():
     print("upload img render")
     if request.method == 'POST':
-
         img_files = request.files.getlist('files[]')
 
         #잘못된 규칙의 파일명 upload시 temp_img 폴더에 저장되는것 방지
-        wrong_list = request.form['wrong_img_list[]']
+        wrong_list = request.form['_via_wrong_img_list[]']
         wrong_list = wrong_list.split(',')
-        print(wrong_list)
         if not os.path.isdir("./statics/temp_img/"+session['userID']+"/"):
             os.mkdir("./statics/temp_img/"+session['userID'])
 
@@ -753,4 +751,4 @@ def dcm_file(filename):
 
 if __name__ == "__main__":
     # app.run(host='59.13.125.147', port=29188)
-    app.run()
+    app.run(debug=True)
