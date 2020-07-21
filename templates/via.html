@@ -3221,11 +3221,37 @@
       _via_redraw_reg_canvas();
       _via_reg_canvas.focus();
     }
-    function _via_reg_canvas_draw(canvas, x, y, slice){
+    function _via_reg_canvas_draw(canvas, x, y, slice, again){
       var double_case = canvas.getAttribute('id');
+      var cid = get_current_index();
+      var dcanvas1 = document.getElementById('region_canvas');
+      var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
+      var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
       if(double_case != "region_canvas"){
-        x = x*2;
-        y = y*2;
+        if(slice === 'y'){
+          _via_draw2_mouse_position.x = x; // x
+          _via_draw2_mouse_position.y = y; // z
+          if(again){
+            _via_reg_canvas_draw(dcanvas1, _via_draw1_mouse_position.x, _via_draw2_mouse_position.y, 'x', false);
+            _via_reg_canvas_draw(dcanvas3, _via_draw2_mouse_position.x, _via_draw3_mouse_position.y, 'z', false);
+          }
+        }else if(slice === 'z'){
+          _via_draw3_mouse_position.x = x; // x
+          _via_draw3_mouse_position.y = y; // y
+          if(again){
+            _via_reg_canvas_draw(dcanvas1, _via_draw3_mouse_position.y, _via_draw1_mouse_position.y, 'x', false);
+            _via_reg_canvas_draw(dcanvas2, _via_draw3_mouse_position.x, _via_draw2_mouse_position.y, 'y', false);
+          }
+        }
+        if(again){
+          x = x*2;
+          y = y*2;
+        }
+      }else if(again){
+        _via_draw1_mouse_position.x = x; // y
+        _via_draw1_mouse_position.y = y; // z
+        _via_reg_canvas_draw(dcanvas2, _via_draw2_mouse_position.x, _via_draw1_mouse_position.y, 'y', false);
+        _via_reg_canvas_draw(dcanvas3, _via_draw3_mouse_position.x, _via_draw1_mouse_position.x, 'z', false);
       }
       var ctx = canvas.getContext("2d");
       ctx.fillStyle='red';
@@ -3239,7 +3265,7 @@
       ctx.stroke();
       ctx.arc(x, y, 5, 0, Math.PI*2);
       ctx.fill();
-
+      
       if (slice === 'x'){
         _via_reg_position['y'] = x;
         _via_reg_position['z'] = canvas.height - y;
@@ -3250,7 +3276,7 @@
         _via_reg_position['x'] = x;
         _via_reg_position['y'] = y;
       }
-      
+      return;
     }
     
     function _via_reg_canvas_mousemove_handler(e) {
@@ -3282,7 +3308,7 @@
           // x slice
           var canvas = e.currentTarget;
           var slices = canvas.getAttribute('slice');
-          _via_reg_canvas_draw(canvas, _via_mouse_position.x, _via_mouse_position.y, slices);
+          _via_reg_canvas_draw(canvas, _via_mouse_position.x, _via_mouse_position.y, slices, true);
           rangeX.trigger('input');
       }
       if (_via_is_region_selected) {
