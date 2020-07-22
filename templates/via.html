@@ -509,17 +509,8 @@
         <!-- buffer images using <img> element will be added here -->
         
         <!-- @todo: in future versions, this canvas will be replaced by a <svg> element -->
-        <canvas id="region_canvas" width="1" height="1" tabindex="1" data-zoom="3" slice="x" class="draw_region_canvas1">Sorry, your browser does not support HTML5 Canvas
+        <canvas id="region_canvas" width="1" height="1" tabindex="1" data-zoom="3" slice="x" class="main_canvas">Sorry, your browser does not support HTML5 Canvas
         functionality which is required for this application.</canvas>
-        
-        <!-- <div id="other_canvas" class="display_none">
-          
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRangeX">
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRangeY">
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRangeZ">
-          <input type="button" value="button" onclick="via_canvas_toggle(this)">
-        </div> -->
-        
 
         <!-- here, a child div with id="annotation_editor" is added by javascript -->
       </table>
@@ -1063,17 +1054,6 @@
         document.getElementById("button_edit_file_metadata").click();
       }
     }());
-    var target = $('#bim0');
-    var zoom = 3;
-    console.log(target.attr("src"));
-    // $("#image_panel")
-    //     .prepend("<div class='magnifier'></div>")
-    //     .children('.magnifier').css({
-    //         "background": "url('" + target.attr("src") + "') no-repeat",
-    //         // 2
-    //         "background-size": target.width() * zoom + "px " + target.height() * zoom+ "px"
-    //     });
-    var magnifier = $('.magnifier');
 
 
     //
@@ -1160,17 +1140,26 @@
       var canvas2_element = document.getElementById('region_canvas2_'+current_id);
       var canvas3_element = document.getElementById('region_canvas3_'+current_id);
 
-      var draw_canvas1 = document.getElementById('draw_region_canvas1_'+current_id);
-      var draw_canvas2 = document.getElementById('draw_region_canvas2_'+current_id);
-      var draw_canvas3 = document.getElementById('draw_region_canvas3_'+current_id);
+      var draw_canvas1 = document.getElementsByClassName('main_canvas')[0];
+      var draw_canvas2 = document.getElementsByClassName('serve_canvas')[0];
+      var draw_canvas3 = document.getElementsByClassName('serve_canvas')[1];
 
       $('#region_canvas3_'+current_id).insertBefore('#bim'+current_id);
       $('#bim'+current_id).insertBefore('#region_canvas2_'+current_id);
 
-      $('#draw_region_canvas3_'+current_id).insertBefore('#draw_region_canvas1_'+current_id);
-      $('#draw_region_canvas1_'+current_id).insertBefore('#draw_region_canvas2_'+current_id);
+      $('.serve_canvas:eq(1)').insertBefore('.main_canvas:eq(0)');
+      $('.main_canvas:eq(0)').insertBefore('.serve_canvas:eq(1)');
 
+      // 1->2, 2->3, 3->1
 
+      // var tx = _via_draw1_mouse_position.x;
+      // var ty = _via_draw1_mouse_position.y;
+      // _via_draw1_mouse_position.x = _via_draw3_mouse_position.x;
+      // _via_draw1_mouse_position.y = _via_draw3_mouse_position.y;
+      // _via_draw3_mouse_position.x = _via_draw2_mouse_position.x;
+      // _via_draw3_mouse_position.y = _via_draw2_mouse_position.y;
+      // _via_draw2_mouse_position.x = tx;
+      // _via_draw2_mouse_position.y = ty;
 /*********************************************************************************************************/
 
       var id1 = current_element.getAttribute('id');
@@ -1193,7 +1182,6 @@
 
 /*********************************************************************************************************/
 
-      var id1_1 = draw_canvas1.getAttribute('id');
       var width1_1 = draw_canvas1.getAttribute('width');
       var height1_1 = draw_canvas1.getAttribute('height');
       var style1_1 = draw_canvas1.getAttribute('style');
@@ -1201,7 +1189,6 @@
       var slice1_1 = draw_canvas1.getAttribute('slice');
 
 
-      var id2_1 = draw_canvas2.getAttribute('id');
       var width2_1 = draw_canvas2.getAttribute('width');
       var height2_1 = draw_canvas2.getAttribute('height');
       var style2_1 = draw_canvas2.getAttribute('style');
@@ -1209,13 +1196,13 @@
       var slice2_1 = draw_canvas2.getAttribute('slice');
 
       
-      var id3_1 = draw_canvas3.getAttribute('id');
       var width3_1 = draw_canvas3.getAttribute('width');
       var height3_1 = draw_canvas3.getAttribute('height');
       var style3_1 = draw_canvas3.getAttribute('style');
       var class3_1 = draw_canvas3.getAttribute('class');
       var slice3_1 = draw_canvas3.getAttribute('slice');
 
+      $('#region_canvas').attr('slice',slice3_1);
 /*********************************************************************************************************/
 
       current_element.setAttribute('id',id2);
@@ -1235,28 +1222,22 @@
 
 /*********************************************************************************************************/
 
-      draw_canvas1.setAttribute('id',id2_1);
       draw_canvas1.setAttribute('style',style2_1);
       draw_canvas1.setAttribute('width',width2_1);
       // draw_canvas1.setAttribute('height',height2_1);
       draw_canvas1.setAttribute('class',class2_1);
-      // draw_canvas1.setAttribute('slice',slice2_1);
 
       
-      draw_canvas2.setAttribute('id',id3_1);
       draw_canvas2.setAttribute('style',style3_1);
       draw_canvas2.setAttribute('width',width3_1);
       // draw_canvas2.setAttribute('height',height3_1);
       draw_canvas2.setAttribute('class',class3_1);
-      // draw_canvas2.setAttribute('slice',slice3_1);
 
 
-      draw_canvas3.setAttribute('id',id1_1); 
       draw_canvas3.setAttribute('style',style1_1);
       draw_canvas3.setAttribute('width',width1_1);
       // draw_canvas3.setAttribute('height',height1_1);
       draw_canvas3.setAttribute('class',class1_1);
-      // draw_canvas3.setAttribute('slice',slice1_1);
 
 
       // trans location
@@ -1270,6 +1251,8 @@
       $('#myRangeX_'+cid).trigger('input');
       $('#myRangeY_'+cid).trigger('input');
       $('#myRangeZ_'+cid).trigger('input');
+
+
 
     }
     // 2019su // Region attributes, File Annotation 수정
@@ -1457,44 +1440,20 @@
       window.addEventListener('keydown', _via_window_keydown_handler, false);
       window.addEventListener('keyup',_via_window_keyup_handler, false);
       _via_reg_canvas.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
-      // _via_reg_canvas2.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
-      // _via_reg_canvas3.addEventListener('keydown', _via_reg_canvas_keydown_handler, false);
-
       _via_reg_canvas.addEventListener('keyup', _via_reg_canvas_keyup_handler, false);
-      // _via_reg_canvas2.addEventListener('keyup', _via_reg_canvas_keyup_handler, false);
-      // _via_reg_canvas3.addEventListener('keyup', _via_reg_canvas_keyup_handler, false);
-
       _via_reg_canvas.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
-      // _via_reg_canvas2.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
-      // _via_reg_canvas3.addEventListener('keypress', _via_reg_canvas_keypress_handler, false);
 
     }
 
     // handles drawing of regions over image by the user
     function _via_init_mouse_handlers() {
       _via_reg_canvas.addEventListener('dblclick', _via_reg_canvas_dblclick_handler, false);
-      // _via_reg_canvas2.addEventListener('dblclick', _via_reg_canvas_dblclick_handler, false);
-      // _via_reg_canvas3.addEventListener('dblclick', _via_reg_canvas_dblclick_handler, false);
-
       _via_reg_canvas.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
-      // _via_reg_canvas2.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
-      // _via_reg_canvas3.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
-
       _via_reg_canvas.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
-      // _via_reg_canvas2.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
-      // _via_reg_canvas3.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
-
       _via_reg_canvas.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
-      // _via_reg_canvas2.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
-      // _via_reg_canvas3.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
-
       _via_reg_canvas.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
-      // _via_reg_canvas2.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
-      // _via_reg_canvas3.addEventListener('mousemove', _via_reg_canvas_mousemove_handler, false);
-
       _via_reg_canvas.addEventListener('wheel', _via_reg_canvas_mouse_wheel_listener, false);
-      // _via_reg_canvas2.addEventListener('wheel', _via_reg_canvas_mouse_wheel_listener, false);
-      // _via_reg_canvas3.addEventListener('wheel', _via_reg_canvas_mouse_wheel_listener, false);
+
       // touch screen event handlers
       // @todo: adapt for mobile users
       _via_reg_canvas.addEventListener('touchstart', _via_reg_canvas_mousedown_handler, false);
@@ -3222,36 +3181,95 @@
       _via_reg_canvas.focus();
     }
     function _via_reg_canvas_draw(canvas, x, y, slice, again){
-      var double_case = canvas.getAttribute('id');
       var cid = get_current_index();
-      var dcanvas1 = document.getElementById('region_canvas');
-      var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
-      var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
-      if(double_case != "region_canvas"){
-        if(slice === 'y'){
+      var dcanvas1 = document.getElementsByClassName('main_canvas')[1];
+      var dcanvas2 = document.getElementsByClassName('serve_canvas')[0];
+      var dcanvas3 = document.getElementsByClassName('serve_canvas')[1];
+
+      var slice1 = dcanvas1.getAttribute('slice');
+      var slice2 = dcanvas2.getAttribute('slice');
+      var slice3 = dcanvas3.getAttribute('slice');
+
+      var xcanvas, ycanvas, zcanvas;
+
+      if(slice1 === 'x' && slice2 === 'y' && slice3 === 'z'){
+        xcanvas = dcanvas1;
+        ycanvas = dcanvas2;
+        zcanvas = dcanvas3;
+      }else if(slice1 === 'x' && slice2 === 'z' && slice3 === 'y'){
+        xcanvas = dcanvas1;
+        ycanvas = dcanvas3;
+        zcanvas = dcanvas2;
+      }else if(slice1 === 'y' && slice2 === 'x' && slice3 === 'z'){
+        xcanvas = dcanvas2;
+        ycanvas = dcanvas1;
+        zcanvas = dcanvas3;
+      }else if(slice1 === 'y' && slice2 === 'z' && slice3 === 'x'){
+        xcanvas = dcanvas3;
+        ycanvas = dcanvas1;
+        zcanvas = dcanvas2;
+      }else if(slice1 === 'z' && slice2 === 'x' && slice3 === 'y'){
+        xcanvas = dcanvas2;
+        ycanvas = dcanvas3;
+        zcanvas = dcanvas1;
+      }else{
+        xcanvas = dcanvas3;
+        ycanvas = dcanvas2;
+        zcanvas = dcanvas1;
+      }
+
+      if(canvas.id != dcanvas1.id){ // if canvas is serve
+        if(slice === 'x'){
+          _via_draw1_mouse_position.x = x; // y
+          _via_draw1_mouse_position.y = y; // z
+          if(again){
+            _via_reg_canvas_draw(ycanvas, _via_draw2_mouse_position.x, _via_draw1_mouse_position.y, ycanvas.getAttribute('slice'), false);
+            _via_reg_canvas_draw(zcanvas, _via_draw3_mouse_position.x, _via_draw1_mouse_position.x, zcanvas.getAttribute('slice'), false);
+          }
+        }
+        else if(slice === 'y'){
           _via_draw2_mouse_position.x = x; // x
           _via_draw2_mouse_position.y = y; // z
           if(again){
-            _via_reg_canvas_draw(dcanvas1, _via_draw1_mouse_position.x, _via_draw2_mouse_position.y, 'x', false);
-            _via_reg_canvas_draw(dcanvas3, _via_draw2_mouse_position.x, _via_draw3_mouse_position.y, 'z', false);
+            _via_reg_canvas_draw(xcanvas, _via_draw1_mouse_position.x, _via_draw2_mouse_position.y, xcanvas.getAttribute('slice'), false);
+            _via_reg_canvas_draw(zcanvas, zcanvas.width - _via_draw2_mouse_position.x, _via_draw3_mouse_position.y, zcanvas.getAttribute('slice'), false);
           }
         }else if(slice === 'z'){
           _via_draw3_mouse_position.x = x; // x
           _via_draw3_mouse_position.y = y; // y
           if(again){
-            _via_reg_canvas_draw(dcanvas1, _via_draw3_mouse_position.y, _via_draw1_mouse_position.y, 'x', false);
-            _via_reg_canvas_draw(dcanvas2, _via_draw3_mouse_position.x, _via_draw2_mouse_position.y, 'y', false);
+            _via_reg_canvas_draw(xcanvas, _via_draw3_mouse_position.y, _via_draw1_mouse_position.y, xcanvas.getAttribute('slice'), false);
+            _via_reg_canvas_draw(ycanvas, ycanvas.width - _via_draw3_mouse_position.x, _via_draw2_mouse_position.y, ycanvas.getAttribute('slice'), false);
           }
         }
         if(again){
-          x = x*2;
-          y = y*2;
+          x = x * 2;
+          y = y * 2;
         }
-      }else if(again){
-        _via_draw1_mouse_position.x = x; // y
-        _via_draw1_mouse_position.y = y; // z
-        _via_reg_canvas_draw(dcanvas2, _via_draw2_mouse_position.x, _via_draw1_mouse_position.y, 'y', false);
-        _via_reg_canvas_draw(dcanvas3, _via_draw3_mouse_position.x, _via_draw1_mouse_position.x, 'z', false);
+      }else if(canvas.id === dcanvas1.id && again){
+        if(slice === 'x'){
+          _via_draw1_mouse_position.x = x; // y
+          _via_draw1_mouse_position.y = y; // z
+          if(again){
+            _via_reg_canvas_draw(ycanvas, _via_draw2_mouse_position.x, _via_draw1_mouse_position.y, ycanvas.getAttribute('slice'), false);
+            _via_reg_canvas_draw(zcanvas, _via_draw3_mouse_position.x, _via_draw1_mouse_position.x, zcanvas.getAttribute('slice'), false);
+          }
+        }
+        else if(slice === 'y'){
+          _via_draw2_mouse_position.x = x; // x
+          _via_draw2_mouse_position.y = y; // z
+          if(again){
+            _via_reg_canvas_draw(xcanvas, _via_draw1_mouse_position.x, _via_draw2_mouse_position.y, xcanvas.getAttribute('slice'), false);
+            _via_reg_canvas_draw(zcanvas, zcanvas.width - _via_draw2_mouse_position.x, _via_draw3_mouse_position.y, zcanvas.getAttribute('slice'), false);
+          }
+        }else if(slice === 'z'){
+          _via_draw3_mouse_position.x = x; // x
+          _via_draw3_mouse_position.y = y; // y
+          if(again){
+            _via_reg_canvas_draw(xcanvas, _via_draw3_mouse_position.y, _via_draw1_mouse_position.y, xcanvas.getAttribute('slice'), false);
+            _via_reg_canvas_draw(ycanvas, ycanvas.width - _via_draw3_mouse_position.x, _via_draw2_mouse_position.y, ycanvas.getAttribute('slice'), false);
+          }
+        }
       }
       var ctx = canvas.getContext("2d");
       ctx.fillStyle='red';
@@ -3265,16 +3283,17 @@
       ctx.stroke();
       ctx.arc(x, y, 5, 0, Math.PI*2);
       ctx.fill();
-      
-      if (slice === 'x'){
-        _via_reg_position['y'] = x;
-        _via_reg_position['z'] = canvas.height - y;
-      }else if (slice === 'y'){
-        _via_reg_position['x'] = x;
-        _via_reg_position['z'] = canvas.height - y;
-      }else if (slice === 'z'){
-        _via_reg_position['x'] = x;
-        _via_reg_position['y'] = y;
+      if(again){
+        if (slice === 'x'){
+          _via_reg_position['y'] = x;
+          _via_reg_position['z'] = canvas.height - y;
+        }else if (slice === 'y'){
+          _via_reg_position['x'] = x;
+          _via_reg_position['z'] = canvas.height - y;
+        }else if (slice === 'z'){
+          _via_reg_position['x'] = x;
+          _via_reg_position['y'] = y;
+        }
       }
       return;
     }
@@ -3285,7 +3304,8 @@
       }
       _via_mouse_position.x = e.offsetX;
       _via_mouse_position.y = e.offsetY;
-      _via_current_x = e.offsetX; _via_current_y = e.offsetY;
+      _via_current_x = e.offsetX; 
+      _via_current_y = e.offsetY;
       // display the cursor coordinates
       var rf = document.getElementById('region_info');
       
@@ -3295,21 +3315,19 @@
         var img_y = Math.round(_via_current_y * _via_canvas_scale);
         rf.innerHTML = 'X:' + img_x + ',' + ' Y:' + img_y;
       }
+
       var case_name = e.currentTarget.getAttribute('id');
 
       var cid = get_current_index();
-      var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
-      var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
-      var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
-
       var rangeX = $('#myRangeX_'+cid);
-
-      if (_via_canvas_position && _via_mouse_down && firstTry === 5) {
-          // x slice
-          var canvas = e.currentTarget;
-          var slices = canvas.getAttribute('slice');
-          _via_reg_canvas_draw(canvas, _via_mouse_position.x, _via_mouse_position.y, slices, true);
-          rangeX.trigger('input');
+      if(true){
+        if (_via_canvas_position && _via_mouse_down && firstTry === 5) {
+            // x slice
+            var canvas = e.currentTarget;
+            var slices = canvas.getAttribute('slice');
+            _via_reg_canvas_draw(canvas, _via_mouse_position.x, _via_mouse_position.y, slices, true);
+            rangeX.trigger('input');
+        }
       }
       if (_via_is_region_selected) {
         if (!_via_is_user_resizing_region) {
@@ -4802,7 +4820,6 @@
       var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
       var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
 
-
       dcanvas1.classList.add('display_none');
       dcanvas2.classList.add('display_none');
       dcanvas3.classList.add('display_none');        
@@ -4832,7 +4849,6 @@
           var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
           var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
           var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
-          
           dcanvas1.classList.remove('display_none');
           dcanvas2.classList.remove('display_none');
           dcanvas3.classList.remove('display_none');
@@ -4971,6 +4987,7 @@
       var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
       var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
       var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
+
 
       dcanvas1.classList.add('display_none');
       dcanvas2.classList.add('display_none');
@@ -10136,7 +10153,6 @@
       this.recompute_svg = true;
     }
 
-
     ///
     /// Region shape : polyline
     ///
@@ -10160,7 +10176,6 @@
       this.points = points.join(',');
       this.recompute_svg = true;
     }
-
 
     ///
     /// Region shape : polygon
@@ -10475,22 +10490,21 @@
             var button = document.createElement('input');
 
             rangeX.setAttribute('id','myRangeX_'+img_index);
-            rangeX.setAttribute('class','sliderX');
+            rangeX.setAttribute('class','sliderX display_none');
             rangeX.setAttribute('type','range');
             rangeX.setAttribute('min','1');
             rangeX.setAttribute('max','100');
             rangeX.setAttribute('value','50');
 
-
             rangeY.setAttribute('id','myRangeY_'+img_index);
-            rangeY.setAttribute('class','sliderY');
+            rangeY.setAttribute('class','sliderY display_none');
             rangeY.setAttribute('type','range');
             rangeY.setAttribute('min','1');
             rangeY.setAttribute('max','100');
             rangeY.setAttribute('value','50');
 
             rangeZ.setAttribute('id','myRangeZ_'+img_index);
-            rangeZ.setAttribute('class','sliderZ');
+            rangeZ.setAttribute('class','sliderZ display_none');
             rangeZ.setAttribute('type','range');
             rangeZ.setAttribute('min','1');
             rangeZ.setAttribute('max','100');
@@ -10502,7 +10516,7 @@
             button.setAttribute('onclick',"via_canvas_toggle()");
 
             draw_canvas1.setAttribute('id','draw_region_canvas1_'+img_index);
-            draw_canvas1.setAttribute('class','draw_region_canvas1');
+            draw_canvas1.setAttribute('class','draw_region_canvas1 main_canvas');
             draw_canvas1.setAttribute('width','505');
             draw_canvas1.setAttribute('height','582');
             draw_canvas1.setAttribute('style','cursor: default;');
@@ -10520,7 +10534,7 @@
             canvas2.setAttribute('slice','y');
 
             draw_canvas2.setAttribute('id','draw_region_canvas2_'+img_index);
-            draw_canvas2.setAttribute('class','draw_region_canvas2');
+            draw_canvas2.setAttribute('class','draw_region_canvas2 serve_canvas');
             draw_canvas2.setAttribute('width','505');
             draw_canvas2.setAttribute('height','582');
             draw_canvas2.setAttribute('style','cursor: default;');
@@ -10538,10 +10552,10 @@
             canvas3.setAttribute('slice','z');
 
             draw_canvas3.setAttribute('id','draw_region_canvas3_'+img_index);
-            draw_canvas3.setAttribute('class','draw_region_canvas3');
+            draw_canvas3.setAttribute('class','draw_region_canvas3 serve_canvas');
             draw_canvas3.setAttribute('width','505');
             draw_canvas3.setAttribute('height','512');
-            draw_canvas3.setAttribute('style','cursor: defqault;');
+            draw_canvas3.setAttribute('style','cursor: default;');
             draw_canvas3.setAttribute('slice','z');
             draw_canvas3.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
             draw_canvas3.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
@@ -10563,8 +10577,8 @@
             canvas_container.appendChild(rangeZ);
             canvas_container.appendChild(button);
 
-            _via_img_panel.insertBefore(bimg,_via_reg_canvas);
             _via_img_panel.insertBefore(draw_canvas1,_via_reg_canvas);
+            _via_img_panel.insertBefore(bimg,_via_reg_canvas);
             _via_img_panel.appendChild(canvas_container);
 
             bimg.setAttribute('id', _via_img_buffer_get_html_id(img_index));
@@ -11678,7 +11692,10 @@
               //
               console.log('bim click');
               var current_id = get_current_index();
-              $('#bim'+current_id).trigger('click');              
+              $('#bim'+current_id).trigger('click');
+              console.log('bim unbind click');
+              $('#bim'+current_id).unbind('click');
+              
             }
         };
         reader.readAsArrayBuffer(blob);

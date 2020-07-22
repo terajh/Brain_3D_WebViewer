@@ -132,7 +132,7 @@ img.show_imgs {
 }
 .canvas_2, .draw_region_canvas2 {
   width: 50%;
-  height: 45%;
+  height: 50%;
   position: absolute;
   left: 520px;
   outline: none;
@@ -140,9 +140,9 @@ img.show_imgs {
 }
 .canvas_3, .draw_region_canvas3 {
   width: 50%;
-  height: 45%;
+  height: 50%;
   position: absolute;
-  top: 260px;
+  top: 290px;
   left: 520px;
   outline: none;
   margin-top: 10px;
