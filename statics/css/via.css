@@ -131,7 +131,7 @@ img.show_imgs {
   outline: none;
 }
 .canvas_2, .draw_region_canvas2 {
-  width: 50%;
+  /* width: 50%; */
   height: 50%;
   position: absolute;
   left: 520px;
@@ -139,7 +139,7 @@ img.show_imgs {
   text-align: center;
 }
 .canvas_3, .draw_region_canvas3 {
-  width: 50%;
+  /* width: 50%; */
   height: 50%;
   position: absolute;
   top: 290px;
