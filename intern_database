@@ -1,0 +1,92 @@
+CREATE TABLE brain_info (
+bid int(11) NOT NULL AUTO_INCREMENT,
+email varchar(45) NOT NULL,
+img_name varchar(45) NOT NULL,
+project_img varchar(45) NOT NULL,
+age int(11),
+gender varchar(45),
+primary key(bid)
+);
+
+CREATE TABLE json_info (
+jid int(11) NOT NULL AUTO_INCREMENT,
+email varchar(45) NOT NULL,
+img_name varchar(45) NOT NULL,
+project_img varchar(45) NOT NULL,
+study_num varchar(50),
+direction varchar(40),
+age int(11),
+filesize varchar(40),
+radius varchar(10),
+styloid varchar(10),
+scaphoid varchar(10),
+primary key(jid)
+);
+
+create table history (
+hid int(11) not null auto_increment,
+filename longtext not null,
+value varchar(10) not null,
+primary key(hid)
+);
+
+CREATE TABLE kl_info (
+kid int(11) NOT NULL AUTO_INCREMENT,
+email varchar(45) NOT NULL,
+img_name varchar(45) NOT NULL,
+project_img varchar(45) NOT NULL,
+KL_grade varchar(45),
+sclerosis varchar(45),
+jsw varchar(45),
+age int(11),
+gender varchar(45),
+primary key(kid)
+);
+
+create table member (
+mid int(11) not null auto_increment,
+name varchar(50) not null,
+email varchar(100) not null,
+password longtext not null,
+authorize int(2) not null,
+primary key(mid)
+);
+
+CREATE TABLE record (
+rid int(11) NOT NULL AUTO_INCREMENT,
+email varchar(45) NOT NULL,
+filename varchar(50) not null,
+allage double,
+dpage varchar(10),
+mpage varchar(10),
+ppage varchar(10),
+radiusage varchar(10),
+ulnaage varchar(10),
+carpalage varchar(10),
+gpage varchar(10),
+data datetime(6) not null,
+gender varchar(10) not null,
+age varchar(10) not null,
+height varchar(10),
+filesize int(20) not null,
+percentGP longtext,
+dName varchar(50) not null,
+sepage varchar(10),
+gpdia01 varchar(5),
+gpdia02 varchar(5),
+pid varchar(100),
+pName varchar(30),
+moHeight varchar(20),
+faHeight varchar(20),
+menarche varchar(10),
+primary key(rid)
+);
+
+create table user_info(
+rid int(11) not null auto_increment,
+email varchar(40) not null,
+project_name varchar(50) not null,
+project_type varchar(45),
+date datetime not null,
+primary key(rid)
+);
