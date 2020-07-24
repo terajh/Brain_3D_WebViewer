@@ -387,7 +387,7 @@
       <button id="hidden02" class="text_button01" onclick="annotation_editor_toggle_all_regions_editor()">Toggle
         Annotation Editor</button><br>
       <button class="leftsidebar_accordion">Keyboard Shortcuts</button>
-      <div class="leftsidebar_accordion_panel">
+      <div class="leftsidebar_accordion_panel" id="keyboard_setting">
         <div style="display:block; text-align:center; padding:1rem;">Available only on image focus</div>
         <table>
           <tr>
@@ -485,11 +485,6 @@
             <td>Cancel ongoing task</td>
           </tr>
         </table>
-      </div>
-      <div>
-        <input id="xposition" type="text">
-        <input id="yposition" type="text">
-        <input id="zposition" type="text">
       </div>
     </div> <!-- end of leftsidebar -->
 
@@ -674,8 +669,17 @@
       <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
 
     </div> <!-- end of display_area -->
+  
+    
+  
   </div> <!-- end of middle_panel -->
-
+  <div id="labelling_sidebar" style="display:table-cell;">
+    <br>
+    <button class="leftsidebar_accordion active" id="labelling_panel_title">Labelling List</button>
+    <div class="leftsidebar_accordion_panel show" id="labelling_fn_list_panel">
+      <div id="labelling_list"></div>
+    </div>
+    <!-- Attributes -->
   <!-- this vertical spacer is needed to allow scrollbar to show
          items like Keyboard Shortcut hidden under the attributes panel -->
   <div style="width: 100%;" id="vertical_space"></div>
@@ -2477,8 +2481,8 @@
         _via_reg_canvas1.style.width = w;
       }
       
-      image_panel.style.height = h + 'px';
-      image_panel.style.width = w + 'px';
+      image_panel.style.height = '100%';
+      image_panel.style.width = '100%';
     }
 
     function set_all_canvas_scale(s) {
@@ -2649,6 +2653,7 @@
             _via_current_shape !== VIA_REGION_SHAPE.POINT) {
             // this is a bounding box drawing event
             _via_is_user_drawing_region = true;
+            update_labelling_list();
             draw_all_regions();
 
           }
@@ -2656,6 +2661,8 @@
           // mousedown inside a region
           // this could lead to (1) region selection or (2) region drawing
           _via_is_user_drawing_region = true;
+          update_labelling_list();
+
           draw_all_regions();
         }
       }
@@ -3106,12 +3113,6 @@
           }
         }
 
-        var xpos = document.getElementById('xposition');
-        var ypos = document.getElementById('yposition');
-        var zpos = document.getElementById('zposition');
-        xpos.setAttribute('value',_via_reg_position.x);
-        ypos.setAttribute('value',_via_reg_position.y);
-        zpos.setAttribute('value',_via_reg_position.z);
       }
       var ctx = canvas.getContext("2d");
       ctx.fillStyle='red';
@@ -3515,9 +3516,12 @@
         _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
         if (_via_canvas_regions.length > 0) {
           if (_via_is_region_boundary_visible) {
+            update_labelling_list();
             draw_all_regions();
           }
           if (_via_is_region_id_visible) {
+            update_labelling_list();
+
             draw_all_region_id();
           }
         }
@@ -3525,11 +3529,14 @@
     }
 
     function _via_clear_reg_canvas() {
+      update_labelling_list();
       var _via_reg_ctx = _via_reg_canvas.getContext('2d');
       _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
     }
 
     function draw_all_regions() {
+      update_labelling_list();
+
       var _via_reg_ctx = _via_reg_canvas.getContext('2d');
       var aid = _via_settings.ui.image.region_color;
       var attr, is_selected, aid, avalue;
@@ -3632,9 +3639,7 @@
       if (is_selected) {
         if (case_slice === 'x')
         {
-          if ( (Math.abs(_via_reg_position.y - x) > dx) || (Math.abs(_via_reg_position.z - z) > dz) ){
-            return;
-          }
+          if (Math.abs(_via_reg_position.x - x) > dx * 2) return;
           _via_draw_rect(y,z,dy,dz);
 
           _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -3656,10 +3661,9 @@
           _via_draw_control_point(y + dy, z + dz / 2);
         }
         else if (case_slice === 'y'){
+          if (Math.abs(_via_reg_position.y - y) > dy * 2) return;
           _via_draw_rect(x,z,dx,dz);
-          if ( (Math.abs(_via_reg_position.y - x) > dx) || (Math.abs(_via_reg_position.z - z) > dz) ){
-            return;
-          }
+          
           _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
           _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
           _via_reg_ctx.stroke();
@@ -3679,11 +3683,9 @@
           _via_draw_control_point(x + dx, z + dz / 2);
         }
         else if (case_slice === 'z'){
+          if (Math.abs(_via_reg_position.z - z) > dz * 2) return;
           _via_draw_rect(x,y,dx,dy);
-          // if ( (Math.abs(_via_reg_position.x - x) > dx) || (Math.abs(_via_reg_position.y - y) > dy) ){
-          //   return;
-          // }
-          if (Math.abs(_via_reg_position.z - z) > dz) return;
+
           _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
           _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
           _via_reg_ctx.stroke();
@@ -3704,11 +3706,8 @@
         }
       } else {
         if (case_slice === 'x'){
-          // draw a fill line
-          // if ( (Math.abs(_via_reg_position.y - y) > dy) || (Math.abs(_via_reg_position.z - z) > dz) ){
-          //   return;
-          // }
-          if (Math.abs(_via_reg_position.x - x) > dx) return;
+          if (Math.abs(_via_reg_position.x - x) > dx * 2) return;
+
           _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
           _via_draw_rect(y, z, dy, dz);
           _via_reg_ctx.stroke();
@@ -3732,11 +3731,7 @@
           }
         }
         else if (case_slice === 'y'){
-          // draw a fill line
-          // if ( (Math.abs(_via_reg_position.x - x) > dx) || (Math.abs(_via_reg_position.z - z) > dz) ){
-          //   return;
-          // }
-          if (Math.abs(_via_reg_position.y - y) > dy) return;
+          if (Math.abs(_via_reg_position.y - y) > dy * 2) return;
 
           _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
           _via_draw_rect(x, z, dx, dz);
@@ -3762,9 +3757,8 @@
         }
         else if (case_slice === 'z'){
           // draw a fill line
-          if ( (Math.abs(_via_reg_position.x - x) > dx) || (Math.abs(_via_reg_position.y - y) > dy) ){
-            return;
-          }
+          if (Math.abs(_via_reg_position.z - z)  > dz * 2) return;
+
           _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
           _via_draw_rect(x, y, dx, dy);
           _via_reg_ctx.stroke();
@@ -4293,9 +4287,9 @@
       var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
       var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
 
-      dcanvas1.classList.add('display_none');
-      dcanvas2.classList.add('display_none');
-      dcanvas3.classList.add('display_none');        
+      if(dcanvas1) dcanvas1.classList.add('display_none');
+      if(dcanvas2) dcanvas2.classList.add('display_none');
+      if(dcanvas3) dcanvas3.classList.add('display_none');        
 
     }
     function _via_window_keydown_handler(e) {
@@ -5248,15 +5242,24 @@
     function init_leftsidebar_accordion() {
       var leftsidebar = document.getElementById('leftsidebar');
       leftsidebar.style.width = _via_settings.ui.leftsidebar_width + 'rem';
-
       var acc = document.getElementsByClassName('leftsidebar_accordion');
       var i;
       for (i = 0; i < acc.length; ++i) {
         acc[i].addEventListener('click', function () {
           update_vertical_space();
           this.classList.toggle('active');
-          this.nextElementSibling.classList.toggle('show');
+          var classlist = this.nextElementSibling.getAttribute('class');
 
+          if (classlist.indexOf('show') != -1){
+            var tid = this.nextElementSibling.getAttribute('id');
+            $('#'+tid).slideUp('slow');
+            this.nextElementSibling.classList.toggle('show');
+          }
+          else{
+            var tid = this.nextElementSibling.getAttribute('id');
+            $('#'+tid).slideDown('slow');
+            this.nextElementSibling.classList.toggle('show');
+          }
           switch (this.innerHTML) {
             case 'Attributes':
               update_attributes_update_panel();
@@ -5265,6 +5268,8 @@
               update_img_fn_list();
               break;
           }
+          
+          
         });
       }
     }
@@ -5389,6 +5394,42 @@
       }
     }
 
+    function update_labelling_list(){
+      var _via_labelling_list_html = [];
+      var _via_labelling_list_index_list = [];
+      _via_labelling_list_html.push('<ul>');
+      var i, attr;
+      for (i = 0; i < _via_canvas_regions.length; ++i) {
+        attr = _via_canvas_regions[i].shape_attributes;
+        _via_labelling_list_html.push(labelling_list_ith_entry_html(i));
+        _via_img_fn_list_img_index_list.push(i);
+      }
+      _via_labelling_list_html.push('</ul>');
+      var labelling_fn_list = document.getElementById('labelling_list');
+      labelling_fn_list.innerHTML = _via_labelling_list_html.join('');
+      // img_fn_list_scroll_to_current_file();
+    }
+    function labelling_list_ith_entry_html(i){
+      var htmli = '';
+      var attr = _via_canvas_regions[i].shape_attributes;
+      var filename = "( " + attr['x'] +", "+attr['y']+", "+attr['z']+" )"; 
+    
+      htmli += '<li id="fl' + i + '"';
+      // if (_via_display_area_content_name === VIA_DISPLAY_AREA_CONTENT_NAME.IMAGE_GRID) {
+      //   if (_via_image_grid_page_img_index_list.includes(i)) {
+      //     // highlight images being shown in image grid
+      //     htmli += ' class="sel"';
+      //   }
+
+      // } else {
+      //   if (i === _via_image_index) {
+      //     // highlight the current entry
+      //     htmli += ' class="sel"';
+      //   }
+      // }
+      htmli += ' onclick="jump_to_image(' + (i) + ')" title="' + _via_image_filename_list[i] + '">[' + (i + 1) + '] ' + filename + '</li>';
+      return htmli;
+    }
     function is_region_annotation_missing(img_id) {
       var region_attribute;
       var i;
@@ -6654,14 +6695,21 @@
     function annotation_editor_toggle_all_regions_editor() {
       var p = document.getElementById('annotation_editor_panel');
       if (p.classList.contains('display_block')) {
+        p.style.height = _via_settings.ui.annotation_editor_height + '%';
+        p.style.fontSize = _via_settings.ui.annotation_editor_fontsize + 'rem';
+        $('#annotation_editor_panel').slideUp('slow');
+
         p.classList.remove('display_block');
         _via_annotation_editor_mode = VIA_ANNOTATION_EDITOR_MODE.SINGLE_REGION;
       } else {
-        _via_annotation_editor_mode = VIA_ANNOTATION_EDITOR_MODE.ALL_REGIONS;
-        p.classList.add('display_block');
+        
         p.style.height = _via_settings.ui.annotation_editor_height + '%';
         p.style.fontSize = _via_settings.ui.annotation_editor_fontsize + 'rem';
+        $('#annotation_editor_panel').slideDown('slow');
+        p.classList.add('display_block');
+        _via_annotation_editor_mode = VIA_ANNOTATION_EDITOR_MODE.ALL_REGIONS;
         annotation_editor_show();
+
       }
     }
 

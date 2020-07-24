@@ -491,40 +491,6 @@ def upload_img():
             filename = secure_filename(file.filename)
             if filename not in wrong_list:
                 file.save("./statics/temp_img/"+session['userID']+"/"+filename) # 유저마다의 파일에 저장된다.
-            
-                # inputfile = "./statics/temp_img/"+session['userID']+"/"+filename
-                # outputfile = "./statics/temp_img/"+session['userID']+"/d"+filename
-                # image_array = nibabel.load(inputfile).get_data()
-                # print(image_array.shape)
-                # # total_volumes = image_array.shape[3]
-
-                # nx, ny, nz = image_array.shape
-
-                # # set destination folder
-                # if not os.path.exists(outputfile):
-                #     os.makedirs(outputfile)
-                # base_slice = ['_x','_y','_z']
-                # for i in range(3):
-                    
-                #     total_slices = image_array.shape[i]
-
-                #     slice_counter = 0
-                #     # iterate through slices
-                #     for current_slice in range(0, total_slices):
-                #         # alternate slices
-                #         if (slice_counter % 1) == 0:
-                #             data = image_array[:, :, current_slice]
-
-                #             #alternate slices and save as png
-                #             if (slice_counter % 1) == 0:
-                #                 image_name = inputfile[:-4] + base_slice[i] + "{:0>3}".format(str(current_slice+1))+ ".png"
-                #                 imageio.imwrite(image_name, data)
-                #                 src = image_name
-                #                 shutil.move(src, outputfile)
-                #                 slice_counter += 1
-
-                # print('Finished converting images')
-
 
         return json.dumps({"result": True})
 
