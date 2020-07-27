@@ -108,13 +108,14 @@ textarea {
   flex-direction:row;
   position: relative;
   outline: none;
+  max-height: 600px;
 }
 
 img.show_imgs {
   /* visibility: hidden; */
   opacity: 0;
   position:absolute;
-  width:100%;
+  width:51%;
   top: 0px;
   left: 0px;
   outline: none;

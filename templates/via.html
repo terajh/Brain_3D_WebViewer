@@ -675,8 +675,8 @@
   </div> <!-- end of middle_panel -->
   <div id="labelling_sidebar" style="display:table-cell;">
     <br>
-    <button class="leftsidebar_accordion active" id="labelling_panel_title">Labelling List</button>
-    <div class="leftsidebar_accordion_panel show" id="labelling_fn_list_panel">
+    <button class="leftsidebar_accordion" id="labelling_panel_title">Labelling List</button>
+    <div class="leftsidebar_accordion_panel" id="labelling_fn_list_panel">
       <div id="labelling_list"></div>
     </div>
     <!-- Attributes -->
@@ -2505,7 +2505,7 @@
       var c1 = document.getElementById('draw_region_canvas1_'+cid);
       var c2 = document.getElementById('draw_region_canvas2_'+cid);
       var c3 = document.getElementById('draw_region_canvas3_'+cid);
-      if(c1) 
+
       var container = document.getElementById('canvas_container'+cid);
       if(container) container.setAttribute('class','display_none');
       var cimage = document.getElementById('bim'+cid);
@@ -4316,9 +4316,10 @@
           var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
           var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
           var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
-          dcanvas1.classList.remove('display_none');
-          dcanvas2.classList.remove('display_none');
-          dcanvas3.classList.remove('display_none');
+          if(dcanvas1 && dcanvas1.getAttribute('class').indexOf('main_canvas') === -1) 
+            dcanvas1.classList.remove('display_none');
+          if(dcanvas2) dcanvas2.classList.remove('display_none');
+          if(dcanvas3) dcanvas3.classList.remove('display_none');
           return;
         }
         if (e.key === "r"){
@@ -4451,11 +4452,9 @@
       var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
       var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
       var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
-
-
-      dcanvas1.classList.add('display_none');
-      dcanvas2.classList.add('display_none');
-      dcanvas3.classList.add('display_none');
+      if(dcanvas1) dcanvas1.classList.add('display_none');
+      if(dcanvas2) dcanvas2.classList.add('display_none');
+      if(dcanvas3) dcanvas3.classList.add('display_none');
 
       // var ctx = e.currentTarget.getContext("2d");
       // ctx.clearRect(0, 0, e.currentTarget.clientWidth, e.currentTarget.clientHeight);
@@ -4520,10 +4519,10 @@
           var dcanvas1 = document.getElementById('draw_region_canvas1_'+cid);
           var dcanvas2 = document.getElementById('draw_region_canvas2_'+cid);
           var dcanvas3 = document.getElementById('draw_region_canvas3_'+cid);
-
-          dcanvas1.classList.remove('display_none');
-          dcanvas2.classList.remove('display_none');
-          dcanvas3.classList.remove('display_none');
+          if(dcanvas1 && dcanvas1.getAttribute('class').indexOf('main_canvas') === -1) 
+            dcanvas1.classList.remove('display_none');
+          if(dcanvas2) dcanvas2.classList.remove('display_none');
+          if(dcanvas3) dcanvas3.classList.remove('display_none');
 
           e.preventDefault();
           return;
@@ -5412,24 +5411,30 @@
     function labelling_list_ith_entry_html(i){
       var htmli = '';
       var attr = _via_canvas_regions[i].shape_attributes;
-      var filename = "( " + attr['x'] +", "+attr['y']+", "+attr['z']+" )"; 
+      var posName = "( " + attr['x'] +", "+attr['y']+", "+attr['z']+" ) dx : " + attr['dx'];
+      posName += ', dy : ' +attr['dy'] + ', dz : '+attr['dz'];
     
       htmli += '<li id="fl' + i + '"';
-      // if (_via_display_area_content_name === VIA_DISPLAY_AREA_CONTENT_NAME.IMAGE_GRID) {
-      //   if (_via_image_grid_page_img_index_list.includes(i)) {
-      //     // highlight images being shown in image grid
-      //     htmli += ' class="sel"';
-      //   }
-
-      // } else {
-      //   if (i === _via_image_index) {
-      //     // highlight the current entry
-      //     htmli += ' class="sel"';
-      //   }
-      // }
-      htmli += ' onclick="jump_to_image(' + (i) + ')" title="' + _via_image_filename_list[i] + '">[' + (i + 1) + '] ' + filename + '</li>';
+      htmli += ' onclick="jump_to_label(' + (i) + ')" >[' + (i+1) + ']' + posName + '</li>';
       return htmli;
     }
+    function jump_to_label(i){
+      var attr = _via_canvas_regions[i].shape_attributes
+      _via_reg_position.x = attr['x'];
+      _via_reg_position.y = attr['y'];
+      _via_reg_position.z = attr['z'];
+
+      $('#myRangeX').val(attr['x']);
+      $('#myRangeY').val(attr['y']);
+      $('#myRangeZ').val(attr['z']);
+      var current_id = get_current_index();
+      $('#myRangeX_'+current_id).trigger('input');
+      $('#region_canvas').trigger('mousemove');
+      $('#region_canvas').trigger('mousedown');
+      draw_all_regions();
+
+    }
+
     function is_region_annotation_missing(img_id) {
       var region_attribute;
       var i;
@@ -9761,8 +9766,8 @@
             button.setAttribute('value','Rot');
             button.setAttribute('onclick',"via_canvas_toggle()");
 
-            draw_canvas1.setAttribute('id','draw_region_canvas1_'+img_index);
-            draw_canvas1.setAttribute('class','draw_region_canvas1 main_canvas');
+            draw_canvas1.setAttribute('id','draw_region_canvas1_' + img_index);
+            draw_canvas1.setAttribute('class','draw_region_canvas1 main_canvas display_none');
             draw_canvas1.setAttribute('width','505');
             draw_canvas1.setAttribute('height','582');
             draw_canvas1.setAttribute('style','cursor: default;');
@@ -10015,7 +10020,7 @@
         }
 
         _via_img_buffer_add_image(preload_img_index).then(function (ok_img_index) {
-          $('myRangeX').trigger('input');
+          $('#myRangeX').trigger('input');
           if (_via_image_index !== _via_buffer_preload_img_index) {
             ok_callback([ok_img_index]);
             return;
