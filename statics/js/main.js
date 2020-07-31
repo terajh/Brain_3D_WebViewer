@@ -885,8 +885,8 @@ papaya.Container.buildRightsidebar = function() {
     var rightsidebar = $('#labelling_sidebar');
     var rightsidebarHtml = null;
     rightsidebarHtml = "<br>\
-                        <button class='leftsidebar_accordion' id='labelling_panel_title'>Labelling List</button>\
-                        <div class='leftsidebar_accordion_panel' id='labelling_fn_list_panel'>\
+                        <button class='leftsidebar_accordion active' id='labelling_panel_title'>Labelling List</button>\
+                        <div class='leftsidebar_accordion_panel show' id='labelling_fn_list_panel'>\
                         <div id='labelling_list'></div>";
     rightsidebar.append(rightsidebarHtml);
 }

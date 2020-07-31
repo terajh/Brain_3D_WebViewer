@@ -50,8 +50,15 @@ def create_xml(content, x, _dic_img, _dic_xml, _first):
     for y in range(len(obj_list)):
         obj = Element('object')
         anote.append(obj)
-        if _first==1 or _first==0:  SubElement(obj, 'name').text = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']['골절 판독 구분']
-        else: SubElement(obj, 'name').text=""
+        if _first==1 or _first==0:  
+            # print([ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes'])
+            region_attr = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']
+            if '골절 판독 구분' in region_attr.keys():
+                SubElement(obj, 'name').text = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']['골절 판독 구분']
+            else:
+                SubElement(obj, 'name').text=""
+        else: 
+            SubElement(obj, 'name').text=""
         SubElement(obj, 'pose').text = 'Unspecified'
         SubElement(obj, 'truncated').text = '0'
         SubElement(obj, 'difficult').text = '0'

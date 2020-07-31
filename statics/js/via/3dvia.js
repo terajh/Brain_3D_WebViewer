@@ -136,54 +136,8 @@ function _set_attributes() {
     // Region Attribute 추가
 
     // When project_type = 'Fracture'
-    if (firstTry < 2) {
-        //attribute name 입력
-        $("#user_input_attribute_id").val('골절 판독 구분');
-        $("#button_add_new_attribute").click();
-        ////
-        // attribute type 설정
-        // option[0]-text (default)
-        // option[1]-checkbox
-        // option[2]-radio
-        // option[3]-image
-        // option[4]-dropdown
-        attribute_property_on_update(document.getElementById('attribute_type'))
-        document.getElementById('attribute_type').options[0].removeAttribute('selected')
-        document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
-        attribute_property_on_update(document.getElementById('attribute_type'))
-
-        //dropdown id 입력
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'Fx')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'Suspicious fx')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'Healed fx')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'Fx-nonunion')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'Miscellaneous')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-    }
-    // When project_type = 'Knee OA'
-    else if (firstTry === 3) {
-        $("#user_input_attribute_id").val('Osteophytes');
-        $("#button_add_new_attribute").click();
-
-        attribute_property_on_update(document.getElementById('attribute_type'))
-        document.getElementById('attribute_type').options[0].removeAttribute('selected')
-        document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
-        attribute_property_on_update(document.getElementById('attribute_type'))
-
-        //dropbox 생성
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '0 (None or doubtful)')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '1 (Obvious)')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '2 (Obvious and big)')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-    }
-
-    else if (firstTry === 5) {
+    
+    if (firstTry === 5) {
         $("#user_input_attribute_id").val('Osteophytes');
         $("#button_add_new_attribute").click();
 
@@ -208,72 +162,6 @@ function _set_attributes() {
         $("#button_show_file_attributes").attr('class', 'text_button active')
 
         $("#button_del_attribute").click();
-
-        // NEW 'Knee OA' project 일 때만 추가
-        if (firstTry === 3) {
-            $("#user_input_attribute_id").val('KL-grade');
-            $("#button_add_new_attribute").click();
-
-            attribute_property_on_update(document.getElementById('attribute_type'))
-            document.getElementById('attribute_type').options[2].removeAttribute('selected')
-            document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
-            attribute_property_on_update(document.getElementById('attribute_type'))
-
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'None')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            attribute_property_on_option_update(document.getElementById('_via_attribute_option_default_None')) // default option으로 'None' 지정, 특정 id를 default로 지정시 _None 자리에 해당 id로 대체
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'KL-0')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'KL-1')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'KL-2')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'KL-3')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'KL-4')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-
-            $("#user_input_attribute_id").val('Sclerosis');
-            $("#button_add_new_attribute").click();
-
-            attribute_property_on_update(document.getElementById('attribute_type'))
-            document.getElementById('attribute_type').options[0].removeAttribute('selected')
-            document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
-            attribute_property_on_update(document.getElementById('attribute_type'))
-
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'None')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            attribute_property_on_option_update(document.getElementById('_via_attribute_option_default_None'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'SC-0')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'SC-1')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'SC-2')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'SC-3')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-
-            $("#user_input_attribute_id").val('Joint Space Width');
-            $("#button_add_new_attribute").click();
-
-            attribute_property_on_update(document.getElementById('attribute_type'))
-            document.getElementById('attribute_type').options[0].removeAttribute('selected')
-            document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
-            attribute_property_on_update(document.getElementById('attribute_type'))
-
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'None')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            attribute_property_on_option_update(document.getElementById('_via_attribute_option_default_None'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'JSW-0')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'JSW-1')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'JSW-2')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-            document.getElementById('_via_attribute_new_option_id').setAttribute('value', 'JSW-3')
-            attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        }
-
         $("#user_input_attribute_id").val('gender');
         $("#button_add_new_attribute").click();
 
@@ -1524,7 +1412,6 @@ function _via_reg_canvas_mousedown_handler(e) {
                 _via_current_shape !== VIA_REGION_SHAPE.POINT) {
                 // this is a bounding box drawing event
                 _via_is_user_drawing_region = true;
-                update_labelling_list();
                 draw_all_regions();
 
             }
@@ -1532,7 +1419,6 @@ function _via_reg_canvas_mousedown_handler(e) {
             // mousedown inside a region
             // this could lead to (1) region selection or (2) region drawing
             _via_is_user_drawing_region = true;
-            update_labelling_list();
             draw_all_regions();
         }
     }
@@ -1592,6 +1478,8 @@ function _via_reg_canvas_mouseup_handler(e) {
                 annotation_editor_update_content();
             }
         }
+        update_labelling_list();
+
         _via_redraw_reg_canvas();
         _via_reg_canvas.focus();
         return;
@@ -1685,6 +1573,8 @@ function _via_reg_canvas_mouseup_handler(e) {
                 canvas_attr['height'] = Math.round(image_attr['height'] / _via_canvas_scale);
                 break;
         } // end of switch()
+        update_labelling_list();
+
         _via_redraw_reg_canvas();
         _via_reg_canvas.focus();
         return;
@@ -1727,6 +1617,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                 annotation_editor_hide();
             }
         }
+        update_labelling_list();
 
         _via_redraw_reg_canvas();
         _via_reg_canvas.focus();
@@ -1875,6 +1766,7 @@ function _via_reg_canvas_mouseup_handler(e) {
         } else {
             show_message('Prevented accidental addition of a very small region.');
         }
+        update_labelling_list();
         return;
     }
 }
@@ -2374,11 +2266,9 @@ function _via_redraw_reg_canvas() {
         _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
         if (_via_canvas_regions.length > 0) {
             if (_via_is_region_boundary_visible) {
-                update_labelling_list();
                 draw_all_regions();
             }
             if (_via_is_region_id_visible) {
-                update_labelling_list();
                 draw_all_region_id();
             }
         }
@@ -2386,14 +2276,11 @@ function _via_redraw_reg_canvas() {
 }
 
 function _via_clear_reg_canvas() {
-    update_labelling_list();
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
 }
 
 function draw_all_regions() {
-    update_labelling_list();
-
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     var aid = _via_settings.ui.image.region_color;
     var attr, is_selected, aid, avalue;
@@ -3444,6 +3331,7 @@ function del_sel_regions() {
     annotation_editor_show();
 
     show_message('Deleted ' + del_region_count + ' selected regions');
+    update_labelling_list();
 }
 
 function sel_all_regions() {

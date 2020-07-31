@@ -182,10 +182,13 @@ def sel_project():
     else:    # select a fracture or kneeOA image(ex)32_A1.json)
         direc = "./statics/test_img/" + _userId + "/" + filename.split("/")[0] + "/"
         first = 2
-    print(str(js_file), _fname, direc, first)
-    if first==5:
+    
+    print(_fname, direc, first)
+
+    if first == 5:
         return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
-    else : return render_template('via.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
+    else : 
+        return render_template('via2d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
 
 #Save project
 @app.route('/save_project', methods=['POST'])
@@ -235,7 +238,7 @@ def save_project():
                     dataDB.append(x[0])
                 if len(data) != 0:
                     if str(_filename) in dataDB:
-                        if _first == 0 or _first == 3:  #새 프로젝트에서 중복된 프로젝트명으로 저장하려고 할 때 project_save_confirmed(input)(via03.html)로 false 전송
+                        if _first == 0 or _first == 3:  #새 프로젝트에서 중복된 프로젝트명으로 저장하려고 할 때 project_save_confirmed(input)(via2d.html)로 false 전송
                             return json.dumps({"result": False})
                         else:
                             cursor.execute(  # 기존 프로젝트를 로드해서 수정할 때
@@ -448,15 +451,16 @@ def save_project():
 def new_project():
     print('new project render')
     first = request.args.get('first', type=int, default=0)   #new 'fracture' project -> first=0, new 'kneeOA' project -> first=3
-    print(first)
     _userId = session['userID']
     _date = datetime.now()
     _nowdate = _date.strftime('%Y%m%d%H%M')
     _fname = "project_"+_nowdate
+    print(first, _fname)
     direc = "./statics/test_img/" + _userId + "/" + _fname + "/"
-    if first==5:
+    if first == 5:
         return render_template('papaya3d.html', fname=_fname, direc=direc, first=first)
-    else : return render_template('via.html', fname=_fname, direc=direc, first=first)
+    else : 
+        return render_template('via2d.html', fname=_fname, direc=direc, first=first)
 
 #upload images to server
 @app.route('/get_image_data',methods=['GET'])
