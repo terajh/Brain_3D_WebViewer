@@ -13,3 +13,5 @@ juelich/
 /statics/test_json/*
 /statics/test_xml/*
 /statics/vendor/*
+/test/*
+/tests/*
