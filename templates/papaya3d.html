@@ -112,7 +112,7 @@
     <div id="leftsidebar"></div>
     <div id="display_area"></div>
     <div id="image_panel" class="display_area_content">
-        <canvas id="region_canvas" width="750" height="724" tabindex="1" slice="x" class="main_canvas">Sorry, your browser does not support HTML5 Canvas
+        <canvas id="region_canvas" width="750" height="724" tabindex="1" slice="z" class="main_canvas">Sorry, your browser does not support HTML5 Canvas
     </div>
     <div class="papaya" data-params="params"></div>
     <div id="image_grid_panel" class="display_area_content display_none"></div>
@@ -123,7 +123,11 @@
     <div id="plus_container"></div>
     <div style='width: 100%;' id='vertical_space'></div>
     <div id="page_404" class="display_area_content display_none narrow_page_content"></div>
-    
+    <div id="share_position" class="display_none">
+        <input id="x_position" class="positions" type="hidden">
+        <input id="y_position" class="positions" type="hidden">
+        <input id="z_position" class="positions" type="hidden">
+    </div>
     
     <script>
         "use strict";
@@ -148,6 +152,10 @@
         var img_fn_list = document.getElementById('img_fn_list');
         var attributes_panel = document.getElementById('attributes_panel');
         var leftsidebar = document.getElementById('leftsidebar');
+
+        var x_position = document.getElementById('x_position');
+        var y_position = document.getElementById('y_position');
+        var z_position = document.getElementById('z_position');
 
         var firstTry = 5;
 

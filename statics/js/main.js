@@ -898,6 +898,10 @@ papaya.Container.buildPlusContainer = function() {
                             <input type='button' id='invisible_submit' onclick='uploadImg()' style='display:none'>\
                         </form>";
     plusContainer.append(plusContainerHtml);
+    // $(".positions").on("propertychange change keyup paste input", function() {
+    //     draw_all_regions();
+    // });
+
 }
 papaya.Container.prototype.rebuildContainer = function (params, index) {
     this.containerHtml.empty();

@@ -1827,6 +1827,16 @@ papaya.viewer.Viewer.prototype.rotateViews = function () {
         this.mainImage = temp;
     }
 
+    var slice = _via_reg_canvas.getAttribute('slice');
+    if (slice === 'x'){
+        _via_reg_canvas.setAttribute('slice','y');
+    }else if (slice === 'y'){
+        _via_reg_canvas.setAttribute('slice','z');
+    }else{
+        _via_reg_canvas.setAttribute('slice','x');
+    }
+    _via_redraw_reg_canvas();
+
     this.viewsChanged();
 };
 
@@ -1912,13 +1922,13 @@ papaya.viewer.Viewer.prototype.mouseDownEvent = function (me) {
 
             this.previousMousePosition.x = papaya.utilities.PlatformUtils.getMousePositionX(me);
             this.previousMousePosition.y = papaya.utilities.PlatformUtils.getMousePositionY(me);
-
+            
+            _via_redraw_reg_canvas();
             this.findClickedSlice(this, this.previousMousePosition.x, this.previousMousePosition.y);
 
             if (((me.button === 2) || this.isControlKeyDown || this.isLongTouch) && this.container.contextManager && (this.selectedSlice === this.mainImage) && (this.mainImage === this.surfaceView)) {
                 this.contextMenuMousePositionX = this.previousMousePosition.x - this.canvasRect.left;
                 this.contextMenuMousePositionY = this.previousMousePosition.y - this.canvasRect.top;
-
                 if (this.container.contextManager.prefersColorPicking && this.container.contextManager.prefersColorPicking()) {
                     pickedColor = this.surfaceView.pickColor(this.contextMenuMousePositionX, this.contextMenuMousePositionY);
                     menuData = this.container.contextManager.getContextAtColor(pickedColor[0], pickedColor[1], pickedColor[2]);
@@ -2137,6 +2147,7 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
 
     currentMouseX = papaya.utilities.PlatformUtils.getMousePositionX(me);
     currentMouseY = papaya.utilities.PlatformUtils.getMousePositionY(me);
+    
 
     if (this.isDragging) {
         if (this.grabbedHandle) {
@@ -2178,7 +2189,6 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
                 this.sagittalSlice.updateZoomTransform(this.zoomFactor, this.zoomLocY, this.zoomLocZ, this.panAmountY,
                     this.panAmountZ, this);
             }
-
             this.drawViewer(true);
         } else {
             this.resetUpdateTimer(null);
@@ -2201,6 +2211,7 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
                 }
             }
         }
+        _via_redraw_reg_canvas();
     } else {
         this.updateCursorPosition(this, papaya.utilities.PlatformUtils.getMousePositionX(me),
             papaya.utilities.PlatformUtils.getMousePositionY(me));
@@ -2227,6 +2238,7 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
         this.controlsHidden = true;
         this.fadeOutControls();
     }
+
     
 };
 
