@@ -2381,7 +2381,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
 
     if (is_selected) {
         if (case_slice === 'x') {
-            if (Math.abs(_via_reg_position.x - x) > dx) return;
+            if (Math.abs(_via_reg_position.x - x) > dx || 
+            _via_reg_position.x - y > dy + 15 || y - _via_reg_position.y > 15 ||
+            _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
             _via_draw_rect(y, z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2403,7 +2405,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             _via_draw_control_point(y + dy, z + dz / 2);
         }
         else if (case_slice === 'y') {
-            if (Math.abs(_via_reg_position.y - y) > dy) return;
+            if (Math.abs(_via_reg_position.y - y) > dy || 
+            _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
+            _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
             _via_draw_rect(x, z, dx, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2425,7 +2429,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             _via_draw_control_point(x + dx, z + dz / 2);
         }
         else if (case_slice === 'z') {
-            if (Math.abs(_via_reg_position.z - z) > dz) return;
+            if (Math.abs(_via_reg_position.z - z) > dz|| 
+            _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
+            _via_reg_position.z - y > dz + 15 || y - _via_reg_position.y > 15) return;
             _via_draw_rect(x, y, dx, dy);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2448,7 +2454,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
         }
     } else {
         if (case_slice === 'x') {
-            if (Math.abs(_via_reg_position.x - x) > dx) return;
+            if (Math.abs(_via_reg_position.x - x) > dx || 
+            _via_reg_position.x - y > dy + 15 || y - _via_reg_position.y > 15 ||
+            _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(y, z, dy, dz);
@@ -2473,7 +2481,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             }
         }
         else if (case_slice === 'y') {
-            if (Math.abs(_via_reg_position.y - y) > dy) return;
+            if (Math.abs(_via_reg_position.y - y) > dy || 
+            _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
+            _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, z, dx, dz);
@@ -2499,7 +2509,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
         }
         else if (case_slice === 'z') {
             // draw a fill line
-            if (Math.abs(_via_reg_position.z - z) > dz) return;
+            if (Math.abs(_via_reg_position.z - z) > dz|| 
+            _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
+            _via_reg_position.z - y > dz + 15 || y - _via_reg_position.y > 15) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, y, dx, dy);

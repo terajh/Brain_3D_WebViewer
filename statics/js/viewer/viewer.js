@@ -1829,11 +1829,11 @@ papaya.viewer.Viewer.prototype.rotateViews = function () {
 
     var slice = _via_reg_canvas.getAttribute('slice');
     if (slice === 'x'){
-        _via_reg_canvas.setAttribute('slice','y');
-    }else if (slice === 'y'){
         _via_reg_canvas.setAttribute('slice','z');
-    }else{
+    }else if (slice === 'y'){
         _via_reg_canvas.setAttribute('slice','x');
+    }else{
+        _via_reg_canvas.setAttribute('slice','y');
     }
     _via_redraw_reg_canvas();
 
