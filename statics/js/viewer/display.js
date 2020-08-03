@@ -116,12 +116,7 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
             yLoc = this.viewer.currentCoord.y;
             zLoc = this.viewer.currentCoord.z;
         }
-        x_position.value = xLoc;
-        _via_reg_position.x = xLoc;
-        y_position.value = yLoc;
-        _via_reg_position.y = yLoc;
-        z_position.value = zLoc;
-        _via_reg_position.z = zLoc;
+        
 
         // canvas background
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -169,6 +164,12 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
 
         // image value
         if (!this.viewer.currentScreenVolume.rgb && !this.viewer.currentScreenVolume.dti) {
+            x_position.value = xLoc;
+            _via_reg_position.x = xLoc;
+            y_position.value = yLoc;
+            _via_reg_position.y = yLoc;
+            z_position.value = zLoc;
+            _via_reg_position.z = zLoc;
             val = this.viewer.getCurrentValueAt(xLoc, yLoc, zLoc);
             this.canvas.currentval = val.toString();  // for unit testing
 
@@ -280,7 +281,6 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
                             atlasLabel[ctr] = (atlasLabel[ctr].substr(0, Math.round(atlasLabel[ctr].length / 3)) +
                                 " ... " + atlasLabel[ctr].substr(atlasLabel[ctr].length - 3, 3));
                         }
-                        debugger;
                         if (ctr === 0) {
                             this.context.fillText(atlasLabel[ctr], halfWidth + papaya.viewer.Display.PADDING * 5,
                                 papaya.viewer.Display.PADDING * 1.5  +

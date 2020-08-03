@@ -1765,9 +1765,10 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
         this.incrementSeriesPoint();
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_SERIES_BACK) {
         this.decrementSeriesPoint();
-    } else if (keyCode === papaya.viewer.Viewer.KEYCODE_ROTATE_VIEWS) {
-        this.rotateViews();
     }
+    // } else if (keyCode === papaya.viewer.Viewer.KEYCODE_ROTATE_VIEWS) {
+    //     this.rotateViews();
+    // }
     else {
         this.keyPressIgnored = true;
     }
@@ -1823,13 +1824,13 @@ papaya.viewer.Viewer.prototype.rotateViews = function () {
         this.mainImage = temp;
     }
 
-    var slice = _via_reg_canvas.getAttribute('slice');
+    var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     if (slice === 'x'){
-        _via_reg_canvas.setAttribute('slice','z');
+        $('#papayaContainer' + _via_current_file_num).attr('slice', 'z');
     }else if (slice === 'y'){
-        _via_reg_canvas.setAttribute('slice','x');
+        $('#papayaContainer' + _via_current_file_num).attr('slice', 'x');
     }else{
-        _via_reg_canvas.setAttribute('slice','y');
+        $('#papayaContainer' + _via_current_file_num).attr('slice', 'y');
     }
     _via_redraw_reg_canvas();
 

@@ -183,9 +183,9 @@ def sel_project():
         direc = "./statics/test_img/" + _userId + "/" + filename.split("/")[0] + "/"
         first = 2
     
-    print(_fname, direc, first)
+    print('##############3',str(js_file), _fname, direc, first)
 
-    if first == 5:
+    if first == 5 or first == 6:
         return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
     else : 
         return render_template('via2d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
@@ -203,7 +203,7 @@ def save_project():
             project_type = 'Fracture'
         elif _first == 3 or _first == 4:
             project_type = 'Knee OA'
-        elif _first == 5:
+        elif _first == 5 or _first == 6:
             project_type = 'Brain'
         _email = session['user']
         _project_name = _filename

@@ -731,9 +731,9 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
             }
             else {
                 papaya_current_container = papaya.Container.getObject(_via_current_file_num);
-                // for (i = 0 ; i <= _via_current_file_num ; i++){
-                //     document.getElementById('papayaContainer'+i).setAttribute('class', 'display_none');
-                // }
+                for (i = 0 ; i <= _via_current_file_num ; i++){
+                    document.getElementById('papayaContainer'+i).setAttribute('class', 'display_none');
+                }
                 document.getElementById('papayaContainer'+_via_current_file_num).classList.remove('display_none');
 
                 papaya_current_container.display.drawProgress(0.1, "Loading");

@@ -25,7 +25,9 @@
     <!-- CSS debug end -->
 
     <!-- JS debug start -->
-    
+    <script> 
+        var firstTry = {{first}};
+    </script>
     <script type="text/javascript" src="/statics/js/data/sample-image.js"></script>
     <script type="text/javascript" src="/statics/js/data/talairach-atlas-image.js"></script>
     <script type="text/javascript" src="/statics/js/data/talairach-atlas.js"></script>
@@ -95,8 +97,10 @@
     <script type="text/javascript" src="/statics/js/viewer/screenvol.js"></script>
     <script type="text/javascript" src="/statics/js/viewer/viewer.js"></script>
 
+    
     <script type="text/javascript" src="/statics/js/main.js"></script>
 
+    
     <title>Crescom</title>
 </head>
 
@@ -109,9 +113,10 @@
     <div class="top_header" id="ui_top_panel"></div> 
     <div class="toolbar" style="display: None;" id="toolbar"></div>
     <div id="leftsidebar"></div>
-    <div id="display_area"></div>
-    <div id="image_panel" class="display_area_content">
-        <canvas id="region_canvas" width="750" height="724" tabindex="1" slice="z" class="main_canvas">Sorry, your browser does not support HTML5 Canvas
+    <div id="display_area">
+        <div id="image_panel" class="display_area_content">
+            <canvas id="region_canvas" width="750" height="724" tabindex="1" class="main_canvas">Sorry, your browser does not support HTML5 Canvas
+        </div>
     </div>
     <div class="papaya" data-params="params"></div>
     <div class="papaya display_none" data-params="params"></div>
@@ -162,19 +167,7 @@
         var y_position = document.getElementById('y_position');
         var z_position = document.getElementById('z_position');
 
-        var firstTry = 5;
-
-        (function () {
-            if (firstTry == 1 || firstTry == 4 || firstTry == 6) {
-                // load json file if project is selected
-                document.getElementById("hidden01").click();
-            }
-            else if (firstTry == 2) {
-                document.getElementById("hidden01").click();
-                document.getElementById("hidden02").click();
-                document.getElementById("button_edit_file_metadata").click();
-            }
-        }());
+        
 
     </script>
 </body>

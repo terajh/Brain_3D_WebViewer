@@ -287,6 +287,7 @@ papaya.Container.fillContainerHTML = function (containerHTML, isDefault, params,
         }
 
         containerHTML.attr("id", PAPAYA_DEFAULT_CONTAINER_ID + index);
+        containerHTML.attr('slice','z');
 
         if (!params || (params.kioskMode === undefined) || !params.kioskMode) {
             containerHTML.append("<div id='" + (PAPAYA_DEFAULT_TOOLBAR_ID + index) +
@@ -972,6 +973,7 @@ papaya.Container.startPapaya = function () {
     papaya.Container.buildPlusContainer();
     papaya.Container.DICOM_SUPPORT = (typeof(daikon) !== "undefined");
     papaya.Container.buildAllContainers();
+    
     _via_init();
 };
 
