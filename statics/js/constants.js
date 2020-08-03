@@ -104,3 +104,9 @@ var PAPAYA_SPACING = 3,
 // GZIP constants
 var GUNZIP_MAGIC_COOKIE1 = 31,
     GUNZIP_MAGIC_COOKIE2 = 139;
+
+var _via_slice_degree = 1;
+var _via_file_counts_num = -1;
+var _via_current_file_num = -1;
+
+var papaya_current_container = null;

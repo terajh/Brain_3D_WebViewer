@@ -46,6 +46,7 @@ papaya.viewer.Preferences.DEFAULT_SHOW_SURFACE_PLANES = "Yes";
 
 papaya.viewer.Preferences.prototype.updatePreference = function (field, value) {
     this[field] = value;
+    _via_slice_degree = Number(value);
     this.viewer.drawViewer(true);
     papaya.utilities.UrlUtils.createCookie(papaya.viewer.Preferences.COOKIE_PREFIX + field, value, papaya.viewer.Preferences.COOKIE_EXPIRY_DAYS);
 };

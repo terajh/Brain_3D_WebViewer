@@ -183,7 +183,9 @@ papaya.Container.showImage = function (index, imageIndex) {
 };
 
 
-
+papaya.Container.getObject = function (index) {
+    return papayaContainers[index];
+}
 papaya.Container.addImage = function (index, imageRef, imageParams) {
     var imageRefs;
 

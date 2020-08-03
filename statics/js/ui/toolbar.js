@@ -220,7 +220,8 @@ papaya.ui.Toolbar.PREFERENCES_DATA = {
             "disabled": "container.disableScrollWheel"},
         {"spacer": "true"},
         {"label": "Smooth display:", "field": "smoothDisplay", "options": ["Yes", "No"]},
-        {"label": "Radiological display:", "field": "radiological", "options": ["Yes", "No"]}
+        {"label": "Radiological display:", "field": "radiological", "options": ["Yes", "No"]},
+        {"label": "Slice value", "field": "sliceValues", "options": ['1',"2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"]}
     ]
 };
 
@@ -721,8 +722,23 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
             imageName = action.substring(action.indexOf("-") + 1);
             this.viewer.loadImage(imageName);
         } else if (action === "OpenImage") {
-            this.container.display.drawProgress(0.1, "Loading");
-            this.viewer.loadImage(file);
+            _via_current_file_num += 1;
+            _via_file_counts_num += 1;
+            var i;
+            if (_via_current_file_num === 0){
+                this.container.display.drawProgress(0.1, "Loading");
+                this.viewer.loadImage(file);
+            }
+            else {
+                papaya_current_container = papaya.Container.getObject(_via_current_file_num);
+                // for (i = 0 ; i <= _via_current_file_num ; i++){
+                //     document.getElementById('papayaContainer'+i).setAttribute('class', 'display_none');
+                // }
+                document.getElementById('papayaContainer'+_via_current_file_num).classList.remove('display_none');
+
+                papaya_current_container.display.drawProgress(0.1, "Loading");
+                papaya_current_container.viewer.loadImage(file);
+            }
         } else if (action === "OpenDTI") {
             this.container.display.drawProgress(0.1, "Loading");
             this.viewer.loadingDTI = true;

@@ -78,6 +78,7 @@ papaya.viewer.Viewer = papaya.viewer.Viewer || function (container, width, heigh
     this.loadingDTI = false;
     this.loadingDTIModRef = null;
     this.tempCoor = new papaya.core.Coordinate();
+    
 
     this.listenerContextMenu = function (me) { me.preventDefault(); return false; };
     this.listenerMouseMove = papaya.utilities.ObjectUtils.bind(this, this.mouseMoveEvent);
@@ -107,7 +108,6 @@ papaya.viewer.Viewer = papaya.viewer.Viewer || function (container, width, heigh
 papaya.viewer.Viewer.GAP = PAPAYA_SPACING;  // padding between slice views
 papaya.viewer.Viewer.BACKGROUND_COLOR = "rgba(0, 0, 0, 255)";
 papaya.viewer.Viewer.CROSSHAIRS_COLOR = "rgba(28, 134, 238, 255)";
-papaya.viewer.Viewer.KEYCODE_ROTATE_VIEWS = 32;
 papaya.viewer.Viewer.KEYCODE_CENTER = 67;
 papaya.viewer.Viewer.KEYCODE_ORIGIN = 79;
 papaya.viewer.Viewer.KEYCODE_ARROW_UP = 38;
@@ -119,11 +119,11 @@ papaya.viewer.Viewer.KEYCODE_PAGE_DOWN = 34;
 papaya.viewer.Viewer.KEYCODE_SINGLE_QUOTE = 222;
 papaya.viewer.Viewer.KEYCODE_FORWARD_SLASH = 191;
 papaya.viewer.Viewer.KEYCODE_INCREMENT_MAIN = 71;
-papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN = 86;
+papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN = 70;
 papaya.viewer.Viewer.KEYCODE_TOGGLE_CROSSHAIRS = 65;
 papaya.viewer.Viewer.KEYCODE_SERIES_BACK = 188;  // , <
 papaya.viewer.Viewer.KEYCODE_SERIES_FORWARD = 190;  // . >
-papaya.viewer.Viewer.KEYCODE_RULER = 82;
+papaya.viewer.Viewer.KEYCODE_ROTATE_VIEWS = 82;
 papaya.viewer.Viewer.MAX_OVERLAYS = 8;
 papaya.viewer.Viewer.ORIENTATION_MARKER_SUPERIOR = "S";
 papaya.viewer.Viewer.ORIENTATION_MARKER_INFERIOR = "I";
@@ -1765,14 +1765,10 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
         this.incrementSeriesPoint();
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_SERIES_BACK) {
         this.decrementSeriesPoint();
-    } else if (keyCode === papaya.viewer.Viewer.KEYCODE_RULER) {
-        if (this.container.preferences.showRuler === "Yes") {
-            this.container.preferences.showRuler = "No";
-        } else {
-            this.container.preferences.showRuler = "Yes";
-        }
-        this.drawViewer(true, true);
-    } else {
+    } else if (keyCode === papaya.viewer.Viewer.KEYCODE_ROTATE_VIEWS) {
+        this.rotateViews();
+    }
+    else {
         this.keyPressIgnored = true;
     }
 
@@ -2444,20 +2440,20 @@ papaya.viewer.Viewer.prototype.resizeViewer = function (dims) {
 
             swapButton = $("#" + PAPAYA_CONTROL_MAIN_SWAP_BUTTON_CSS + this.container.containerIndex);
             swapButton.css({
-                top: offset.top + this.mainImage.screenDim - swapButton.outerHeight() - halfPadding,
+                top: offset.top + this.mainImage.screenDim - swapButton.outerHeight() - halfPadding - 18,
                 left: offset.left + this.mainImage.screenDim - swapButton.outerWidth() - halfPadding,
                 //width: swapButton.outerWidth(),
                 position:'absolute'});
 
             centerButton = $("#" + PAPAYA_CONTROL_MAIN_GOTO_CENTER_BUTTON_CSS + this.container.containerIndex);
             centerButton.css({
-                top: offset.top + this.mainImage.screenDim - centerButton.outerHeight() - halfPadding,
+                top: offset.top + this.mainImage.screenDim - centerButton.outerHeight() - halfPadding - 18,
                 left: offset.left + halfPadding,
                 position:'absolute'});
 
             originButton = $("#" + PAPAYA_CONTROL_MAIN_GOTO_ORIGIN_BUTTON_CSS + this.container.containerIndex);
             originButton.css({
-                top: offset.top + this.mainImage.screenDim - originButton.outerHeight() - halfPadding,
+                top: offset.top + this.mainImage.screenDim - originButton.outerHeight() - halfPadding - 18,
                 left: offset.left + halfPadding + originButton.outerWidth() + PAPAYA_PADDING,
                 position:'absolute'});
         }
@@ -2963,14 +2959,14 @@ papaya.viewer.Viewer.prototype.incrementAxial = function (increment, degree) {
     var max = this.volume.header.imageDimensions.zDim;
 
     if (degree === undefined) {
-        degree = 1;
+        degree = _via_slice_degree;
     }
 
     if (increment) {
         this.currentCoord.z += degree;
 
         if (this.currentCoord.z >= max) {
-            this.currentCoord.z = max - 1;
+            this.currentCoord.z = max - 5;
         }
     } else {
         this.currentCoord.z -= degree;
@@ -2989,14 +2985,14 @@ papaya.viewer.Viewer.prototype.incrementCoronal = function (increment, degree) {
     var max = this.volume.header.imageDimensions.yDim;
 
     if (degree === undefined) {
-        degree = 1;
+        degree = _via_slice_degree;
     }
 
     if (increment) {
         this.currentCoord.y += degree;
 
         if (this.currentCoord.y >= max) {
-            this.currentCoord.y = max - 1;
+            this.currentCoord.y = max - 5;
         }
     } else {
         this.currentCoord.y -= degree;
@@ -3015,7 +3011,7 @@ papaya.viewer.Viewer.prototype.incrementSagittal = function (increment, degree) 
     var max = this.volume.header.imageDimensions.xDim;
 
     if (degree === undefined) {
-        degree = 1;
+        degree = _via_slice_degree;
     }
 
     if (increment) {

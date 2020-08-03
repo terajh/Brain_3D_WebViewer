@@ -1270,14 +1270,15 @@ function hide_all_canvas() {
 }
 
 function jump_to_image(image_index) {
+    document.getElementById('papayaContainer'+_via_global_index).setAttribute('class', 'display_none');
+
     _via_global_index = image_index
-    _via_display_area.setAttribute('class', 'display_none');
+    document.getElementById('papayaContainer' + image_index).classList.remove('display_none');
 
     var cid = get_current_index();
     if (_via_img_count <= 0) {
         return;
     }
-
     switch (_via_display_area_content_name) {
         case VIA_DISPLAY_AREA_CONTENT_NAME.IMAGE_GRID:
             if (image_index >= 0 && image_index < _via_img_count) {
@@ -6693,15 +6694,24 @@ function project_file_add_local(event) {
                     res();
                 })
                 .then(()=>{
-                    var eraseView = $('#CloseAllImages0').eq(0);
-                    eraseView.click();
+                    if (_via_current_file_num != 0){
+                        var eraseView = $('#CloseAllImages0').eq(0);
+                        eraseView.click();
+                    }
                 })
                 .then(()=>{
-                    $('#File').click();
+                    if (_via_current_file_num === 0){
+                        document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
+                        var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                        filechoosers.trigger('change',[event.target.files]);
+                    }
+                    else $('#File').click();
                 })
                 .then(()=>{
-                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                    filechoosers.trigger('change',[event.target.files]);
+                    if (_via_current_file_num != 0){
+                        var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                        filechoosers.trigger('change',[event.target.files]);
+                    }
                 });
             }
             else {
