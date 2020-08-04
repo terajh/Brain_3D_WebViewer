@@ -45,17 +45,7 @@ function file_region() {
 //
 // Initialization routine
 //
-(function () {
-    if (firstTry == 1 || firstTry == 4 || firstTry == 6) {
-        console.log('click hidden01');
-        $("#hidden01").click();
-    }
-    else if (firstTry == 2) {
-        document.getElementById("hidden01").click();
-        document.getElementById("hidden02").click();
-        document.getElementById("button_edit_file_metadata").click();
-    }
-}());
+
 
 function _via_init() {
     _via_img_panel = document.getElementById('image_panel');
@@ -6508,7 +6498,7 @@ function project_open_parse_json_file(project_file_data) {
                 _via_current_attribute_id = fattr_id_list[0];
             }
         }
-        _via_settings.core.default_filepath = "./statics/test_img/11/project_202007161644/";
+        // _via_settings.core.default_filepath = "./statics/test_img/11/project_202007161644/";
         if (_via_settings.core.default_filepath !== '') {
             _via_file_resolve_all_to_default_filepath();
         }
@@ -6518,17 +6508,65 @@ function project_open_parse_json_file(project_file_data) {
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
-                var rawFile = new XMLHttpRequest();
+                var params = {};
+                // params['projec_names'] = _via_settings['project'].name;
+                for(var i = 0 ; i < _via_img_count ; i++){
+                    // params['file_names'] = _via_image_filename_list[i];
 
-                rawFile.open("GET", 'statics/test_img/' + _via_image_filename_list[0], false);
-                rawFile.onreadystatechange = function () {
-                    if (rawFile.readyState === 4) {
-                        if (rawFile.status === 200 || rawFile.status == 0) {
-                            var allText = rawFile.responseText;
-                            readFile(allText);
+                    var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
+                    var xmlhttp = new XMLHttpRequest();
+                    var result;
+                    // xmlhttp.open("GET", filePath, false);
+                    // xmlhttp.send();
+                    // if (xmlhttp.status==200) {
+                    //     result = xmlhttp.responseText;
+                    //     console.log(result);
+                    // }
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
+                        contentType: 'application/json',
+                        success: function (result) {
+                            console.log(result);
+                            new Promise((res,rej)=>{
+                                $('#File').click();
+                                res();
+                            })
+                            .then(()=>{
+                                if (_via_current_file_num != 0){
+                                    var eraseView = $('#CloseAllImages0').eq(0);
+                                    eraseView.click();
+                                }
+                            })
+                            .then(()=>{
+                                if (_via_current_file_num === 0){
+                                    document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
+                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                                    filechoosers.trigger('change',[result]);
+                                }
+                                else $('#File').click();
+                            })
+                            .then(()=>{
+                                if (_via_current_file_num != 0){
+                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                                    filechoosers.trigger('change',[result]);
+                                }
+                            });
+                        },
+                        error: function (result) {
+                            alert('Fail to Save');
+                            return result;
                         }
-                    }
+                    })
+
+                        
                 }
+                
+
+                
+                        
+                
             }
             _via_show_img(0);
             update_img_fn_list();

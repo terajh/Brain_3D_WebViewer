@@ -975,6 +975,17 @@ papaya.Container.startPapaya = function () {
     papaya.Container.buildAllContainers();
     
     _via_init();
+    (function () {
+        if (firstTry == 1 || firstTry == 4 || firstTry == 6) {
+            console.log('click hidden01');
+            $("#hidden01").trigger('click');
+        }
+        else if (firstTry == 2) {
+            document.getElementById("hidden01").click();
+            document.getElementById("hidden02").click();
+            document.getElementById("button_edit_file_metadata").click();
+        }
+    }());
 };
 
 
