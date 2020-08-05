@@ -84,7 +84,7 @@ var _via_img_stat_current_img_index = false;
 
 
 
-var _via_reg_position = {'x':0,'y':0,'z':0}; // for show NIFTI images
+var _via_reg_position = {'x':256,'y':256,'z':291}; // for show NIFTI images
 
 
 var _via_reg_ctx; // initialized in _via_init()

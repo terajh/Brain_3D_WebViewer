@@ -247,7 +247,7 @@ def sel_project():
     if first == 5:
         return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first, proj='f', filedata = 'f')
     elif first == 6:
-        return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first, proj='t', filedata = image_array)
+        return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first, proj='t', filedata = image_array.tobytes())
 
     else : 
         return render_template('via2d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)

@@ -1499,7 +1499,7 @@ function _via_reg_canvas_mouseup_handler(e) {
 
         switch (canvas_attr['name']) {
             case VIA_REGION_SHAPE.CUBE:
-                var slice = 'x';
+                var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                 var d;
                 if (slice === 'x') {
                     d = [canvas_attr['y'], canvas_attr['z'], 0, 0];
@@ -1675,6 +1675,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = 6;
                             original_img_region.shape_attributes['dy'] = width;
                             original_img_region.shape_attributes['dz'] = height;
+                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
+                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
+                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round((_via_reg_position.x - 3) / _via_canvas_scale);
@@ -1683,6 +1686,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
+                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
+                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
@@ -1692,6 +1698,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = 6;
                             original_img_region.shape_attributes['dz'] = height;
+                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
+                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
+                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
@@ -1700,6 +1709,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
+                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
+                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         else if (slice === 'z') {
                             original_img_region.shape_attributes['name'] = 'cube';
@@ -1709,6 +1721,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = 6;
+                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
+                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
+                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
@@ -1717,6 +1732,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(20 / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
+                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
+                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         new_region_added = true;
                         break;
@@ -4189,18 +4207,21 @@ function labelling_list_ith_entry_html(i) {
     return htmli;
 }
 function jump_to_label(i) {
+    // jump to label's position
     var attr = _via_canvas_regions[i].shape_attributes
-    _via_reg_position.x = attr['x'] + 10;
-    _via_reg_position.y = attr['y'] + 10;
-    _via_reg_position.z = attr['z'] + 10;
+    console.log(attr);
+    _via_reg_position.x = attr['x'] + attr['dx']/2;
+    _via_reg_position.y = attr['y'] + attr['dy']/2;
+    _via_reg_position.z = attr['z'] + attr['dz']/2;
 
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
-    current_viewer.currentCoord.x =_via_reg_position.x;
-    current_viewer.currentCoord.y =_via_reg_position.y;
-    current_viewer.currentCoord.z =_via_reg_position.z;
+    current_viewer.currentCoord.x = attr['cx'];
+    current_viewer.currentCoord.y = attr['cy'];
+    current_viewer.currentCoord.z = attr['cz'];
 
     current_viewer.drawViewer(true);
-    draw_all_regions();
+    _via_redraw_reg_canvas();
+    
 }
 
 function is_region_annotation_missing(img_id) {
@@ -8490,12 +8511,12 @@ function _via_show_img_from_buffer(img_index) {
 }
 
 function via_canvas_toggle() {
-    var img_panel_class_list = document.getElementById('image_panel').className;
-    if (img_panel_class_list.indexOf('display_none') != -1) document.getElementById('image_panel').classList.remove('display_none');
-    else document.getElementById('image_panel').classList.add('display_none');
+    var display_class_list = document.getElementById('display_area').className;
+    if (display_class_list.indexOf('display_none') != -1) document.getElementById('display_area').classList.remove('display_none');
+    else document.getElementById('display_area').classList.add('display_none');
 
-    if (_via_reg_canvas.className.indexOf('display_none') != -1) _via_reg_canvas.classList.remove('display_none');
-    else _via_reg_canvas.classList.add('display_none');
+    // if (_via_reg_canvas.className.indexOf('display_none') != -1) _via_reg_canvas.classList.remove('display_none');
+    // else _via_reg_canvas.classList.add('display_none');
 
 
 }
