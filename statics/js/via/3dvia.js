@@ -1456,14 +1456,7 @@ function _via_reg_canvas_mouseup_handler(e) {
             // move all selected regions
             _via_move_selected_regions(move_x, move_y);
         } else {
-            // indicates a user click on an already selected region
-            // this could indicate the user's intention to select another
-            // nested region within this region
-            // OR
-            // draw a nested region (i.e. region inside a region)
 
-            // traverse the canvas regions in alternating ascending
-            // and descending order to solve the issue of nested regions
             var nested_region_id = is_inside_region(_via_click_x0, _via_click_y0, true);
             if (nested_region_id >= 0 &&
                 nested_region_id !== _via_user_sel_region_id) {
@@ -2165,10 +2158,9 @@ function _via_reg_canvas_mousemove_handler(e) {
                 break;
         }
         _via_reg_canvas.focus();
-        annotation_editor_hide() // moving
+        annotation_editor_hide(); // moving
         return;
     }
-
 
 }
 
@@ -2396,7 +2388,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             // if (Math.abs(_via_reg_position.x - x) > dx || 
             // _via_reg_position.x - y > dy + 15 || y - _via_reg_position.y > 15 ||
             // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.x - x) > dx) return;
+            if (Math.abs(_via_reg_position.x - x) > dx) {
+                console.log(_via_reg_position.x,x,dx);
+                return;
+            }
             _via_draw_rect(y, z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2421,7 +2416,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             // if (Math.abs(_via_reg_position.y - y) > dy || 
             // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
             // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.y - y) > dy) return;
+            if (Math.abs(_via_reg_position.y - y) > dy) {
+                console.log(_via_reg_position.y,y,dy);
+                return;
+            }
             _via_draw_rect(x, z, dx, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2446,7 +2444,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             // if (Math.abs(_via_reg_position.z - z) > dz|| 
             // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
             // _via_reg_position.z - y > dz + 15 || y - _via_reg_position.y > 15) return;
-            if (Math.abs(_via_reg_position.z - z) > dz) return;
+            if (Math.abs(_via_reg_position.z - z) > dz) {
+                console.log(_via_reg_position.z,z,dz);
+                return;
+            }
             _via_draw_rect(x, y, dx, dy);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2472,7 +2473,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             // if (Math.abs(_via_reg_position.x - x) > dx || 
             // _via_reg_position.x - y > dy + 15 || y - _via_reg_position.y > 15 ||
             // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.x - x) > dx) return;
+            console.log(Math.abs(_via_reg_position.x - x));
+
+            if (Math.abs(_via_reg_position.x - x) > dx) {
+                console.log(_via_reg_position.x,x,dx);
+                return;
+            }
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(y, z, dy, dz);
@@ -2500,7 +2506,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             // if (Math.abs(_via_reg_position.y - y) > dy || 
             // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
             // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.y - y) > dy) return;
+            if (Math.abs(_via_reg_position.y - y) > dy) {
+                console.log(_via_reg_position.y,y,dy);
+                return;
+            }
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, z, dx, dz);
@@ -2529,7 +2538,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             // if (Math.abs(_via_reg_position.z - z) > dz|| 
             // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
             // _via_reg_position.z - y > dz + 15 || y - _via_reg_position.y > 15) return;
-            if (Math.abs(_via_reg_position.z - z) > dz) return;
+            if (Math.abs(_via_reg_position.z - z) > dz) {
+                console.log(_via_reg_position.z,z,dz);
+                return;
+            }
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, y, dx, dy);
@@ -6510,58 +6522,58 @@ function project_open_parse_json_file(project_file_data) {
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
                 var params = {};
                 // params['projec_names'] = _via_settings['project'].name;
-                for(var i = 0 ; i < _via_img_count ; i++){
-                    // params['file_names'] = _via_image_filename_list[i];
+                // for(var i = 0 ; i < _via_img_count ; i++){
+                //     // params['file_names'] = _via_image_filename_list[i];
 
-                    var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
-                    var xmlhttp = new XMLHttpRequest();
-                    var result;
-                    // xmlhttp.open("GET", filePath, false);
-                    // xmlhttp.send();
-                    // if (xmlhttp.status==200) {
-                    //     result = xmlhttp.responseText;
-                    //     console.log(result);
-                    // }
+                //     var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
+                //     var xmlhttp = new XMLHttpRequest();
+                //     var result;
+                //     // xmlhttp.open("GET", filePath, false);
+                //     // xmlhttp.send();
+                //     // if (xmlhttp.status==200) {
+                //     //     result = xmlhttp.responseText;
+                //     //     console.log(result);
+                //     // }
 
-                    $.ajax({
-                        type: 'GET',
-                        url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
-                        contentType: 'application/json',
-                        success: function (result) {
-                            console.log(result);
-                            new Promise((res,rej)=>{
-                                $('#File').click();
-                                res();
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num != 0){
-                                    var eraseView = $('#CloseAllImages0').eq(0);
-                                    eraseView.click();
-                                }
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num === 0){
-                                    document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
-                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
-                                }
-                                else $('#File').click();
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num != 0){
-                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
-                                }
-                            });
-                        },
-                        error: function (result) {
-                            alert('Fail to Save');
-                            return result;
-                        }
-                    })
+                //     $.ajax({
+                //         type: 'GET',
+                //         url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
+                //         contentType: 'application/json',
+                //         success: function (result) {
+                //             console.log(result);
+                //             new Promise((res,rej)=>{
+                //                 $('#File').click();
+                //                 res();
+                //             })
+                //             .then(()=>{
+                //                 if (_via_current_file_num != 0){
+                //                     var eraseView = $('#CloseAllImages0').eq(0);
+                //                     eraseView.click();
+                //                 }
+                //             })
+                //             .then(()=>{
+                //                 if (_via_current_file_num === 0){
+                //                     document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
+                //                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                //                     filechoosers.trigger('change',[result]);
+                //                 }
+                //                 else $('#File').click();
+                //             })
+                //             .then(()=>{
+                //                 if (_via_current_file_num != 0){
+                //                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                //                     filechoosers.trigger('change',[result]);
+                //                 }
+                //             });
+                //         },
+                //         error: function (result) {
+                //             alert('Fail to Save');
+                //             return result;
+                //         }
+                //     })
 
                         
-                }
+                // }
                 
 
                 

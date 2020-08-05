@@ -26,13 +26,16 @@
 
     <!-- JS debug start -->
     <script type="text/javascript" src="/statics/js/via/3dconstants.js"></script>
-
+    
     <script> 
         var firstTry = {{first}};
         _via_settings.core.default_filepath = "{{direc}}";
-        var proj_ok = {{proj}};
-        if(proj_ok === "t") temp = {{filedata}};
-    </script>
+        var proj_ok = "{{proj}}";
+        if(proj_ok === "t") {
+            temp = `{{filedata}}`;
+            console.log(temp);
+        }
+        </script>
     <script type="text/javascript" src="/statics/js/data/sample-image.js"></script>
     <script type="text/javascript" src="/statics/js/data/talairach-atlas-image.js"></script>
     <script type="text/javascript" src="/statics/js/data/talairach-atlas.js"></script>

@@ -2147,6 +2147,9 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
     
 
     if (this.isDragging) {
+        _via_reg_position.x = x_position.value;
+        _via_reg_position.y = y_position.value;
+        _via_reg_position.z = z_position.value;
         if (this.grabbedHandle) {
             if (this.isInsideMainSlice(currentMouseX, currentMouseY)) {
                 this.grabbedHandle.x = this.convertScreenToImageCoordinateX(currentMouseX - this.canvasRect.left, this.selectedSlice);
