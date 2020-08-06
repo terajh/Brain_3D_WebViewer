@@ -108,5 +108,6 @@ var GUNZIP_MAGIC_COOKIE1 = 31,
 var _via_slice_degree = 1;
 var _via_file_counts_num = -1;
 var _via_current_file_num = -1;
+var _via_max_file_num = 0;
 
 var papaya_current_container = null;

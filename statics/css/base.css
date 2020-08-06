@@ -22,7 +22,9 @@ body {
     font-family: sans-serif;
 }
 
-
+.papaya-menu-label{
+    color: white;
+}
 
 .papaya-fullscreen {
     height: 100%;

@@ -352,7 +352,9 @@ function show_image_grid_view() {
 // -------------------- Open local files
 function sel_local_images() {
     // source: https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
+    
     if (invisible_file_input) {
+        invisible_file_input.value = null;
         invisible_file_input.setAttribute('multiple', 'multiple')
         invisible_file_input.accept = '.jpg,.jpeg,.png,.bmp,.gz,.nii,.gz, *';
         invisible_file_input.onchange = project_file_add_local;
@@ -1665,11 +1667,11 @@ function _via_reg_canvas_mouseup_handler(e) {
                     var y = Math.round(region_y0 * _via_canvas_scale);
                     var width = Math.round(region_dx * _via_canvas_scale);
                     var height = Math.round(region_dy * _via_canvas_scale);
-                    if (firstTry === 5) {
+                    if (firstTry === 5 || firstTry === 6) {
                         var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                         if (slice === 'x') {
                             original_img_region.shape_attributes['name'] = 'cube';
-                            original_img_region.shape_attributes['x'] = _via_reg_position.x - 3;
+                            original_img_region.shape_attributes['x'] = Number(_via_reg_position.x) - 3;
                             original_img_region.shape_attributes['y'] = x;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['dx'] = 6;
@@ -1680,7 +1682,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
-                            canvas_img_region.shape_attributes['x'] = Math.round((_via_reg_position.x - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['x'] = Math.round((Number(_via_reg_position.x) - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dx'] = Math.round(20 / _via_canvas_scale);
@@ -1693,7 +1695,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
-                            original_img_region.shape_attributes['y'] = _via_reg_position.y - 3;
+                            original_img_region.shape_attributes['y'] = Number(_via_reg_position.y) - 3;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = 6;
@@ -1717,7 +1719,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = y;
-                            original_img_region.shape_attributes['z'] = _via_reg_position.z - 3;
+                            original_img_region.shape_attributes['z'] = Number(_via_reg_position.z) - 3;
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = 6;
@@ -4183,7 +4185,7 @@ function img_fn_list_onpresetfilter_select() {
 
 function update_labelling_list() {
     var _via_labelling_list_html = [];
-    var _via_labelling_list_index_list = [];
+    var _via_img_fn_list_img_index_list = [];
     _via_labelling_list_html.push('<ul>');
     var i, attr;
     for (i = 0; i < _via_canvas_regions.length; ++i) {
@@ -4210,14 +4212,17 @@ function jump_to_label(i) {
     // jump to label's position
     var attr = _via_canvas_regions[i].shape_attributes
     console.log(attr);
-    _via_reg_position.x = attr['x'] + attr['dx']/2;
-    _via_reg_position.y = attr['y'] + attr['dy']/2;
-    _via_reg_position.z = attr['z'] + attr['dz']/2;
+    // _via_reg_position.x = attr['x'] + attr['dx']/2;
+    // _via_reg_position.y = attr['y'] + attr['dy']/2;
+    // _via_reg_position.z = attr['z'] + attr['dz']/2;
 
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
     current_viewer.currentCoord.x = attr['cx'];
     current_viewer.currentCoord.y = attr['cy'];
     current_viewer.currentCoord.z = attr['cz'];
+    _via_reg_position.x = attr['cx'];
+    _via_reg_position.y = attr['cy'];
+    _via_reg_position.z = attr['cz'];
 
     current_viewer.drawViewer(true);
     _via_redraw_reg_canvas();
@@ -6676,9 +6681,9 @@ function project_file_remove_with_confirm() {
         'filename': { type: 'text', name: 'Filename', value: filename, disabled: true, size: 30 },
         'region_count': { type: 'text', name: 'Number of regions', disabled: true, value: region_count, size: 8 }
     };
-
     invoke_with_user_inputs(project_file_remove_confirmed, input, config);
 }
+
 
 function project_file_remove_confirmed(input) {
     var img_index = input.img_index.value - 1;
@@ -6688,17 +6693,53 @@ function project_file_remove_confirmed(input) {
     if (img_index === _via_img_count) {
         if (_via_img_count === 0) {
             _via_current_image_loaded = false;
+            new Promise((res,rej)=>{
+                $('#File').click();
+                res();
+            })
+            .then(()=>{
+                var eraseView = $('#CloseAllImages0').eq(0);
+                eraseView.click();
+            })
             show_home_panel();
         } else {
-            _via_show_img(img_index - 1);
+            new Promise((res,rej)=>{
+                $('#File'+_via_current_file_num).trigger('click');
+                res();
+            })
+            .then(()=>{
+                var eraseView = $('#CloseAllImages'+_via_current_file_num).eq(0);
+                eraseView.trigger('click');
+                jump_to_image(img_index - 1);
+
+                _via_current_file_num = img_index - 1;
+                _via_max_file_num = _via_max_file_num - 1;
+                _via_reload_img_fn_list_table = true;
+                update_img_fn_list();
+                show_message('Removed file [' + input.filename.value + '] from project');
+                user_input_default_cancel_handler();
+                $('#bim'+_via_current_file_num).trigger('click');
+            });
         }
     } else {
-        _via_show_img(img_index);
+        new Promise((res,rej)=>{
+            $('#File'+_via_current_file_num).trigger('click');
+            res();
+        })
+        .then(()=>{
+            var eraseView = $('#CloseAllImages'+_via_current_file_num).eq(0);
+            eraseView.trigger('click');
+            jump_to_image(img_index - 1);
+
+            _via_current_file_num = img_index - 1;
+            _via_max_file_num = _via_max_file_num - 1;
+            _via_reload_img_fn_list_table = true;
+            update_img_fn_list();
+            show_message('Removed file [' + input.filename.value + '] from project');
+            user_input_default_cancel_handler();
+            $('#bim'+_via_current_file_num).trigger('click');
+        });
     }
-    _via_reload_img_fn_list_table = true;
-    update_img_fn_list();
-    show_message('Removed file [' + input.filename.value + '] from project');
-    user_input_default_cancel_handler();
 }
 
 
@@ -6707,6 +6748,7 @@ function project_remove_file(img_index) {
         console.log('project_remove_file(): invalid img_index ' + img_index);
         return;
     }
+
     var img_id = _via_image_id_list[img_index];
 
     // remove img_index from all array
@@ -6721,7 +6763,7 @@ function project_remove_file(img_index) {
 
     // clear all buffer
     // @todo: it is wasteful to clear all the buffer instead of removing a single image
-    _via_buffer_remove_all();
+    _via_buffer_remove_all(img_index);
     img_fn_list_clear_css_classname('buffered');
 
     _via_clear_reg_canvas();
@@ -6746,14 +6788,25 @@ function project_add_new_file(filename, size, file_id) {
         _via_image_id_list.push(img_id);
         _via_image_filename_list.push(filename);
         _via_img_count += 1;
+        _via_max_file_num += 1;
     }
     return img_id;
 }
 
 function project_file_add_local(event) {
     //
+    if(_via_current_file_num != -1) {
+        document.getElementById('papayaContainer'+_via_current_file_num).classList.add('display_none');
+        document.getElementById('bim'+_via_current_file_num).classList.add('display_none');
+
+        document.getElementById('papayaContainer'+(_via_max_file_num + 1)).classList.remove('display_none');
+        // document.getElementById('bim'+(_via_current_file_num+1)).classList.remove('display_none');
+
+    }
+    
     var user_selected_images = event.target.files;
     var original_image_count = _via_img_count;
+    
     var pattern_eng = /[a-zA-Z]/;
     var new_img_index_list = [];
     var discarded_file_count = 0;
@@ -6849,23 +6902,8 @@ function project_file_add_local(event) {
         }
     }
 
-    if (_via_img_metadata && filetype === 'image') {
-        var status_msg = 'Loading ' + new_img_index_list.length + ' images.';
-        if (discarded_file_count) {
-            status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
-        }
-        show_message(status_msg);
-
-        if (new_img_index_list.length) {
-            // show first of newly added image
-            _via_show_img(new_img_index_list[0]);
-        } else {
-            // show original image
-            _via_show_img(_via_image_index);
-        }
-        update_img_fn_list();
-    }
-    else if (filetype != 'image') {
+    
+    if (filetype != 'image') {
         var status_msg = 'Loading ' + new_img_index_list.length + ' NIFTI images.';
         if (discarded_file_count) {
             status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
@@ -8455,8 +8493,8 @@ function _via_show_img_from_buffer(img_index) {
 
         if (_via_current_image_width === 0 || _via_current_image_height === 0) {
             // for error image icon
-            _via_current_image_width = 640;
-            _via_current_image_height = 480;
+            _via_current_image_width = 720;
+            _via_current_image_height = 720;
         }
 
         // set the size of canvas
@@ -8566,17 +8604,17 @@ function _via_img_buffer_add_image(img_index) {
             });
             bimg.addEventListener('load', function () {
                 console.log('load event');
-                URL.revokeObjectURL(tmp_file_object_url);
-                img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
-                _via_img_panel.insertBefore(bimg, _via_reg_canvas);
-                project_file_load_on_success(img_index);
-                img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
-                // add timestamp so that we can apply Least Recently Used (LRU)
-                // scheme to remove elements when buffer is full
-                var arr_index = _via_buffer_img_index_list.length;
-                _via_buffer_img_index_list.push(img_index);
-                _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
-                ok_callback(img_index);
+                // URL.revokeObjectURL(tmp_file_object_url);
+                // img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
+                // _via_img_panel.insertBefore(bimg, _via_reg_canvas);
+                // project_file_load_on_success(img_index);
+                // img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
+                // // add timestamp so that we can apply Least Recently Used (LRU)
+                // // scheme to remove elements when buffer is full
+                // var arr_index = _via_buffer_img_index_list.length;
+                // // _via_buffer_img_index_list.push(img_index);
+                // _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
+                // ok_callback(img_index);
             });
             bimg.addEventListener('click', function () {
                 URL.revokeObjectURL(tmp_file_object_url);
@@ -8637,16 +8675,16 @@ function _via_img_buffer_add_image(img_index) {
             // the "load" event. Therefore, all processing must happen inside this event handler.
             bimg.addEventListener('load', function () {
                 console.log('load event');
-                img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
-                _via_img_panel.insertBefore(bimg, _via_reg_canvas);
-                project_file_load_on_success(img_index);
-                img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
-                // add timestamp so that we can apply Least Recently Used (LRU)
-                // scheme to remove elements when buffer is full
-                var arr_index = _via_buffer_img_index_list.length;
-                _via_buffer_img_index_list.push(img_index);
-                _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
-                ok_callback(img_index);
+                // img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
+                // _via_img_panel.insertBefore(bimg, _via_reg_canvas);
+                // project_file_load_on_success(img_index);
+                // img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
+                // // add timestamp so that we can apply Least Recently Used (LRU)
+                // // scheme to remove elements when buffer is full
+                // var arr_index = _via_buffer_img_index_list.length;
+                // _via_buffer_img_index_list.push(img_index);
+                // _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
+                // ok_callback(img_index);
             }, false);
 
             bimg.addEventListener('click', function () {
@@ -8784,28 +8822,20 @@ function _via_buffer_remove(buffer_index) {
     }
 }
 
-function _via_buffer_remove_all() {
+function _via_buffer_remove_all(remove_index) {
     var i, n;
-    n = _via_buffer_img_index_list.length;
-    for (i = 0; i < n; ++i) {
-        var img_index = _via_buffer_img_index_list[i];
-        var bimg_html_id = _via_img_buffer_get_html_id(img_index);
-        var bimg = document.getElementById(bimg_html_id);
-        if (bimg) {
-            if (bimg.tagName === "CANVAS") {
-                for (var i = 0 ; i <= _via_current_file_num ; i++){
-                    $('#CloseAllImages'+i).eq(0).click();
-                    _via_img_panel.removeChild(bimg);
-                }
-
-
-
-            } else {
-                _via_img_panel.removeChild(bimg);
-            }
-        }
+    n = _via_buffer_img_index_list.length / 2;
+    // _via_buffer_img_index_list -> bim, papayacontainer counts
+    while(true){
+        var idx = _via_buffer_img_index_list.indexOf(remove_index);
+        if (idx > -1) _via_buffer_img_index_list.splice(idx, 1);
+        else break;
     }
-    _via_buffer_img_index_list = [];
+    var bimg_html_id = _via_img_buffer_get_html_id(remove_index);
+    var bimg = document.getElementById(bimg_html_id);
+    if (bimg) {
+        _via_img_panel.removeChild(bimg);
+    }
     _via_buffer_img_shown_timestamp = [];
 }
 
