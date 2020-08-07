@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, json, request, redirect, session, send_from_directory, Blueprint, make_response
+from flask import Flask, render_template, json, request, redirect, session, send_from_directory, Blueprint, make_response, send_file
 from flask_paginate import Pagination, get_page_parameter
 from flask.json import JSONEncoder
 import json as jsn
@@ -26,6 +26,7 @@ import imageio, base64
 import msgpack
 import pathlib
 import pandas as pd
+import io
 # change main path when copy to other device
 #main_path = '/home/crescom01/Downloads/via_final/Labeling'
 #os.chdir(main_path)
@@ -79,20 +80,17 @@ def get_image_data():
         projec_name = request.args.get('projec_names')
 
         image_path = '/home/ubuntu/Desktop/dev/Papaya-master/statics/test_img/'
-        image_array = nibabel.load(image_path+session['userID']+'/'+str(projec_name)+'/'+str(file_name)).get_data()
-        # rdata = pd.Series(image_array.tolist()).to_json(orient='values')
-        # serialized = msgpack.packb(image_array.tobytes(), use_bin_type=True)
-        # print(type(serialized))
-        print(rdata)
-        raws_data = {'result':rdata }
-        return json.dumps(raws_data)
+        file_path = image_path+session['userID']+'/'+str(projec_name)+'/'+str(file_name)
+        return send_file(file_path, as_attachment=True)
     else:
         return json.dumps({"result": False})
+
 
 # checking image extension
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
 
 # connect first or select page
 @app.route('/')

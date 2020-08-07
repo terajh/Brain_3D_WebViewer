@@ -6476,25 +6476,28 @@ function project_save_confirmed(input) {
 
     user_input_default_cancel_handler();
 }
+function loadFile(filePath, callbackFunc) {
+    $.ajaxSetup({
+        dataType:'blob',
+        async:false
+    });
+    console.log('ajax');
 
-function project_open_select_project_file() {
-    if (invisible_file_input) {
-        invisible_file_input.accept = '.json';
-        invisible_file_input.onchange = project_open;
-        invisible_file_input.removeAttribute('multiple');
-        invisible_file_input.click();
-    }
-}
-
-function project_open(event) {
-    var selected_file = event.target.files[0];
-    load_text_file(selected_file, project_open_parse_json_file);
+    $.get(filePath, function(data){
+        callbackFunc(data);
+    });
+    $.ajax({
+        url: url,
+        data: data,
+        success: success,
+        dataType: dataType
+    });
 }
 
 function project_open_parse_json_file(project_file_data) {
     console.log('open parse json file');
-
     var d = project_file_data;
+
     if (d['_via_settings'] && d['_via_img_metadata'] && d['_via_attributes']) {
         // import settings
         project_import_settings(d['_via_settings']);
@@ -6541,73 +6544,58 @@ function project_open_parse_json_file(project_file_data) {
         }
 
         show_message('Imported project [' + _via_settings['project'].name + '] with ' + _via_img_count + ' files.');
-
+        var filelist = [];
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
                 var params = {};
+                var filenames;
+                var file;
+                var parts;
+
                 params['projec_names'] = _via_settings['project'].name;
-                for(var i = 0 ; i < _via_img_count ; i++){
-                    // params['file_names'] = _via_image_filename_list[i];
-
-                    // var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
-                    // var xmlhttp = new XMLHttpRequest();
-                    // var result;
-                    // // xmlhttp.open("GET", filePath, false);
-                    // // xmlhttp.send();
-                    // // if (xmlhttp.status==200) {
-                    // //     result = xmlhttp.responseText;
-                    // //     console.log(result);
-                    // // }
-                    console.log(_via_image_filename_list[i],_via_settings['project']);
-                    $.ajax({
-                        type: 'GET',
-                        url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
-                        contentType: 'application/json',
-                        success: function (result) {
-                            console.log(result);
-                            new Promise((res,rej)=>{
-                                $('#File').click();
-                                res();
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num != 0){
-                                    var eraseView = $('#CloseAllImages0').eq(0);
-                                    eraseView.click();
-                                }
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num === 0){
-                                    document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
-                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
-                                }
-                                else $('#File').click();
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num != 0){
-                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
-                                }
-                            });
-                        },
-                        error: function (result) {
-                            alert('Fail to Save');
-                            return result;
-                        }
-                    })
-
+                // download image file (server to browser)
+                new Promise((res1,rej1)=>{
+                    for(var i = 0 ; i < _via_img_count ; i++){
+                        filenames = _via_image_filename_list[i];
                         
-                }
-                
-
-                
+                        var image_path = 'statics/test_img/'
+                        var file_path = image_path+ '11/'+_via_settings['project'].name+'/'+_via_image_filename_list[i]
                         
+                        $.get(
+                            file_path,
+                            "",
+                            function(data,status){
+                                file=data;
+                                console.log('load');
+                                res1();
+                            },
+                            'blob'
+                        )
+                    }   
+                })    
+                .then(()=>{
+                    $('#File').click();
+                })
+                .then(()=>{
+                    var eraseView = $('#CloseAllImages0').eq(0);
+                    eraseView.click();
+                })
+                .then(()=>{
+                    $('#File').click();
+                })
+                .then(()=>{
+                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                    console.log('change');
+                    filechoosers.trigger('change',[file]);
+                    _via_show_img(0);
+                    update_img_fn_list();
+                    _via_reload_img_fn_list_table = true;
+                });         
+                
                 
             }
-            _via_show_img(0);
-            update_img_fn_list();
-            _via_reload_img_fn_list_table = true;
+            
         }
     } else {
         show_message('Cannot import project from a corrupt file!');

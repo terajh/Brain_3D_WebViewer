@@ -70,10 +70,19 @@ papaya.volume.Volume.prototype.fileIsCompressed = function (filename, data) {
 
 papaya.volume.Volume.prototype.readFiles = function (files, callback) {
     this.files = files;
-    this.fileName = files[0].name;
-    this.onFinishedRead = callback;
-    this.compressed = this.fileIsCompressed(this.fileName);
-    this.fileLength = this.files[0].size;
+    if(files[0] === undefined){
+        this.fileName = files.name;
+        this.onFinishedRead = callback;
+        this.compressed = this.fileIsCompressed(this.fileName);
+        this.fileLength = this.files.size;
+    }
+    else{
+        this.fileName = files[0].name;
+        this.onFinishedRead = callback;
+        this.compressed = this.fileIsCompressed(this.fileName);
+        this.fileLength = this.files[0].size;
+    }
+    
     this.readNextFile(this, 0);
 };
 
