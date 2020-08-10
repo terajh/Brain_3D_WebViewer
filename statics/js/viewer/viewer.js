@@ -1748,18 +1748,24 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_INCREMENT_MAIN) {
         if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
             this.incrementAxial(false);
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
             this.incrementCoronal(false);
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
             this.incrementSagittal(true);
+            _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN) {
         if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
             this.incrementAxial(true);
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
             this.incrementCoronal(true);
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
             this.incrementSagittal(false);
+            _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_SERIES_FORWARD) {
         this.incrementSeriesPoint();
@@ -2147,6 +2153,9 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
     
 
     if (this.isDragging) {
+        _via_reg_position.x = x_position.value;
+        _via_reg_position.y = y_position.value;
+        _via_reg_position.z = z_position.value;
         if (this.grabbedHandle) {
             if (this.isInsideMainSlice(currentMouseX, currentMouseY)) {
                 this.grabbedHandle.x = this.convertScreenToImageCoordinateX(currentMouseX - this.canvasRect.left, this.selectedSlice);

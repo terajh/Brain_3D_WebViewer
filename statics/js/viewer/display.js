@@ -165,11 +165,11 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
         // image value
         if (!this.viewer.currentScreenVolume.rgb && !this.viewer.currentScreenVolume.dti) {
             x_position.value = xLoc;
-            _via_reg_position.x = xLoc;
+            // _via_reg_position.x = xLoc
             y_position.value = yLoc;
-            _via_reg_position.y = yLoc;
+            // _via_reg_position.y = yLoc;
             z_position.value = zLoc;
-            _via_reg_position.z = zLoc;
+            // _via_reg_position.z = zLoc;
             val = this.viewer.getCurrentValueAt(xLoc, yLoc, zLoc);
             this.canvas.currentval = val.toString();  // for unit testing
 

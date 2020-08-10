@@ -62,6 +62,8 @@ var VIA_CSV_SEP = ',';
 var VIA_CSV_QUOTE_CHAR = '"';
 var VIA_CSV_KEYVAL_SEP = ':';
 
+
+
 var _via_img_metadata = {};   // data structure to store loaded images metadata
 var _via_img_src = {};   // image content {abs. path, url, base64 data, etc}
 var _via_img_fileref = {};   // reference to local images selected by using browser file selector
@@ -84,7 +86,7 @@ var _via_img_stat_current_img_index = false;
 
 
 
-var _via_reg_position = {'x':0,'y':0,'z':0}; // for show NIFTI images
+var _via_reg_position = {'x':256,'y':256,'z':291}; // for show NIFTI images
 
 
 var _via_reg_ctx; // initialized in _via_init()
@@ -134,9 +136,7 @@ var _via_message_clear_timer;
 
 // attributes
 var _via_attribute_being_updated = 'region'; // {region, file}
-// var _via_attributes = { 'region' : {'osteophytes':['0 (None or doubtful)','1 (Obvioust)','2 (Obviouse and big)']}, 
-//                         'file' : {'filename':1, 'KL-grade':[1,2,3], 'Sclerosis':[1,2,3], 'Joint Space Width':[1,2,3], 'gender':[1,2,3], 'age':-1}};
-var _via_attributes = {'region':{},'file':{}};
+var _via_attributes = { 'region': {}, 'file': {} };
 var _via_current_attribute_id = '';
 
 // region group color
@@ -147,13 +147,14 @@ var _via_user_input_ok_handler = null;
 var _via_user_input_cancel_handler = null;
 var _via_user_input_data = {};
 
-// annotation editor
 var _via_metadata_being_updated = 'region'; // {region, file}
 var _via_annotation_editor_mode = VIA_ANNOTATION_EDITOR_MODE.SINGLE_REGION;
 
 // persistence to local storage
 var _via_is_local_storage_available = false;
 var _via_is_save_ongoing = false;
+
+
 
 // all the image_id and image_filename of images added by the user is
 // stored in _via_image_id_list and _via_image_filename_list

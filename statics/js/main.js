@@ -700,7 +700,7 @@ papaya.Container.buildLeftsidebar = function() {
                                 <br><br>\
                                 <span class='button' onclick='zoom_in()'><i class='fas fa-search-plus'></i>&nbsp;&nbsp;Zoom In</span>\
                                 <span class='button' onclick='zoom_out()'><i class='fas fa-search-minus'></i>&nbsp;&nbsp;Zoom Out</span>\
-                                <span class='button' onclick='via_canvas_toggle()'>&nbsp;Toggle</span>\
+                                <span class='button' onclick='via_canvas_toggle()'>&nbsp;Labelling</span>\
                                 <br><br>\
                             </div>\
                         </p>\

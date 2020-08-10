@@ -26,6 +26,7 @@
 
     <!-- JS debug start -->
     <script type="text/javascript" src="/statics/js/via/3dconstants.js"></script>
+<<<<<<< HEAD
 
     <script> 
         var firstTry = {{first}};
@@ -33,6 +34,19 @@
         var proj_ok = {{proj}};
         if(proj_ok === "t") temp = {{filedata}};
     </script>
+=======
+    
+    <script> 
+        var firstTry = {{first}};
+        // var jsfile = "{{js_file}}";
+        _via_settings.core.default_filepath = "{{direc}}";
+        var proj_ok = "{{proj}}";
+        if(proj_ok === "t") {
+            temp = "{{filedata}}";
+            console.log(typeof(temp));
+        }
+        </script>
+>>>>>>> e7e06b2b35263a0a6cd840e3b4bf76ccd4d51b4c
     <script type="text/javascript" src="/statics/js/data/sample-image.js"></script>
     <script type="text/javascript" src="/statics/js/data/talairach-atlas-image.js"></script>
     <script type="text/javascript" src="/statics/js/data/talairach-atlas.js"></script>
@@ -131,9 +145,10 @@
     <div id="settings_panel" class="display_area_content display_none"></div>
     <div id="labelling_sidebar" style="display:table-cell; width: 305px;"></div>
     <div id="page_start_info" class="display_area_content display_none narrow_page_content"></div>
-    <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
-    <div id="plus_container"></div>
+    <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})" ></button>
+
     <div style='width: 100%;' id='vertical_space'></div>
+    <div id="plus_container"></div>
     <div id="page_404" class="display_area_content display_none narrow_page_content"></div>
     <div id="share_position" class="display_none">
         <input id="x_position" class="positions" type="hidden">
