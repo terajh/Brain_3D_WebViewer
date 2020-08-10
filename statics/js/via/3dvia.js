@@ -45,17 +45,7 @@ function file_region() {
 //
 // Initialization routine
 //
-(function () {
-    if (firstTry == 1 || firstTry == 4 || firstTry == 6) {
-        console.log('click hidden01');
-        $("#hidden01").click();
-    }
-    else if (firstTry == 2) {
-        document.getElementById("hidden01").click();
-        document.getElementById("hidden02").click();
-        document.getElementById("button_edit_file_metadata").click();
-    }
-}());
+
 
 function _via_init() {
     _via_img_panel = document.getElementById('image_panel');
@@ -1657,6 +1647,12 @@ function _via_reg_canvas_mouseup_handler(e) {
         var region_dy = Math.abs(region_y1 - region_y0);
         var new_region_added = false;
 
+        var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
+        // current_viewer.currentCoord.x =_via_reg_position.x;
+        // current_viewer.currentCoord.y =_via_reg_position.y;
+        // current_viewer.currentCoord.z =_via_reg_position.z;
+
+
         if (region_dx >= VIA_REGION_MIN_DIM && region_dy >= VIA_REGION_MIN_DIM) { // avoid regions with 0 dim
             switch (_via_current_shape) {
                 case VIA_REGION_SHAPE.CUBE:
@@ -1689,6 +1685,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['x'] = _via_reg_position.x - 3;
                             original_img_region.shape_attributes['y'] = x;
                             original_img_region.shape_attributes['z'] = y;
+                            original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
+                            original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
+                            original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             original_img_region.shape_attributes['dx'] = 6;
                             original_img_region.shape_attributes['dy'] = width;
                             original_img_region.shape_attributes['dz'] = height;
@@ -1697,6 +1696,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['x'] = Math.round((_via_reg_position.x - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
+                            canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
+                            canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             canvas_img_region.shape_attributes['dx'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
@@ -1706,6 +1708,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = _via_reg_position.y - 3;
                             original_img_region.shape_attributes['z'] = y;
+                            original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
+                            original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
+                            original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = 6;
                             original_img_region.shape_attributes['dz'] = height;
@@ -1714,6 +1719,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round((_via_reg_position.y - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
+                            canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
+                            canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
@@ -1723,6 +1731,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = y;
                             original_img_region.shape_attributes['z'] = _via_reg_position.z - 3;
+                            original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
+                            original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
+                            original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = 6;
@@ -1731,6 +1742,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round((_via_reg_position.z - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
+                            canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
+                            canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(20 / _via_canvas_scale);
@@ -2178,7 +2192,10 @@ function _via_reg_canvas_mousemove_handler(e) {
         annotation_editor_hide() // moving
         return;
     }
-
+    if (!_via_is_user_drawing_region){
+        _via_redraw_reg_canvas();
+    }
+    // _via_redraw_reg_canvas();
 
 }
 
@@ -2332,6 +2349,9 @@ function draw_all_regions() {
                     attr['dx'],
                     attr['dy'],
                     attr['dz'],
+                    attr['cx'],
+                    attr['cy'],
+                    attr['cz'],
                     is_selected);
                 break;
         }
@@ -2396,17 +2416,13 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
         }
     }
 }
-function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
+function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
-
-
+    var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
     if (is_selected) {
         if (case_slice === 'x') {
-            // if (Math.abs(_via_reg_position.x - x) > dx || 
-            // _via_reg_position.x - y > dy + 15 || y - _via_reg_position.y > 15 ||
-            // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.x - x) > dx) return;
+            if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
             _via_draw_rect(y, z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2428,10 +2444,7 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             _via_draw_control_point(y + dy, z + dz / 2);
         }
         else if (case_slice === 'y') {
-            // if (Math.abs(_via_reg_position.y - y) > dy || 
-            // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
-            // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.y - y) > dy) return;
+            if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
             _via_draw_rect(x, z, dx, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2453,10 +2466,7 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             _via_draw_control_point(x + dx, z + dz / 2);
         }
         else if (case_slice === 'z') {
-            // if (Math.abs(_via_reg_position.z - z) > dz|| 
-            // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
-            // _via_reg_position.z - y > dz + 15 || y - _via_reg_position.y > 15) return;
-            if (Math.abs(_via_reg_position.z - z) > dz) return;
+            if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
             _via_draw_rect(x, y, dx, dy);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2479,10 +2489,8 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
         }
     } else {
         if (case_slice === 'x') {
-            // if (Math.abs(_via_reg_position.x - x) > dx || 
-            // _via_reg_position.x - y > dy + 15 || y - _via_reg_position.y > 15 ||
-            // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.x - x) > dx) return;
+            if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
+            // if (Math.abs(_via_reg_position.x - x) > dx) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(y, z, dy, dz);
@@ -2507,10 +2515,8 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             }
         }
         else if (case_slice === 'y') {
-            // if (Math.abs(_via_reg_position.y - y) > dy || 
-            // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
-            // _via_reg_position.z - z > dz + 15 || z - _via_reg_position.z > 15) return;
-            if (Math.abs(_via_reg_position.y - y) > dy) return;
+            if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
+            // if (Math.abs(_via_reg_position.y - y) > dy) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, z, dx, dz);
@@ -2535,11 +2541,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, is_selected) {
             }
         }
         else if (case_slice === 'z') {
-            // draw a fill line
-            // if (Math.abs(_via_reg_position.z - z) > dz|| 
-            // _via_reg_position.x - x > dx + 15 || x - _via_reg_position.x > 15 ||
-            // _via_reg_position.z - y > dz + 15 || y - _via_reg_position.y > 15) return;
-            if (Math.abs(_via_reg_position.z - z) > dz) return;
+            // if (Math.abs(_via_reg_position.z - z) > dz) return;
+            if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
+
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, y, dx, dy);
@@ -4188,14 +4192,14 @@ function labelling_list_ith_entry_html(i) {
 }
 function jump_to_label(i) {
     var attr = _via_canvas_regions[i].shape_attributes
-    _via_reg_position.x = attr['x'] + 10;
-    _via_reg_position.y = attr['y'] + 10;
-    _via_reg_position.z = attr['z'] + 10;
+    // _via_reg_position.x = attr['cx'];
+    // _via_reg_position.y = attr['cy'];
+    // _via_reg_position.z = attr['cz'];
 
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
-    current_viewer.currentCoord.x =_via_reg_position.x;
-    current_viewer.currentCoord.y =_via_reg_position.y;
-    current_viewer.currentCoord.z =_via_reg_position.z;
+    current_viewer.currentCoord.x = attr['cx'];
+    current_viewer.currentCoord.y = attr['cy'];
+    current_viewer.currentCoord.z = attr['cz'];
 
     current_viewer.drawViewer(true);
     draw_all_regions();
@@ -6508,7 +6512,7 @@ function project_open_parse_json_file(project_file_data) {
                 _via_current_attribute_id = fattr_id_list[0];
             }
         }
-        _via_settings.core.default_filepath = "./statics/test_img/11/project_202007161644/";
+        // _via_settings.core.default_filepath = "./statics/test_img/11/project_202007161644/";
         if (_via_settings.core.default_filepath !== '') {
             _via_file_resolve_all_to_default_filepath();
         }
@@ -6518,17 +6522,65 @@ function project_open_parse_json_file(project_file_data) {
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
-                var rawFile = new XMLHttpRequest();
+                var params = {};
+                // params['projec_names'] = _via_settings['project'].name;
+                for(var i = 0 ; i < _via_img_count ; i++){
+                    // params['file_names'] = _via_image_filename_list[i];
 
-                rawFile.open("GET", 'statics/test_img/' + _via_image_filename_list[0], false);
-                rawFile.onreadystatechange = function () {
-                    if (rawFile.readyState === 4) {
-                        if (rawFile.status === 200 || rawFile.status == 0) {
-                            var allText = rawFile.responseText;
-                            readFile(allText);
+                    var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
+                    var xmlhttp = new XMLHttpRequest();
+                    var result;
+                    // xmlhttp.open("GET", filePath, false);
+                    // xmlhttp.send();
+                    // if (xmlhttp.status==200) {
+                    //     result = xmlhttp.responseText;
+                    //     console.log(result);
+                    // }
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
+                        contentType: 'application/json',
+                        success: function (result) {
+                            console.log(result);
+                            new Promise((res,rej)=>{
+                                $('#File').click();
+                                res();
+                            })
+                            .then(()=>{
+                                if (_via_current_file_num != 0){
+                                    var eraseView = $('#CloseAllImages0').eq(0);
+                                    eraseView.click();
+                                }
+                            })
+                            .then(()=>{
+                                if (_via_current_file_num === 0){
+                                    document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
+                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                                    filechoosers.trigger('change',[result]);
+                                }
+                                else $('#File').click();
+                            })
+                            .then(()=>{
+                                if (_via_current_file_num != 0){
+                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                                    filechoosers.trigger('change',[result]);
+                                }
+                            });
+                        },
+                        error: function (result) {
+                            alert('Fail to Save');
+                            return result;
                         }
-                    }
+                    })
+
+                        
                 }
+                
+
+                
+                        
+                
             }
             _via_show_img(0);
             update_img_fn_list();
