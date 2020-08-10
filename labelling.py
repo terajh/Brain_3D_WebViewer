@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 
-<<<<<<< HEAD
 from flask import Flask, render_template, json, request, redirect, session, send_from_directory, Blueprint, make_response
 from flask_paginate import Pagination, get_page_parameter
 from flask.json import JSONEncoder
-=======
-from flask import Flask, render_template, json, request, redirect, session, send_from_directory, Blueprint, make_response, send_file
-from flask_paginate import Pagination, get_page_parameter
-from flask.json import JSONEncoder
-import json as jsn
->>>>>>> e7e06b2b35263a0a6cd840e3b4bf76ccd4d51b4c
 import os, cv2, shutil
 import numpy as np
 from xml.etree.ElementTree import Element,SubElement, dump, ElementTree
@@ -29,14 +22,6 @@ import scipy, numpy, shutil, os, nibabel
 import sys, getopt
 import mxnet as mx
 import imageio, base64
-<<<<<<< HEAD
-
-=======
-import msgpack
-import pathlib
-import pandas as pd
-import io
->>>>>>> e7e06b2b35263a0a6cd840e3b4bf76ccd4d51b4c
 # change main path when copy to other device
 #main_path = '/home/crescom01/Downloads/via_final/Labeling'
 #os.chdir(main_path)
@@ -68,36 +53,6 @@ app.config['DCM_EXTENSIONS'] = set(['dcm'])
 app.secret_key = 'why would I tell you my secret key?'
 
 
-<<<<<<< HEAD
-=======
-def stream_template(template_name, **context):
-    app.update_template_context(context)
-    t = app.jinja_env.get_template(template_name)
-    rv = t.stream(context)
-    rv.enable_buffering(5)
-    return rv
-
-@app.route('/my-large-page.html')
-def render_large_template():
-    rows = iter_all_rows()
-    return Response(stream_template('the_template.html', rows=rows))
-
-
-
-@app.route('/get_image_data',methods=['GET'])
-def get_image_data():
-    print('get image data render')
-    if request.method == 'GET':
-        file_name = request.args.get('file_names')
-        projec_name = request.args.get('projec_names')
-
-        image_path = '/home/ubuntu/Desktop/dev/Papaya-master/statics/test_img/'
-        file_path = image_path+session['userID']+'/'+str(projec_name)+'/'+str(file_name)
-        return send_file(file_path, as_attachment=True)
-    else:
-        return json.dumps({"result": False})
-
->>>>>>> e7e06b2b35263a0a6cd840e3b4bf76ccd4d51b4c
 
 # checking image extension
 def allowed_file(filename):
@@ -247,16 +202,8 @@ def sel_project():
         first = 2
     
 
-<<<<<<< HEAD
     if first == 5 or first == 6:
         return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first, proj='f', filedata = 'f')
-=======
-    if first == 5:
-        return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first, proj='f', filedata = 'f')
-    elif first == 6:
-        print('render 6')
-        return render_template('papaya3d.html', js_file=str(js_file).replace('\n',''), fname=_fname, direc=direc, first=first, proj='t', filedata = 'f')
->>>>>>> e7e06b2b35263a0a6cd840e3b4bf76ccd4d51b4c
     else : 
         return render_template('via2d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first)
 
@@ -532,7 +479,6 @@ def new_project():
     else : 
         return render_template('via2d.html', fname=_fname, direc=direc, first=first)
 
-<<<<<<< HEAD
 @app.route('/get_image_data',methods=['GET'])
 def get_image_data():
     print('get image data render')
@@ -558,11 +504,9 @@ def get_image_data():
         return json.dumps({"result": False})
                 
 
-=======
 
                 
 
->>>>>>> e7e06b2b35263a0a6cd840e3b4bf76ccd4d51b4c
 #upload images to server
 @app.route('/upload_img', methods=['POST'])
 def upload_img():
