@@ -1576,7 +1576,7 @@ function _via_reg_canvas_mouseup_handler(e) {
         } // end of switch()
         update_labelling_list();
 
-        _via_redraw_reg_canvas();
+        if(!_via_is_user_resizing_region) _via_redraw_reg_canvas();
         _via_reg_canvas.focus();
         return;
     }
@@ -1684,9 +1684,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = 6;
                             original_img_region.shape_attributes['dy'] = width;
                             original_img_region.shape_attributes['dz'] = height;
-                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round((Number(_via_reg_position.x) - 3) / _via_canvas_scale);
@@ -1698,9 +1695,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
@@ -1713,9 +1707,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = 6;
                             original_img_region.shape_attributes['dz'] = height;
-                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
@@ -1727,9 +1718,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         else if (slice === 'z') {
                             original_img_region.shape_attributes['name'] = 'cube';
@@ -1742,10 +1730,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = 6;
-                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
-
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
@@ -1756,9 +1740,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(20 / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         new_region_added = true;
                         break;
@@ -2069,7 +2050,6 @@ function _via_reg_canvas_mousemove_handler(e) {
         switch (attr['name']) {
             case VIA_REGION_SHAPE.CUBE:
                 var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
-
                 var d;
                 if (slice === 'x') {
                     d = [attr['y'], attr['z'], 0, 0];
@@ -2077,14 +2057,14 @@ function _via_reg_canvas_mousemove_handler(e) {
                     d[3] = d[1] + attr['dz'];
                 }
                 else if (slice === 'y') {
-                    d = [attr['z'], attr['z'], 0, 0];
-                    d[2] = d[0] + attr['dy'];
+                    d = [attr['x'], attr['z'], 0, 0];
+                    d[2] = d[0] + attr['dx'];
                     d[3] = d[1] + attr['dz'];
                 }
                 else if (slice === 'z') {
-                    d = [attr['y'], attr['z'], 0, 0];
-                    d[2] = d[0] + attr['dy'];
-                    d[3] = d[1] + attr['dz'];
+                    d = [attr['x'], attr['y'], 0, 0];
+                    d[2] = d[0] + attr['dx'];
+                    d[3] = d[1] + attr['dy'];
                 }
                 var mx = _via_current_x;
                 var my = _via_current_y;
@@ -2203,7 +2183,7 @@ function _via_reg_canvas_mousemove_handler(e) {
         annotation_editor_hide(); // moving
         return;
     }
-    if (!_via_is_user_drawing_region){
+    if (!_via_is_user_drawing_region && !_via_is_user_resizing_region){
         _via_redraw_reg_canvas();
     }
     // _via_redraw_reg_canvas();
@@ -4192,11 +4172,19 @@ function update_labelling_list() {
 function labelling_list_ith_entry_html(i) {
     var htmli = '';
     var attr = _via_canvas_regions[i].shape_attributes;
-    var posName = "( " + attr['x'] + ", " + attr['y'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
+    var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
+    var posName = "";
+    if (slice === 'x'){
+        posName = "( " + attr['cx'] + ", " + attr['y'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
+    }else if (slice === 'y'){
+        posName = "( " + attr['x'] + ", " + attr['cy'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
+    }else if (slice === 'z'){
+        posName = "( " + attr['x'] + ", " + attr['y'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
+    }
     posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
 
     htmli += '<li id="fl' + i + '"';
-    htmli += ' onclick="jump_to_label(' + (i) + ')" >[' + (i + 1) + ']' + posName + '</li>';
+    htmli += ' onclick="jump_to_label(' + (i) + ')" >[' + (i + 1) + '] ' + posName + '</li>';
     return htmli;
 }
 function jump_to_label(i) {

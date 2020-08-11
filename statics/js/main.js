@@ -700,7 +700,7 @@ papaya.Container.buildLeftsidebar = function() {
                                 <br><br>\
                                 <span class='button' onclick='zoom_in()'><i class='fas fa-search-plus'></i>&nbsp;&nbsp;Zoom In</span>\
                                 <span class='button' onclick='zoom_out()'><i class='fas fa-search-minus'></i>&nbsp;&nbsp;Zoom Out</span>\
-                                <span class='button' onclick='via_canvas_toggle()'>&nbsp;Labelling</span>\
+                                <span class='button' onclick='via_canvas_toggle()'>&nbsp;Label</span>\
                                 <br><br>\
                             </div>\
                         </p>\
@@ -749,12 +749,20 @@ papaya.Container.buildLeftsidebar = function() {
                                     <td>Select all regions</td>\
                                 </tr>\
                                 <tr>\
-                                    <td><span class='key'>q</span></td>\
-                                    <td>Show position bar</td>\
+                                    <td><span class='key'>t</span></td>\
+                                    <td>Show labelling canvas regions</td>\
                                 </tr>\
                                 <tr>\
                                     <td><span class='key'>r</span></td>\
-                                    <td>Toggle canvas view</td>\
+                                    <td>Toggle nii view</td>\
+                                </tr>\
+                                <tr>\
+                                    <td><span class='key'>g</span></td>\
+                                    <td>Increase slice value</td>\
+                                </tr>\
+                                <tr>\
+                                    <td><span class='key'>f</span></td>\
+                                    <td>Decrease slice value</td>\
                                 </tr>\
                                 <tr>\
                                     <td><span class='key'>c</span></td>\
@@ -769,67 +777,20 @@ papaya.Container.buildLeftsidebar = function() {
                                     <td>Delete selected regions</td>\
                                 </tr>\
                                 <tr>\
-                                    <td><span class='key'>Ctrl</span> + Wheel</td>\
-                                    <td>Zoom in/out (mouse cursor is over image)</td>\
+                                    <td><span class='key'>Alt</span> + MouseMove</td>\
+                                    <td>Zoom in/out (mouse cursor is over image and move up/down)</td>\
+                                </tr>\
+                                <tr>\
+                                    <td><span class='key'>Ctrl</span> + MouseMove</td>\
+                                    <td>Zoom in/out (mouse cursor is over image and move up/down)</td>\
                                 </tr>\
                                 <tr>\
                                     <td><span class='key'>l</span></td>\
-                                    <td>Toggle region label</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>b</span></td>\
-                                    <td>Toggle region boundary</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Enter</span></td>\
-                                    <td>Finish drawing polyshape</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Backspace</span></td>\
-                                    <td>Delete last polyshape vertex</td>\
-                                </tr>\
-                                </table>\
-                                <div style='display:block; text-align:center; padding:1rem;'>Always Available</div>\
-                                <table>\
-                                <tr>\
-                                    <td style='width:8em;'><span class='key'>&larr;</span>&nbsp;<span class='key'>&rarr;</span></td>\
-                                    <td>Move to next/previous image</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>+</span>&nbsp;<span class='key'>-</span>&nbsp;<span class='key'>=</span></td>\
-                                    <td>Zoom in/out/reset</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>&uarr;</span></td>\
-                                    <td>Update region label</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>&darr;</span></td>\
-                                    <td>Update region colour</td>\
+                                    <td>Toggle labelling region</td>\
                                 </tr>\
                                 <tr>\
                                     <td><span class='key'>Spacebar</span></td>\
                                     <td>Toggle annotation editor (Ctrl to toggle on image editor)</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Home</span> / <span class='key'>h</span></td>\
-                                    <td>Jump to first image</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>End</span> / <span class='key'>e</span></td>\
-                                    <td>Jump to last image</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>PgUp</span> / <span class='key'>u</span></td>\
-                                    <td>Jump several images</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>PgDown</span> / <span class='key'>d</span></td>\
-                                    <td>Jump several images</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Esc</span></td>\
-                                    <td>Cancel ongoing task</td>\
                                 </tr>\
                             </table>\
                         </div>\

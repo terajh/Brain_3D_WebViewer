@@ -694,6 +694,7 @@ papaya.viewer.Viewer.prototype.initializeViewer = function () {
         } else {
             this.finishedLoading();
         }
+        _via_redraw_reg_canvas();
     }
 };
 
@@ -1747,24 +1748,34 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
         this.incrementAxial(false);
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_INCREMENT_MAIN) {
         if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
-            this.incrementAxial(false);
-            _via_redraw_reg_canvas();
+            this.incrementAxial(false, function(){
+                _via_redraw_reg_canvas();
+            });
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(false);
-            _via_redraw_reg_canvas();
+            this.incrementCoronal(false, function(){
+                _via_redraw_reg_canvas();
+            });
+            
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(true);
-            _via_redraw_reg_canvas();
+            this.incrementSagittal(true, function(){
+                _via_redraw_reg_canvas();
+            });
+            
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN) {
         if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
-            this.incrementAxial(true);
-            _via_redraw_reg_canvas();
+            this.incrementAxial(true, function(){
+                _via_redraw_reg_canvas();
+            });
+            
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(true);
-            _via_redraw_reg_canvas();
+            this.incrementCoronal(true, function(){
+                _via_redraw_reg_canvas();
+            });
+            
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(false);
+            this.incrementSagittal(false, function(){
+            });
             _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_SERIES_FORWARD) {
@@ -1806,6 +1817,9 @@ papaya.viewer.Viewer.prototype.keyUpEvent = function (ke) {
             this.drawViewer(true, false);
         }
     }
+
+    _via_redraw_reg_canvas();
+
 };
 
 
@@ -2414,6 +2428,7 @@ papaya.viewer.Viewer.prototype.gotoCoordinate = function (coor, nosync) {
 
     this.container.coordinateChanged(this);
     this.drawViewer(false);
+    _via_redraw_reg_canvas();
 };
 
 
