@@ -355,7 +355,7 @@ function sel_local_images() {
     
     if (invisible_file_input) {
         invisible_file_input.value = null;
-        invisible_file_input.setAttribute('multiple', 'multiple')
+        // invisible_file_input.setAttribute('multiple', 'multiple')
         invisible_file_input.accept = '.jpg,.jpeg,.png,.bmp,.gz,.nii,.gz, *';
         invisible_file_input.onchange = project_file_add_local;
         invisible_file_input.click();
@@ -4891,7 +4891,6 @@ function attribute_property_on_option_add(p) {
 function attribute_property_reset_new_entry_inputs() {
     var container = document.getElementById('attribute_options');
     var p = container.lastChild;
-    console.log(p.childNodes)
     if (p.childNodes[0]) {
         p.childNodes[0].value = '';
     }
@@ -6533,27 +6532,12 @@ function project_open_parse_json_file(project_file_data) {
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
-                var params = {};
-                // params['projec_names'] = _via_settings['project'].name;
                 for(var i = 0 ; i < _via_img_count ; i++){
-                    // params['file_names'] = _via_image_filename_list[i];
-
-                    var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
-                    var xmlhttp = new XMLHttpRequest();
-                    var result;
-                    // xmlhttp.open("GET", filePath, false);
-                    // xmlhttp.send();
-                    // if (xmlhttp.status==200) {
-                    //     result = xmlhttp.responseText;
-                    //     console.log(result);
-                    // }
-
                     $.ajax({
                         type: 'GET',
                         url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
-                        contentType: 'application/json',
                         success: function (result) {
-                            console.log(result);
+                            console.log(typeof(result));
                             new Promise((res,rej)=>{
                                 $('#File').click();
                                 res();
@@ -6889,6 +6873,9 @@ function project_file_add_local(event) {
                     if (_via_current_file_num === -1){
                         var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                         filechoosers.trigger('change',[event.target.files]);
+                    }else{
+                        var filechoosers = $('#fileChooserAdd_Image'+_via_current_file_num).eq(0);
+                        filechoosers.trigger('change', [event.target.files[i]]);
                     }
                 });
             }
@@ -8605,23 +8592,9 @@ function _via_img_buffer_add_image(img_index) {
                 project_file_load_on_fail(img_index);
                 err_callback(img_index);
             });
-            bimg.addEventListener('load', function () {
-                console.log('load event');
-                // URL.revokeObjectURL(tmp_file_object_url);
-                // img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
-                // _via_img_panel.insertBefore(bimg, _via_reg_canvas);
-                // project_file_load_on_success(img_index);
-                // img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
-                // // add timestamp so that we can apply Least Recently Used (LRU)
-                // // scheme to remove elements when buffer is full
-                // var arr_index = _via_buffer_img_index_list.length;
-                // // _via_buffer_img_index_list.push(img_index);
-                // _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
-                // ok_callback(img_index);
-            });
             bimg.addEventListener('click', function () {
                 URL.revokeObjectURL(tmp_file_object_url);
-                console.log('click event');
+                // console.log('click event');
                 if (bimg.tagName === "CANVAS") {
                     img_stat_set(img_index, [bimg.width, bimg.height]);
                 } else {
@@ -8674,24 +8647,9 @@ function _via_img_buffer_add_image(img_index) {
                 err_callback(img_index);
             });
 
-            // Note: _via_current_image.{naturalWidth,naturalHeight} is only accessible after
-            // the "load" event. Therefore, all processing must happen inside this event handler.
-            bimg.addEventListener('load', function () {
-                console.log('load event');
-                // img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
-                // _via_img_panel.insertBefore(bimg, _via_reg_canvas);
-                // project_file_load_on_success(img_index);
-                // img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
-                // // add timestamp so that we can apply Least Recently Used (LRU)
-                // // scheme to remove elements when buffer is full
-                // var arr_index = _via_buffer_img_index_list.length;
-                // _via_buffer_img_index_list.push(img_index);
-                // _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
-                // ok_callback(img_index);
-            }, false);
 
             bimg.addEventListener('click', function () {
-                console.log('click event');
+                // console.log('click event');
                 if (bimg.tagName === "CANVAS") {
                     img_stat_set(img_index, [bimg.width, bimg.height]);
                 } else {
