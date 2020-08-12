@@ -6532,12 +6532,18 @@ function project_open_parse_json_file(project_file_data) {
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
-                for(var i = 0 ; i < _via_img_count ; i++){
+                for(var i = 0 ; i < _via_img_count ;i++){
                     $.ajax({
                         type: 'GET',
                         url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
-                        success: function (result) {
-                            console.log(typeof(result));
+                        success: function (result) {                            
+                            // var blob = new Blob([result],{type:'text/plain'});
+                            console.log(_via_image_filename_list[0],typeof(_via_image_filename_list[0]));
+                            var file = new File([result],_via_image_filename_list[0],{
+                                lastModified: new Date(0)
+                            });
+                            filelist.push(file);
+                            console.log(file);
                             new Promise((res,rej)=>{
                                 $('#File').click();
                                 res();
@@ -6552,14 +6558,17 @@ function project_open_parse_json_file(project_file_data) {
                                 if (_via_current_file_num === 0){
                                     document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
+                                    filechoosers.file = file;
+                                    filechoosers.trigger('change');
                                 }
                                 else $('#File').click();
                             })
                             .then(()=>{
                                 if (_via_current_file_num != 0){
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
+                                    filechoosers.file = file;
+
+                                    filechoosers.trigger('change');
                                 }
                             });
                         },

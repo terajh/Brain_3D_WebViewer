@@ -71,8 +71,12 @@ def get_image_data():
         projec_name = request.args.get('projec_names')
         image_path = 'statics/test_img/'
         full_path = image_path+session['userID']+'/'+str(projec_name)+'/'+file_name
+        # img = nibabel.load(full_path)
+        # img_data = img.get_fdata()
         try:
-            return send_file(full_path,as_attachment=True)
+            file = send_file(full_path, mimetype='application/octet-stream',as_attachment=True,  attachment_filename=file_name)
+            print(type(file))
+            return file
         except FileNotFoundError:
             abort(404)
     else:
