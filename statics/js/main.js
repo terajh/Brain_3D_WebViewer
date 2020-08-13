@@ -702,6 +702,8 @@ papaya.Container.buildLeftsidebar = function() {
                                 <span class='button' onclick='zoom_out()'><i class='fas fa-search-minus'></i>&nbsp;&nbsp;Zoom Out</span>\
                                 <span class='button' onclick='via_canvas_toggle()'>&nbsp;Label</span>\
                                 <br><br>\
+                                <span class='button' onclick='via_drawing_canvas_toggle()'>&nbsp;Draw</span>\
+                                <br><br>\
                             </div>\
                         </p>\
                     </div>\
@@ -858,14 +860,10 @@ papaya.Container.buildPlusContainer = function() {
     var plusContainer = $('#plus_container');
     var plusContainerHtml = null;
     plusContainerHtml = "<form id='img_form' method='post' enctype='multipart/form-data'>\
-                            <input type='file' id='invisible_file_input' name='files[]' style='display:none'>\
+                            <div id='change'><input type='file' id='invisible_file_input' name='files[]' style='display:none'></div>\
                             <input type='button' id='invisible_submit' onclick='uploadImg()' style='display:none'>\
                         </form>";
     plusContainer.append(plusContainerHtml);
-    // $(".positions").on("propertychange change keyup paste input", function() {
-    //     draw_all_regions();
-    // });
-
 }
 papaya.Container.prototype.rebuildContainer = function (params, index) {
     this.containerHtml.empty();

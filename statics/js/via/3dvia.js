@@ -1187,10 +1187,10 @@ function _via_load_canvas_regions() {
                     var width = regions[i].shape_attributes['dy'] / _via_canvas_scale;
                     var height = regions[i].shape_attributes['dz'] / _via_canvas_scale;
 
-                    _via_canvas_regions[i].shape_attributes['x'] = Math.round(x);
-                    _via_canvas_regions[i].shape_attributes['y'] = Math.round(y);
-                    _via_canvas_regions[i].shape_attributes['width'] = Math.round(width);
-                    _via_canvas_regions[i].shape_attributes['height'] = Math.round(height);
+                    _via_canvas_regions[i].shape_attributes['y'] = Math.round(x);
+                    _via_canvas_regions[i].shape_attributes['z'] = Math.round(y);
+                    _via_canvas_regions[i].shape_attributes['dy'] = Math.round(width);
+                    _via_canvas_regions[i].shape_attributes['dz'] = Math.round(height);
                 }
                 else if (slice === 'y') {
                     var x = regions[i].shape_attributes['x'] / _via_canvas_scale;
@@ -1199,9 +1199,9 @@ function _via_load_canvas_regions() {
                     var height = regions[i].shape_attributes['dz'] / _via_canvas_scale;
 
                     _via_canvas_regions[i].shape_attributes['x'] = Math.round(x);
-                    _via_canvas_regions[i].shape_attributes['y'] = Math.round(y);
-                    _via_canvas_regions[i].shape_attributes['width'] = Math.round(width);
-                    _via_canvas_regions[i].shape_attributes['height'] = Math.round(height);
+                    _via_canvas_regions[i].shape_attributes['z'] = Math.round(y);
+                    _via_canvas_regions[i].shape_attributes['dx'] = Math.round(width);
+                    _via_canvas_regions[i].shape_attributes['dz'] = Math.round(height);
                 }
                 else if (slice === 'z') {
                     var x = regions[i].shape_attributes['x'] / _via_canvas_scale;
@@ -1211,8 +1211,8 @@ function _via_load_canvas_regions() {
 
                     _via_canvas_regions[i].shape_attributes['x'] = Math.round(x);
                     _via_canvas_regions[i].shape_attributes['y'] = Math.round(y);
-                    _via_canvas_regions[i].shape_attributes['width'] = Math.round(width);
-                    _via_canvas_regions[i].shape_attributes['height'] = Math.round(height);
+                    _via_canvas_regions[i].shape_attributes['dx'] = Math.round(width);
+                    _via_canvas_regions[i].shape_attributes['dy'] = Math.round(height);
                 }
 
                 break;
@@ -1259,8 +1259,8 @@ function set_all_canvas_size(w, h) {
     _via_reg_canvas.height = h;
     _via_reg_canvas.width = w;
 
-    image_panel.style.height = '1118px';
-    image_panel.style.width = '745px';
+    image_panel.style.height = '745px';
+    image_panel.style.width = '1118px';
 }
 
 function set_all_canvas_scale(s) {
@@ -1531,16 +1531,36 @@ function _via_reg_canvas_mouseup_handler(e) {
 
                 var w = Math.abs(d[2] - d[0]);
                 var h = Math.abs(d[3] - d[1]);
-
-                image_attr['x'] = Math.round(d[0] * _via_canvas_scale);
-                image_attr['y'] = Math.round(d[1] * _via_canvas_scale);
-                image_attr['width'] = Math.round(w * _via_canvas_scale);
-                image_attr['height'] = Math.round(h * _via_canvas_scale);
-
-                canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
-                canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
-                canvas_attr['width'] = Math.round(image_attr['width'] / _via_canvas_scale);
-                canvas_attr['height'] = Math.round(image_attr['height'] / _via_canvas_scale);
+                if (slice === 'x') {
+                    image_attr['y'] = Math.round(d[0] * _via_canvas_scale);
+                    image_attr['z'] = Math.round(d[1] * _via_canvas_scale);
+                    image_attr['dy'] = Math.round(w * _via_canvas_scale);
+                    image_attr['dz'] = Math.round(h * _via_canvas_scale);
+                    canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
+                    canvas_attr['z'] = Math.round(image_attr['z'] / _via_canvas_scale);
+                    canvas_attr['dy'] = Math.round(image_attr['dy'] / _via_canvas_scale);
+                    canvas_attr['dz'] = Math.round(image_attr['dz'] / _via_canvas_scale);
+                }
+                else if (slice === 'y') {
+                    image_attr['x'] = Math.round(d[0] * _via_canvas_scale);
+                    image_attr['z'] = Math.round(d[1] * _via_canvas_scale);
+                    image_attr['dx'] = Math.round(w * _via_canvas_scale);
+                    image_attr['dz'] = Math.round(h * _via_canvas_scale);
+                    canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
+                    canvas_attr['z'] = Math.round(image_attr['z'] / _via_canvas_scale);
+                    canvas_attr['dx'] = Math.round(image_attr['dx'] / _via_canvas_scale);
+                    canvas_attr['dz'] = Math.round(image_attr['dz'] / _via_canvas_scale);
+                }
+                else if (slice === 'z') {
+                    image_attr['x'] = Math.round(d[0] * _via_canvas_scale);
+                    image_attr['y'] = Math.round(d[1] * _via_canvas_scale);
+                    image_attr['dx'] = Math.round(w * _via_canvas_scale);
+                    image_attr['dy'] = Math.round(h * _via_canvas_scale);
+                    canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
+                    canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
+                    canvas_attr['dx'] = Math.round(image_attr['dx'] / _via_canvas_scale);
+                    canvas_attr['dy'] = Math.round(image_attr['dy'] / _via_canvas_scale);
+                }
                 break;
 
             case VIA_REGION_SHAPE.RECT:
@@ -1675,7 +1695,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                         var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                         if (slice === 'x') {
                             original_img_region.shape_attributes['name'] = 'cube';
-                            original_img_region.shape_attributes['x'] = Number(_via_reg_position.x) - 3;
+                            original_img_region.shape_attributes['x'] = Number(current_viewer.currentCoord.x) - 3;
                             original_img_region.shape_attributes['y'] = x;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
@@ -1684,12 +1704,9 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = 6;
                             original_img_region.shape_attributes['dy'] = width;
                             original_img_region.shape_attributes['dz'] = height;
-                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
-                            canvas_img_region.shape_attributes['x'] = Math.round((Number(_via_reg_position.x) - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x) - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
@@ -1698,14 +1715,11 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
-                            original_img_region.shape_attributes['y'] = Number(_via_reg_position.y) - 3;
+                            original_img_region.shape_attributes['y'] = Number(current_viewer.currentCoord.y) - 3;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
@@ -1713,13 +1727,10 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = 6;
                             original_img_region.shape_attributes['dz'] = height;
-                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['y'] = Math.round((_via_reg_position.y - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
@@ -1727,38 +1738,29 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(20 / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         else if (slice === 'z') {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = y;
-                            original_img_region.shape_attributes['z'] = _via_reg_position.z - 3;
+                            original_img_region.shape_attributes['z'] = current_viewer.currentCoord.z - 3;
                             original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
                             original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = 6;
-                            original_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            original_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            original_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['z'] = Math.round((_via_reg_position.z - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['z'] = Math.round((current_viewer.currentCoord.z - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
                             canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(20 / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = Number(_via_reg_position.x);
-                            canvas_img_region.shape_attributes['cy'] = Number(_via_reg_position.y);
-                            canvas_img_region.shape_attributes['cz'] = Number(_via_reg_position.z);
                         }
                         new_region_added = true;
                         break;
@@ -2055,6 +2057,7 @@ function _via_reg_canvas_mousemove_handler(e) {
     }
 
     if (_via_is_user_resizing_region) {
+        console.log('resizing ... ');
         // user has clicked mouse on bounding box edge and is now moving it
         // draw region as the user drags the mouse coursor
         if (_via_canvas_regions.length) {
@@ -2069,8 +2072,8 @@ function _via_reg_canvas_mousemove_handler(e) {
         switch (attr['name']) {
             case VIA_REGION_SHAPE.CUBE:
                 var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
-
                 var d;
+
                 if (slice === 'x') {
                     d = [attr['y'], attr['z'], 0, 0];
                     d[2] = d[0] + attr['dy'];
@@ -2082,9 +2085,9 @@ function _via_reg_canvas_mousemove_handler(e) {
                     d[3] = d[1] + attr['dz'];
                 }
                 else if (slice === 'z') {
-                    d = [attr['y'], attr['z'], 0, 0];
-                    d[2] = d[0] + attr['dy'];
-                    d[3] = d[1] + attr['dz'];
+                    d = [attr['x'], attr['y'], 0, 0];
+                    d[2] = d[0] + attr['dx'];
+                    d[3] = d[1] + attr['dy'];
                 }
                 var mx = _via_current_x;
                 var my = _via_current_y;
@@ -2203,7 +2206,7 @@ function _via_reg_canvas_mousemove_handler(e) {
         annotation_editor_hide(); // moving
         return;
     }
-    if (!_via_is_user_drawing_region){
+    if (!_via_is_user_drawing_region && !_via_is_user_resizing_region){
         _via_redraw_reg_canvas();
     }
     // _via_redraw_reg_canvas();
@@ -2380,6 +2383,16 @@ function _via_draw_control_point(cx, cy) {
     _via_reg_ctx.fill();
 }
 
+function _via_draw_control_spoint(cx, cy) {
+    _via_reg_ctx.beginPath();
+    _via_reg_ctx.arc(cx, cy, 1, 0, 2 * Math.PI, false);
+    _via_reg_ctx.closePath();
+
+    _via_reg_ctx.fillStyle = VIA_THEME_CONTROL_POINT_COLOR;
+    _via_reg_ctx.globalAlpha = 1.0;
+    _via_reg_ctx.fill();
+}
+
 function _via_draw_rect_region(x, y, w, h, is_selected) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     if (is_selected) {
@@ -2434,13 +2447,14 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
     if (is_selected) {
         if (case_slice === 'x') {
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
-
+            var ra = 358/760;
             _via_draw_rect(y, z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_reg_ctx.stroke();
 
+            
             _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
             _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
             _via_reg_ctx.fill();
@@ -2454,6 +2468,47 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(y + dy / 2, z + dz);
             _via_draw_control_point(y, z + dz / 2);
             _via_draw_control_point(y + dy, z + dz / 2);
+
+            var ra = 358/760;
+            _via_draw_rect(760 + x*ra, z*ra, dx*ra, dz*ra);
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(760 + x*ra, z*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(760 + x*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, z*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, z*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, z*ra + dz*ra);
+            _via_draw_control_spoint(760 + x*ra, z*ra + dz*ra / 2);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, z*ra + dz*ra / 2);
+
+            _via_draw_rect(760 + x*ra, 372.5 + y*ra, dx*ra, dy*ra);
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+            
+            _via_draw_control_spoint(760 + x*ra, 372.5 + y*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, 372.5 + y*ra + dy*ra);
+            _via_draw_control_spoint(760 + x*ra, 372.5 + y*ra + dy*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, 372.5 + y*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, 372.5 + y*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, 372.5 + y*ra + dy*ra);
+            _via_draw_control_spoint(760 + x*ra, 372.5 + y*ra + dy*ra / 2);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, 372.5 + y*ra + dy*ra / 2);
         }
         else if (case_slice === 'y') {
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
@@ -2476,6 +2531,47 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(x + dx / 2, z + dz);
             _via_draw_control_point(x, z + dz / 2);
             _via_draw_control_point(x + dx, z + dz / 2);
+
+            var ra = 358/760;
+            _via_draw_rect(760 + x*ra, y*ra, dx*ra, dy*ra);
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(760 + x*ra, y*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, y*ra + dy*ra);
+            _via_draw_control_spoint(760 + x*ra, y*ra + dy*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, y*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, y*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, y*ra + dy*ra);
+            _via_draw_control_spoint(760 + x*ra, y*ra + dy*ra / 2);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, y*ra + dy*ra / 2);
+
+            _via_draw_rect(760 + y*ra, 372.5 + z*ra, dy*ra, dz*ra);
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(760 + y*ra, 372.5 + z*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra, 372.5 + z*ra + dz*ra);
+            _via_draw_control_spoint(760 + y*ra, 372.5 + z*ra + dz*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra, 372.5 + z*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra / 2, 372.5 + z*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra / 2, 372.5 + z*ra + dz*ra);
+            _via_draw_control_spoint(760 + y*ra, 372.5 + z*ra + dz*ra / 2);
+            _via_draw_control_spoint(760 + y*ra + dy*ra, 372.5 + z*ra + dz*ra / 2);
         }
         else if (case_slice === 'z') {
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
@@ -2498,6 +2594,47 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(x + dx / 2, y + dy);
             _via_draw_control_point(x, y + dy / 2);
             _via_draw_control_point(x + dx, y + dy / 2);
+
+            var ra = 358/760;
+            _via_draw_rect(760 + y*ra, z*ra, dy*ra, dz*ra);
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(760 + y*ra, z*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(760 + y*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra, z*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra / 2, z*ra);
+            _via_draw_control_spoint(760 + y*ra + dy*ra / 2, z*ra + dz*ra);
+            _via_draw_control_spoint(760 + y*ra, z*ra + dz*ra / 2);
+            _via_draw_control_spoint(760 + y*ra + dy*ra, z*ra + dz*ra / 2);
+
+            _via_draw_rect(760 + x*ra, 372.5 + z*ra, dx*ra, dz*ra);
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(760 + x*ra, 372.5 + z*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, 372.5 + z*ra + dz*ra);
+            _via_draw_control_spoint(760 + x*ra, 372.5 + z*ra + dz*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, 372.5 + z*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, 372.5 + z*ra);
+            _via_draw_control_spoint(760 + x*ra + dx*ra / 2, 372.5 + z*ra + dz*ra);
+            _via_draw_control_spoint(760 + x*ra, 372.5 + z*ra + dz*ra / 2);
+            _via_draw_control_spoint(760 + x*ra + dx*ra, 372.5 + z*ra + dz*ra / 2);
         }
     } else {
         if (case_slice === 'x') {
@@ -2507,23 +2644,15 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
-            if (dy > VIA_THEME_REGION_BOUNDARY_WIDTH &&
-                dz > VIA_THEME_REGION_BOUNDARY_WIDTH) {
-                // draw a boundary line on both sides of the fill line
-                _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
-                _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
-                _via_draw_rect(y - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dy + VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz + VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
+            var ra = 358/760;
+            _via_draw_rect(760 + x*ra, z*ra, dx*ra, dz*ra);
+            _via_reg_ctx.stroke();
 
-                _via_draw_rect(y + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dy - VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz - VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
-            }
+
+            _via_draw_rect(760 + x*ra, 372.5 + y*ra, dx*ra, dy*ra);
+            _via_reg_ctx.stroke();
+
+          
         }
         else if (case_slice === 'y') {
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
@@ -2532,23 +2661,14 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_rect(x, z, dx, dz);
             _via_reg_ctx.stroke();
 
-            if (dx > VIA_THEME_REGION_BOUNDARY_WIDTH &&
-                dz > VIA_THEME_REGION_BOUNDARY_WIDTH) {
-                // draw a boundary line on both sides of the fill line
-                _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
-                _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
-                _via_draw_rect(x - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx + VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz + VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
 
-                _via_draw_rect(x + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx - VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz - VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
-            }
+            var ra = 358/760;
+            _via_draw_rect(760 + x*ra, y*ra, dx*ra, dy*ra);
+            _via_reg_ctx.stroke();
+
+            _via_draw_rect(760 + y*ra, 372.5 + z*ra, dy*ra, dz*ra);
+            _via_reg_ctx.stroke();
+
         }
         else if (case_slice === 'z') {
             // if (Math.abs(_via_reg_position.z - z) > dz) return;
@@ -2558,23 +2678,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
-            if (dx > VIA_THEME_REGION_BOUNDARY_WIDTH &&
-                dy > VIA_THEME_REGION_BOUNDARY_WIDTH) {
-                // draw a boundary line on both sides of the fill line
-                _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
-                _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
-                _via_draw_rect(x - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    y - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx + VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dy + VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
+            var ra = 358/760;
+            _via_draw_rect(760 + y*ra, z*ra, dy*ra, dz*ra);
+            _via_reg_ctx.stroke();
 
-                _via_draw_rect(x + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    y + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx - VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dy - VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
-            }
+            _via_draw_rect(760 + x*ra, 372.5 + z*ra, dx*ra, dz*ra);
+            _via_reg_ctx.stroke();
 
         }
     }
@@ -2668,11 +2777,9 @@ function draw_all_region_id() {
             bgnd_rect_width = strw + char_width;
         }
 
-        
         // center the label
         x = x - (bgnd_rect_width / 2 - w / 2);
         
-
         // ensure that the text is within the image boundaries
         if (y < char_height) {
             y = char_height;
@@ -3105,6 +3212,11 @@ function _via_handle_global_keydown_event(e) {
             return;
         }
 
+        if (e.key === "Alt"){
+            document.getElementById('display_area').classList.add('display_none');
+            return;
+        }
+
         if (e.key === "-") {
             zoom_out();
             return;
@@ -3251,6 +3363,10 @@ function _via_reg_canvas_keyup_handler(e) {
 
     if (e.ctrlKey) {
         _via_is_ctrl_pressed = false;
+    }
+
+    if (e.key === "Alt"){
+        document.getElementById('display_area').classList.remove('display_none');
     }
 }
 
@@ -6543,7 +6659,7 @@ function project_open_parse_json_file(project_file_data) {
                                 lastModified: new Date(0)
                             });
                             filelist.push(file);
-                            console.log(file);
+                            
                             new Promise((res,rej)=>{
                                 $('#File').click();
                                 res();
@@ -6559,7 +6675,7 @@ function project_open_parse_json_file(project_file_data) {
                                     document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                                     filechoosers.file = file;
-                                    filechoosers.trigger('change');
+                                    filechoosers.trigger('change', filelist);
                                 }
                                 else $('#File').click();
                             })
@@ -6568,7 +6684,7 @@ function project_open_parse_json_file(project_file_data) {
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                                     filechoosers.file = file;
 
-                                    filechoosers.trigger('change');
+                                    filechoosers.trigger('change', filelist);
                                 }
                             });
                         },
@@ -8476,7 +8592,7 @@ function _via_show_img_from_buffer(img_index) {
         var arr_index = _via_buffer_img_index_list.indexOf(img_index);
         _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // update shown timestamp
         //
-        _via_current_image_width = _via_current_image.offsetWidth * 0.68;
+        _via_current_image_width = _via_current_image.offsetWidth;
         _via_current_image_height = _via_current_image.offsetHeight;
 
         // update the current state of application
@@ -8551,11 +8667,11 @@ function via_canvas_toggle() {
     var display_class_list = document.getElementById('display_area').className;
     if (display_class_list.indexOf('display_none') != -1) document.getElementById('display_area').classList.remove('display_none');
     else document.getElementById('display_area').classList.add('display_none');
-
-    // if (_via_reg_canvas.className.indexOf('display_none') != -1) _via_reg_canvas.classList.remove('display_none');
-    // else _via_reg_canvas.classList.add('display_none');
-
-
+}
+function via_drawing_canvas_toggle() {
+    var display_class_list = document.getElementById('drawing_area').className;
+    if (display_class_list.indexOf('display_none') != -1) document.getElementById('drawing_area').classList.remove('display_none');
+    else document.getElementById('drawing_area').classList.add('display_none');
 }
 
 function _via_img_buffer_add_image(img_index) {

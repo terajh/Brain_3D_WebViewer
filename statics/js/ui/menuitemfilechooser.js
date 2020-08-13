@@ -46,7 +46,6 @@ papaya.ui.MenuItemFileChooser.prototype.buildHTML = function (parentId) {
     }
 
     $("#" + parentId).append(html);
-
     $("#" + this.fileChooserId)[0].onchange = papaya.utilities.ObjectUtils.bind(filechooser, function (event, param1) {
         if(param1) {
             filechooser.callback(filechooser.action, param1);
