@@ -1257,13 +1257,9 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
     }
 };
 
-
-
 papaya.viewer.Viewer.prototype.hasSurface = function () {
     return (this.container.hasSurface() && this.surfaceView && this.surfaceView.initialized);
 };
-
-
 
 papaya.viewer.Viewer.prototype.drawScreenSlice = function (slice) {
     var textWidth, textWidthExample, offset, padding = 5;
@@ -2192,7 +2188,7 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
             } else {
                 zoomFactorCurrent = ((this.previousMousePosition.y - currentMouseY) * 0.05);
                 this.setZoomFactor(this.zoomFactorPrevious - zoomFactorCurrent);
-
+                var degree = this.zoomFactorPrevious - zoomFactorCurrent;
                 this.axialSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocY, this.panAmountX,
                     this.panAmountY, this);
                 this.coronalSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocZ, this.panAmountX,
@@ -3057,7 +3053,7 @@ papaya.viewer.Viewer.prototype.setZoomFactor = function (val) {
     }
 
     this.zoomFactor = val;
-
+    console.log(this.panAmountX, this.panAmountY, this.panAmountZ);
     if (this.zoomFactor === 1) {
         this.panAmountX = this.panAmountY = this.panAmountZ = 0;
     }
