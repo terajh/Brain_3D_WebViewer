@@ -6544,6 +6544,8 @@ function project_open_parse_json_file(project_file_data) {
                             });
                             filelist.push(file);
                             console.log(file);
+
+                            
                             new Promise((res,rej)=>{
                                 $('#File').click();
                                 res();
