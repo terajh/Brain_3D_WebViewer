@@ -114,7 +114,7 @@
     <div id="leftsidebar"></div>
     <div id="display_area">
         <div id="image_panel" class="display_area_content">
-            <canvas id="region_canvas" width="1118" height="724" tabindex="1" class="main_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+            <canvas id="region_canvas" width="1247" height="813" tabindex="1" class="main_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
         </div> 
     </div>
     <div id="drawing_area">
@@ -198,7 +198,7 @@
         function out(e) { drawing = false; }
         canvas_context.lineWidth = 2; // 선 굵기를 2로 설정
         canvas_context.strokeStyle = "red";
-    
+
         // 마우스 리스너 등록. e는 MouseEvent 객체
         drawing_canvas.addEventListener("mousemove", function (e) { move(e) }, false);
         drawing_canvas.addEventListener("mousedown", function (e) { down(e) }, false);

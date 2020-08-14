@@ -117,7 +117,6 @@ function uploadImg() {
     var form = $('#img_form')[0];
     var formData = new FormData(form);
     formData.append('_via_wrong_img_list[]', _via_wrong_img_list);
-
     $.ajax({
         url: 'upload_img',
         type: 'POST',
@@ -127,7 +126,7 @@ function uploadImg() {
         success: function (result) {
             return result;
         }
-    })
+    });
 }
 
 // 2019su // Region attributes, File Annotation 수정
@@ -1378,6 +1377,7 @@ function _via_reg_canvas_mousedown_handler(e) {
         return;
     }
     _via_click_x0 = e.offsetX; _via_click_y0 = e.offsetY;
+    console.log(e.offsetX, e.offsetY);
     _via_region_edge = is_on_region_corner(_via_click_x0, _via_click_y0);
     var region_id = is_inside_region(_via_click_x0, _via_click_y0);
 
@@ -2447,7 +2447,6 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
     if (is_selected) {
         if (case_slice === 'x') {
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
-            
             _via_draw_rect(y, z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2469,8 +2468,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(y, z + dz / 2);
             _via_draw_control_point(y + dy, z + dz / 2);
 
-            var ra = 407/840;
-            _via_draw_rect(840 + x*ra, z*ra, dx*ra, dz*ra);
+            var ra = 417/830;
+            _via_draw_rect(891 + (x-120)*ra, z*ra, dx*ra, dz*ra); // y
+
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2481,16 +2481,16 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_spoint(840 + x*ra, z*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, z*ra + dz*ra);
-            _via_draw_control_spoint(840 + x*ra, z*ra + dz*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, z*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, z*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, z*ra + dz*ra);
-            _via_draw_control_spoint(840 + x*ra, z*ra + dz*ra / 2);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra, z*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, z*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, z*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, z*ra + dz*ra / 2);
 
-            _via_draw_rect(840 + x*ra, 390.5 + y*ra, dx*ra, dy*ra);
+            _via_draw_rect(891 + (x-120)*ra, 406.5 + 58 + (y-120)*ra, dx*ra, dy*ra); // z
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2501,14 +2501,14 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
             
-            _via_draw_control_spoint(840 + x*ra, 390.5 + y*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, 390.5 + y*ra + dy*ra);
-            _via_draw_control_spoint(840 + x*ra, 390.5 + y*ra + dy*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, 390.5 + y*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, 390.5 + y*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, 390.5 + y*ra + dy*ra);
-            _via_draw_control_spoint(840 + x*ra, 390.5 + y*ra + dy*ra / 2);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, 390.5 + y*ra + dy*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra, 417 + 58 + (y-120)*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 417 + 58 + (y-120)*ra + dy*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, 417 + 58 + (y-120)*ra + dy*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 417 + 58 + (y-120)*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, 417 + 58 + (y-120)*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, 417 + 58 + (y-120)*ra + dy*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, 417 + 58 + (y-120)*ra + dy*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 417 + 58 + (y-120)*ra + dy*ra / 2);
         }
         else if (case_slice === 'y') {
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
@@ -2532,8 +2532,8 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(x, z + dz / 2);
             _via_draw_control_point(x + dx, z + dz / 2);
 
-            var ra = 407/840;
-            _via_draw_rect(840 + x*ra, y*ra, dx*ra, dy*ra);
+            var ra = 417/830;
+            _via_draw_rect(891 + (x-120)*ra, 58 + (y-120)*ra, dx*ra, dy*ra); // z
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2544,16 +2544,16 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_spoint(840 + x*ra, y*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, y*ra + dy*ra);
-            _via_draw_control_spoint(840 + x*ra, y*ra + dy*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, y*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, y*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, y*ra + dy*ra);
-            _via_draw_control_spoint(840 + x*ra, y*ra + dy*ra / 2);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, y*ra + dy*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra, 58 + (y-120)*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 58 + (y-120)*ra + dy*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, 58 + (y-120)*ra + dy*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 58 + (y-120)*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, 58 + (y-120)*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, 58 + (y-120)*ra + dy*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, 58 + (y-120)*ra + dy*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 58 + (y-120)*ra + dy*ra / 2);
 
-            _via_draw_rect(840 + y*ra, 372.5 + z*ra, dy*ra, dz*ra);
+            _via_draw_rect(891 + (y-120)*ra, 417 + z*ra, dy*ra, dz*ra); // x
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2564,14 +2564,14 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_spoint(840 + y*ra, 372.5 + z*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra, 372.5 + z*ra + dz*ra);
-            _via_draw_control_spoint(840 + y*ra, 372.5 + z*ra + dz*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra, 372.5 + z*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra / 2, 372.5 + z*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra / 2, 372.5 + z*ra + dz*ra);
-            _via_draw_control_spoint(840 + y*ra, 372.5 + z*ra + dz*ra / 2);
-            _via_draw_control_spoint(840 + y*ra + dy*ra, 372.5 + z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (y-120)*ra, 417 + z*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra, 417 + z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra, 417 + z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra, 417 + z*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra / 2, 417 + z*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra / 2, 417 + z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra, 417 + z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra, 417 + z*ra + dz*ra / 2);
         }
         else if (case_slice === 'z') {
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
@@ -2595,8 +2595,9 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(x, y + dy / 2);
             _via_draw_control_point(x + dx, y + dy / 2);
 
-            var ra = 407/840;
-            _via_draw_rect(840 + y*ra, z*ra, dy*ra, dz*ra);
+            var ra = 417/830;
+            _via_draw_rect(891 + (y-120)*ra, z*ra, dy*ra, dz*ra); // x
+
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2607,16 +2608,17 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_spoint(840 + y*ra, z*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra, z*ra + dz*ra);
-            _via_draw_control_spoint(840 + y*ra, z*ra + dz*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra, z*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra / 2, z*ra);
-            _via_draw_control_spoint(840 + y*ra + dy*ra / 2, z*ra + dz*ra);
-            _via_draw_control_spoint(840 + y*ra, z*ra + dz*ra / 2);
-            _via_draw_control_spoint(840 + y*ra + dy*ra, z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (y-120)*ra, z*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra, z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra, z*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra / 2, z*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra / 2, z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (y-120)*ra, z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (y-120)*ra + dy*ra, z*ra + dz*ra / 2);
 
-            _via_draw_rect(840 + x*ra, 372.5 + z*ra, dx*ra, dz*ra);
+            _via_draw_rect(891 + (x-120)*ra, 417 + z*ra, dx*ra, dz*ra); // y
+
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2627,14 +2629,14 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_spoint(840 + x*ra, 372.5 + z*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, 372.5 + z*ra + dz*ra);
-            _via_draw_control_spoint(840 + x*ra, 372.5 + z*ra + dz*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, 372.5 + z*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, 372.5 + z*ra);
-            _via_draw_control_spoint(840 + x*ra + dx*ra / 2, 372.5 + z*ra + dz*ra);
-            _via_draw_control_spoint(840 + x*ra, 372.5 + z*ra + dz*ra / 2);
-            _via_draw_control_spoint(840 + x*ra + dx*ra, 372.5 + z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra, 417 + z*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 417 + z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, 417 + z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 417 + z*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, 417 + z*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra / 2, 417 + z*ra + dz*ra);
+            _via_draw_control_spoint(891 + (x-120)*ra, 417 + z*ra + dz*ra / 2);
+            _via_draw_control_spoint(891 + (x-120)*ra + dx*ra, 417 + z*ra + dz*ra / 2);
         }
     } else {
         if (case_slice === 'x') {
@@ -2644,12 +2646,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
-            var ra = 407/840;
-            _via_draw_rect(840 + x*ra, z*ra, dx*ra, dz*ra);
+            var ra = 417/830;
+            _via_draw_rect(891 + (x-120)*ra, z*ra, dx*ra, dz*ra); // y
             _via_reg_ctx.stroke();
 
 
-            _via_draw_rect(840 + x*ra, 372.5 + y*ra, dx*ra, dy*ra);
+            _via_draw_rect(891 + (x-120)*ra, 417 + 58 + (y-120)*ra, dx*ra, dy*ra); // z
             _via_reg_ctx.stroke();
 
           
@@ -2662,27 +2664,26 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_reg_ctx.stroke();
 
 
-            var ra = 407/840;
-            _via_draw_rect(840 + x*ra, y*ra, dx*ra, dy*ra);
+            var ra = 417/830;
+            _via_draw_rect(891 + (x-120)*ra, 58 + (y-120)*ra, dx*ra, dy*ra); // z
             _via_reg_ctx.stroke();
 
-            _via_draw_rect(840 + y*ra, 372.5 + z*ra, dy*ra, dz*ra);
+            _via_draw_rect(891 + (y-120)*ra, 417 + z*ra, dy*ra, dz*ra); // x
             _via_reg_ctx.stroke();
 
         }
         else if (case_slice === 'z') {
-            // if (Math.abs(_via_reg_position.z - z) > dz) return;
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
-            var ra = 407/840;
-            _via_draw_rect(840 + y*ra, z*ra, dy*ra, dz*ra);
+            var ra = 417/830;
+            _via_draw_rect(891 + (y-120)*ra, z*ra, dy*ra, dz*ra); // x
             _via_reg_ctx.stroke();
 
-            _via_draw_rect(840 + x*ra, 372.5 + z*ra, dx*ra, dz*ra);
+            _via_draw_rect(891 + (x-120)*ra, 417 + z*ra, dx*ra, dz*ra); // y
             _via_reg_ctx.stroke();
 
         }

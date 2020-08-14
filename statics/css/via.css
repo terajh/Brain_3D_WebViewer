@@ -1,5 +1,5 @@
 body {
-    min-width: 200px;
+    min-width: 2000px;
     padding: 0;
     margin: 0;
     font-family: sans-serif;
@@ -113,9 +113,11 @@ body {
     flex-direction: row;
     position: absolute;
     top: 95px;
-    left: 284px;
+    left: 288px;
     outline: none;
-    max-height: 600px;
+    padding-left:8px;
+    padding-right:8px;
+    max-height: 900px;
   }
   
   img.show_imgs {
@@ -129,6 +131,7 @@ body {
   }
   #region_canvas, #other_canvas{
     float:left;
+    
   }
   #other_canvas, .slider{
     width: 250px;
@@ -141,9 +144,6 @@ body {
     position: absolute;
   }
   #region_canvas, .current_image{
-    position: absolute;
-    top: 0px;
-    left: 0px;
     outline: none;
   }
   
