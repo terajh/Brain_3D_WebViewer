@@ -2189,7 +2189,8 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
                 zoomFactorCurrent = ((this.previousMousePosition.y - currentMouseY) * 0.05);
                 this.setZoomFactor(this.zoomFactorPrevious - zoomFactorCurrent);
                 var degree = this.zoomFactorPrevious - zoomFactorCurrent; // zoom 
-                
+                // this degree is used to zoom Labelling canvas
+                _via_labelling_zoom(degree);
                 this.axialSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocY, this.panAmountX,
                     this.panAmountY, this);
                 this.coronalSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocZ, this.panAmountX,
