@@ -1747,10 +1747,10 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
             this.incrementAxial(false);
             _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(false);
+            this.incrementCoronal(false);            
             _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(false);
+            this.incrementSagittal(true);
             _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN) {
@@ -1761,9 +1761,8 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
             this.incrementCoronal(true);
             _via_redraw_reg_canvas();
-            
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(true);
+            this.incrementSagittal(false);
             _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_SERIES_FORWARD) {
@@ -2922,7 +2921,7 @@ papaya.viewer.Viewer.prototype.scrolled = function (e) {
     e.returnValue = false;
 
     isSliceScroll = (this.container.preferences.scrollBehavior === "Increment Slice");
-    scrollSign = papaya.utilities.PlatformUtils.getScrollSign(e, !isSliceScroll);
+    scrollSign = papaya.utilities.PlatformUtils.getScrollSign(e, !isSliceScroll) * _via_slice_degree;
 
     if (isSliceScroll) {
         if (scrollSign < 0) {

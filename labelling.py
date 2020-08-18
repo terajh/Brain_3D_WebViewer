@@ -502,10 +502,6 @@ def new_project():
     else : 
         return render_template('via2d.html', fname=_fname, direc=direc, first=first)
 
-
-                
-
-
                 
 
 #upload images to server

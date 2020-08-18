@@ -1,5 +1,6 @@
 body {
-    min-width: 1700px;
+
+    min-width: 1400px;
     padding: 0;
     margin: 0;
     font-family: sans-serif;
@@ -131,7 +132,13 @@ body {
   }
   #region_canvas, #other_canvas{
     float:left;
-    
+  }
+
+  .sub_canvas{
+    float:left;
+  }
+  #sub_canvases{
+    display:grid;
   }
   #other_canvas, .slider{
     width: 250px;
