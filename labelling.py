@@ -483,7 +483,6 @@ def new_project():
 def get_image_data():
     print('get image data render')
     if request.method == 'GET':
-        # print('##',request.args.get('file_names'))
         file_name = request.args.get('file_names')
         projec_name = request.args.get('projec_names')
         image_path = '/home/ubuntu/Desktop/dev/Papaya-master/statics/test_img/'
@@ -494,11 +493,6 @@ def get_image_data():
 
         raws_data = {'result':q}
         json_data = json.dumps(raw_data, indent=4)
-        # return json.jsonify({'array' : image_array.tolist()})
-        # return make_response(json.dumps(image_array))
-        # response_data = json.dumps({"data":image_array}, cls=NumpyArrayEncoder)
-        # return json.dumps({'result' : image_array}, cls=NDArrayEncoder, indent=4)
-        # return render_template('papaya3d.html',filedata = image_array, proj='t')
         return json_data
     else:
         return json.dumps({"result": False})

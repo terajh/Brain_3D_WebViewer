@@ -6529,12 +6529,6 @@ function project_open_parse_json_file(project_file_data) {
                     var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
                     var xmlhttp = new XMLHttpRequest();
                     var result;
-                    // xmlhttp.open("GET", filePath, false);
-                    // xmlhttp.send();
-                    // if (xmlhttp.status==200) {
-                    //     result = xmlhttp.responseText;
-                    //     console.log(result);
-                    // }
 
                     $.ajax({
                         type: 'GET',

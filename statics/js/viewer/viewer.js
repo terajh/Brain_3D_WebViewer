@@ -1748,34 +1748,27 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
         this.incrementAxial(false);
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_INCREMENT_MAIN) {
         if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
-            this.incrementAxial(false, function(){
-                _via_redraw_reg_canvas();
-            });
+            this.incrementAxial(false);
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(false, function(){
-                _via_redraw_reg_canvas();
-            });
+            this.incrementCoronal(false);
             
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(true, function(){
-                _via_redraw_reg_canvas();
-            });
+            this.incrementSagittal(true);
             
+            _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN) {
         if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
-            this.incrementAxial(true, function(){
-                _via_redraw_reg_canvas();
-            });
+            this.incrementAxial(true);
+            _via_redraw_reg_canvas();
             
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(true, function(){
-                _via_redraw_reg_canvas();
-            });
-            
+            this.incrementCoronal(true);
+            _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(false, function(){
-            });
+            this.incrementSagittal(false);
             _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_SERIES_FORWARD) {
