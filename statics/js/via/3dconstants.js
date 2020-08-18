@@ -257,6 +257,8 @@ var _via_draw1_mouse_position = {x:250, y:290};
 var _via_draw2_mouse_position = {x:250, y:290};
 var _via_draw3_mouse_position = {x:250, y:290};
 
+var _via_zoom_degree = 1;
+var _via_Loc = {x:0,y:0,z:0};
 
 
 var niftiHeader, niftiImage;
