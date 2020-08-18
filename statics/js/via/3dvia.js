@@ -7,6 +7,8 @@ var papaya = papaya || {};
 
 var _via_img_panel;
 var _via_reg_canvas; // for draw rectangle
+var _via_reg_canvas2;
+var _via_reg_canvas3;
 
 // UI html elements
 
@@ -50,7 +52,8 @@ function file_region() {
 function _via_init() {
     _via_img_panel = document.getElementById('image_panel');
     _via_reg_canvas = document.getElementById('region_canvas'); // for draw rectangle
-
+    _via_reg_canvas2 = document.getElementById('region_canvas2');
+    _via_reg_canvas3 = document.getElementById('region_canvas3');
     // UI html elements
 
     invisible_file_input = document.getElementById("invisible_file_input");
@@ -117,7 +120,6 @@ function uploadImg() {
     var form = $('#img_form')[0];
     var formData = new FormData(form);
     formData.append('_via_wrong_img_list[]', _via_wrong_img_list);
-
     $.ajax({
         url: 'upload_img',
         type: 'POST',
@@ -127,7 +129,7 @@ function uploadImg() {
         success: function (result) {
             return result;
         }
-    })
+    });
 }
 
 // 2019su // Region attributes, File Annotation 수정
@@ -139,10 +141,10 @@ function _set_attributes() {
 
     // Region Attribute 추가
 
-    // When project_type = 'Fracture'
+    // When project_type = 'Brain(cv)'
     
     if (firstTry === 5) {
-        $("#user_input_attribute_id").val('Osteophytes');
+        $("#user_input_attribute_id").val('type');
         $("#button_add_new_attribute").click();
 
         attribute_property_on_update(document.getElementById('attribute_type'))
@@ -151,11 +153,11 @@ function _set_attributes() {
         attribute_property_on_update(document.getElementById('attribute_type'))
 
         //dropbox 생성
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '0 (brain0)')
+        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '0 (stenosis)')
         attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '1 (brain1)')
+        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '1 (occlusion)')
         attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '2 (brain2)')
+        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '2 (aneurysm)')
         attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
     }
 
@@ -355,7 +357,7 @@ function sel_local_images() {
     
     if (invisible_file_input) {
         invisible_file_input.value = null;
-        invisible_file_input.setAttribute('multiple', 'multiple')
+        // invisible_file_input.setAttribute('multiple', 'multiple')
         invisible_file_input.accept = '.jpg,.jpeg,.png,.bmp,.gz,.nii,.gz, *';
         invisible_file_input.onchange = project_file_add_local;
         invisible_file_input.click();
@@ -1187,10 +1189,10 @@ function _via_load_canvas_regions() {
                     var width = regions[i].shape_attributes['dy'] / _via_canvas_scale;
                     var height = regions[i].shape_attributes['dz'] / _via_canvas_scale;
 
-                    _via_canvas_regions[i].shape_attributes['x'] = Math.round(x);
-                    _via_canvas_regions[i].shape_attributes['y'] = Math.round(y);
-                    _via_canvas_regions[i].shape_attributes['width'] = Math.round(width);
-                    _via_canvas_regions[i].shape_attributes['height'] = Math.round(height);
+                    _via_canvas_regions[i].shape_attributes['y'] = Math.round(x);
+                    _via_canvas_regions[i].shape_attributes['z'] = Math.round(y);
+                    _via_canvas_regions[i].shape_attributes['dy'] = Math.round(width);
+                    _via_canvas_regions[i].shape_attributes['dz'] = Math.round(height);
                 }
                 else if (slice === 'y') {
                     var x = regions[i].shape_attributes['x'] / _via_canvas_scale;
@@ -1199,9 +1201,9 @@ function _via_load_canvas_regions() {
                     var height = regions[i].shape_attributes['dz'] / _via_canvas_scale;
 
                     _via_canvas_regions[i].shape_attributes['x'] = Math.round(x);
-                    _via_canvas_regions[i].shape_attributes['y'] = Math.round(y);
-                    _via_canvas_regions[i].shape_attributes['width'] = Math.round(width);
-                    _via_canvas_regions[i].shape_attributes['height'] = Math.round(height);
+                    _via_canvas_regions[i].shape_attributes['z'] = Math.round(y);
+                    _via_canvas_regions[i].shape_attributes['dx'] = Math.round(width);
+                    _via_canvas_regions[i].shape_attributes['dz'] = Math.round(height);
                 }
                 else if (slice === 'z') {
                     var x = regions[i].shape_attributes['x'] / _via_canvas_scale;
@@ -1211,8 +1213,8 @@ function _via_load_canvas_regions() {
 
                     _via_canvas_regions[i].shape_attributes['x'] = Math.round(x);
                     _via_canvas_regions[i].shape_attributes['y'] = Math.round(y);
-                    _via_canvas_regions[i].shape_attributes['width'] = Math.round(width);
-                    _via_canvas_regions[i].shape_attributes['height'] = Math.round(height);
+                    _via_canvas_regions[i].shape_attributes['dx'] = Math.round(width);
+                    _via_canvas_regions[i].shape_attributes['dy'] = Math.round(height);
                 }
 
                 break;
@@ -1256,11 +1258,15 @@ function select_region_shape(sel_shape_name) {
 }
 
 function set_all_canvas_size(w, h) {
-    _via_reg_canvas.height = h;
-    _via_reg_canvas.width = w;
+    _via_reg_canvas.height = h - 20;
+    _via_reg_canvas.width = w * 830 / 1247;
+    _via_reg_canvas2.height = (h - 20)/2 + 8;
+    _via_reg_canvas2.width = w * 417 / 1247;
+    _via_reg_canvas3.height = (h - 20)/2;
+    _via_reg_canvas3.width = w * 417 / 1247;
 
-    image_panel.style.height = '1118px';
-    image_panel.style.width = '745px';
+    image_panel.style.height = h - 20;
+    image_panel.style.width = w;
 }
 
 function set_all_canvas_scale(s) {
@@ -1378,6 +1384,7 @@ function _via_reg_canvas_mousedown_handler(e) {
         return;
     }
     _via_click_x0 = e.offsetX; _via_click_y0 = e.offsetY;
+    console.log(e.offsetX, e.offsetY);
     _via_region_edge = is_on_region_corner(_via_click_x0, _via_click_y0);
     var region_id = is_inside_region(_via_click_x0, _via_click_y0);
 
@@ -1531,16 +1538,36 @@ function _via_reg_canvas_mouseup_handler(e) {
 
                 var w = Math.abs(d[2] - d[0]);
                 var h = Math.abs(d[3] - d[1]);
-
-                image_attr['x'] = Math.round(d[0] * _via_canvas_scale);
-                image_attr['y'] = Math.round(d[1] * _via_canvas_scale);
-                image_attr['width'] = Math.round(w * _via_canvas_scale);
-                image_attr['height'] = Math.round(h * _via_canvas_scale);
-
-                canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
-                canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
-                canvas_attr['width'] = Math.round(image_attr['width'] / _via_canvas_scale);
-                canvas_attr['height'] = Math.round(image_attr['height'] / _via_canvas_scale);
+                if (slice === 'x') {
+                    image_attr['y'] = Math.round(d[0] * _via_canvas_scale);
+                    image_attr['z'] = Math.round(d[1] * _via_canvas_scale);
+                    image_attr['dy'] = Math.round(w * _via_canvas_scale);
+                    image_attr['dz'] = Math.round(h * _via_canvas_scale);
+                    canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
+                    canvas_attr['z'] = Math.round(image_attr['z'] / _via_canvas_scale);
+                    canvas_attr['dy'] = Math.round(image_attr['dy'] / _via_canvas_scale);
+                    canvas_attr['dz'] = Math.round(image_attr['dz'] / _via_canvas_scale);
+                }
+                else if (slice === 'y') {
+                    image_attr['x'] = Math.round(d[0] * _via_canvas_scale);
+                    image_attr['z'] = Math.round(d[1] * _via_canvas_scale);
+                    image_attr['dx'] = Math.round(w * _via_canvas_scale);
+                    image_attr['dz'] = Math.round(h * _via_canvas_scale);
+                    canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
+                    canvas_attr['z'] = Math.round(image_attr['z'] / _via_canvas_scale);
+                    canvas_attr['dx'] = Math.round(image_attr['dx'] / _via_canvas_scale);
+                    canvas_attr['dz'] = Math.round(image_attr['dz'] / _via_canvas_scale);
+                }
+                else if (slice === 'z') {
+                    image_attr['x'] = Math.round(d[0] * _via_canvas_scale);
+                    image_attr['y'] = Math.round(d[1] * _via_canvas_scale);
+                    image_attr['dx'] = Math.round(w * _via_canvas_scale);
+                    image_attr['dy'] = Math.round(h * _via_canvas_scale);
+                    canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
+                    canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
+                    canvas_attr['dx'] = Math.round(image_attr['dx'] / _via_canvas_scale);
+                    canvas_attr['dy'] = Math.round(image_attr['dy'] / _via_canvas_scale);
+                }
                 break;
 
             case VIA_REGION_SHAPE.RECT:
@@ -1576,7 +1603,7 @@ function _via_reg_canvas_mouseup_handler(e) {
         } // end of switch()
         update_labelling_list();
 
-        if(!_via_is_user_resizing_region) _via_redraw_reg_canvas();
+        _via_redraw_reg_canvas();
         _via_reg_canvas.focus();
         return;
     }
@@ -1675,7 +1702,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                         var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                         if (slice === 'x') {
                             original_img_region.shape_attributes['name'] = 'cube';
-                            original_img_region.shape_attributes['x'] = Number(_via_reg_position.x) - 3;
+                            original_img_region.shape_attributes['x'] = Number(current_viewer.currentCoord.x) - 3;
                             original_img_region.shape_attributes['y'] = x;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
@@ -1686,7 +1713,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dz'] = height;
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
-                            canvas_img_region.shape_attributes['x'] = Math.round((Number(_via_reg_position.x) - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x) - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
@@ -1699,7 +1726,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
-                            original_img_region.shape_attributes['y'] = Number(_via_reg_position.y) - 3;
+                            original_img_region.shape_attributes['y'] = Number(current_viewer.currentCoord.y) - 3;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
@@ -1710,7 +1737,7 @@ function _via_reg_canvas_mouseup_handler(e) {
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['y'] = Math.round((_via_reg_position.y - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
@@ -1723,17 +1750,18 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = y;
-                            original_img_region.shape_attributes['z'] = _via_reg_position.z - 3;
+                            original_img_region.shape_attributes['z'] = current_viewer.currentCoord.z - 3;
                             original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
                             original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = 6;
+
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['z'] = Math.round((_via_reg_position.z - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['z'] = Math.round((current_viewer.currentCoord.z - 3) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
                             canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
                             canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
@@ -2036,6 +2064,7 @@ function _via_reg_canvas_mousemove_handler(e) {
     }
 
     if (_via_is_user_resizing_region) {
+        console.log('resizing ... ');
         // user has clicked mouse on bounding box edge and is now moving it
         // draw region as the user drags the mouse coursor
         if (_via_canvas_regions.length) {
@@ -2051,6 +2080,7 @@ function _via_reg_canvas_mousemove_handler(e) {
             case VIA_REGION_SHAPE.CUBE:
                 var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                 var d;
+
                 if (slice === 'x') {
                     d = [attr['y'], attr['z'], 0, 0];
                     d[2] = d[0] + attr['dy'];
@@ -2305,7 +2335,12 @@ function _via_redraw_reg_canvas() {
 
 function _via_clear_reg_canvas() {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
+    var _via_reg_ctx2 = _via_reg_canvas2.getContext('2d');
+    var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
+
     _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
+    _via_reg_ctx2.clearRect(0, 0, _via_reg_canvas2.width, _via_reg_canvas2.height);
+    _via_reg_ctx3.clearRect(0, 0, _via_reg_canvas3.width, _via_reg_canvas3.height);
 }
 
 function draw_all_regions() {
@@ -2360,6 +2395,32 @@ function _via_draw_control_point(cx, cy) {
     _via_reg_ctx.fill();
 }
 
+function _via_draw_control_spoint(cx, cy) {
+    _via_reg_ctx.beginPath();
+    _via_reg_ctx.arc(cx, cy, 1, 0, 2 * Math.PI, false);
+    _via_reg_ctx.closePath();
+
+    _via_reg_ctx.fillStyle = VIA_THEME_CONTROL_POINT_COLOR;
+    _via_reg_ctx.globalAlpha = 1.0;
+    _via_reg_ctx.fill();
+}
+
+function _via_draw_control_spoint_sub(cx, cy, n) {
+    var _via_sub_ctx;
+    if(n===2){
+        _via_sub_ctx = _via_reg_canvas2.getContext('2d');
+    }else{
+        _via_sub_ctx = _via_reg_canvas3.getContext('2d');
+    }
+    _via_sub_ctx.beginPath();
+    _via_sub_ctx.arc(cx, cy, 1, 0, 2 * Math.PI, false);
+    _via_sub_ctx.closePath();
+
+    _via_sub_ctx.fillStyle = VIA_THEME_CONTROL_POINT_COLOR;
+    _via_sub_ctx.globalAlpha = 1.0;
+    _via_sub_ctx.fill();
+}
+
 function _via_draw_rect_region(x, y, w, h, is_selected) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     if (is_selected) {
@@ -2407,20 +2468,33 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
         }
     }
 }
+
 function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
+    var _via_reg_ctx2 = _via_reg_canvas2.getContext('2d');
+    var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
+
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
+
+    var ratio = (417/830);
+    _via_screen_ratio = (_via_reg_canvas.width+_via_reg_canvas2.width) / 1247;
+    var all_left = _via_reg_canvas.width * 0.1  * (_via_screen_ratio);
+    var z_top = 58 * _via_screen_ratio;
+    var serve_left = 891 * _via_screen_ratio;
+    var serve_top = 417 * _via_screen_ratio;
+
+
     if (is_selected) {
         if (case_slice === 'x') {
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
-
             _via_draw_rect(y, z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_reg_ctx.stroke();
 
+            
             _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
             _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
             _via_reg_ctx.fill();
@@ -2434,6 +2508,47 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(y + dy / 2, z + dz);
             _via_draw_control_point(y, z + dz / 2);
             _via_draw_control_point(y + dy, z + dz / 2);
+
+            _via_draw_rect_sub(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
+
+
+            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx2.stroke();
+
+            _via_reg_ctx2.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx2.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx2.fill();
+            _via_reg_ctx2.globalAlpha = 1.0;
+
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio + dz*ratio / 2, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio / 2, 2);
+
+            _via_draw_rect_sub(all_left*ratio + (x)*ratio,(y)*ratio, dx*ratio, dy*ratio, 3); // z
+
+            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx3.stroke();
+
+            _via_reg_ctx3.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx3.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx3.fill();
+            _via_reg_ctx3.globalAlpha = 1.0;
+            
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio + dy*ratio, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio / 2, 3);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio / 2, 3);
         }
         else if (case_slice === 'y') {
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
@@ -2456,6 +2571,46 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(x + dx / 2, z + dz);
             _via_draw_control_point(x, z + dz / 2);
             _via_draw_control_point(x + dx, z + dz / 2);
+
+            _via_draw_rect(all_left*ratio + (x)*ratio, (y)*ratio, dx*ratio, dy*ratio); // z
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio + dy*ratio, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio / 2, 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio / 2, 2);
+
+            _via_draw_rect(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio); // x
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio + dz*ratio);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio + dz*ratio);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio + dz*ratio / 2);
+            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio / 2);
         }
         else if (case_slice === 'z') {
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
@@ -2478,6 +2633,48 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_control_point(x + dx / 2, y + dy);
             _via_draw_control_point(x, y + dy / 2);
             _via_draw_control_point(x + dx, y + dy / 2);
+
+            _via_draw_rect(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio); // x
+
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio, z*ratio);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio, z*ratio + dz*ratio);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio + dy*ratio, z*ratio);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio + dz*ratio);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio, z*ratio + dz*ratio / 2);
+            _via_draw_control_spoint(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio / 2);
+
+            _via_draw_rect(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio); // y
+
+
+            _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+            _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_reg_ctx.stroke();
+
+            _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+            _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+            _via_reg_ctx.fill();
+            _via_reg_ctx.globalAlpha = 1.0;
+
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio, z*ratio);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio, z*ratio + dz*ratio);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio + dx*ratio, z*ratio);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio + dz*ratio);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio, z*ratio + dz*ratio / 2);
+            _via_draw_control_spoint(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio / 2);
         }
     } else {
         if (case_slice === 'x') {
@@ -2487,23 +2684,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
-            if (dy > VIA_THEME_REGION_BOUNDARY_WIDTH &&
-                dz > VIA_THEME_REGION_BOUNDARY_WIDTH) {
-                // draw a boundary line on both sides of the fill line
-                _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
-                _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
-                _via_draw_rect(y - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dy + VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz + VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
+            _via_draw_rect(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio); // y
+            _via_reg_ctx.stroke();
 
-                _via_draw_rect(y + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dy - VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz - VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
-            }
+            _via_draw_rect(all_left*ratio + (x)*ratio, (y)*ratio, dx*ratio, dy*ratio); // z
+            _via_reg_ctx.stroke();
+
         }
         else if (case_slice === 'y') {
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
@@ -2512,50 +2698,24 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
             _via_draw_rect(x, z, dx, dz);
             _via_reg_ctx.stroke();
 
-            if (dx > VIA_THEME_REGION_BOUNDARY_WIDTH &&
-                dz > VIA_THEME_REGION_BOUNDARY_WIDTH) {
-                // draw a boundary line on both sides of the fill line
-                _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
-                _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
-                _via_draw_rect(x - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx + VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz + VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
+            _via_draw_rect(all_left*ratio + (x)*ratio, z_top + (y)*ratio, dx*ratio, dy*ratio); // z
+            _via_reg_ctx.stroke();
 
-                _via_draw_rect(x + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    z + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx - VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dz - VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
-            }
+            _via_draw_rect(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio); // x
+            _via_reg_ctx.stroke();
         }
         else if (case_slice === 'z') {
-            // if (Math.abs(_via_reg_position.z - z) > dz) return;
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
-            if (dx > VIA_THEME_REGION_BOUNDARY_WIDTH &&
-                dy > VIA_THEME_REGION_BOUNDARY_WIDTH) {
-                // draw a boundary line on both sides of the fill line
-                _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
-                _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
-                _via_draw_rect(x - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    y - VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx + VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dy + VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
+            _via_draw_rect(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio); // x
+            _via_reg_ctx.stroke();
 
-                _via_draw_rect(x + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    y + VIA_THEME_REGION_BOUNDARY_WIDTH / 2,
-                    dx - VIA_THEME_REGION_BOUNDARY_WIDTH,
-                    dy - VIA_THEME_REGION_BOUNDARY_WIDTH);
-                _via_reg_ctx.stroke();
-            }
-
+            _via_draw_rect(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio); // y
+            _via_reg_ctx.stroke();
         }
     }
 }
@@ -2563,6 +2723,21 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, is_selected) {
 
 function _via_draw_rect(x, y, w, h) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
+    _via_reg_ctx.beginPath();
+    _via_reg_ctx.moveTo(x, y);
+    _via_reg_ctx.lineTo(x + w, y);
+    _via_reg_ctx.lineTo(x + w, y + h);
+    _via_reg_ctx.lineTo(x, y + h);
+    _via_reg_ctx.closePath();
+}
+
+function _via_draw_rect_sub(x, y, w, h, n) {
+    var _via_reg_ctx;
+    if (n === 2){
+        _via_reg_ctx = _via_reg_canvas2.getContext('2d');
+    }else{
+        _via_reg_ctx = _via_reg_canvas3.getContext('2d');
+    }
     _via_reg_ctx.beginPath();
     _via_reg_ctx.moveTo(x, y);
     _via_reg_ctx.lineTo(x + w, y);
@@ -2648,11 +2823,9 @@ function draw_all_region_id() {
             bgnd_rect_width = strw + char_width;
         }
 
-        
         // center the label
         x = x - (bgnd_rect_width / 2 - w / 2);
         
-
         // ensure that the text is within the image boundaries
         if (y < char_height) {
             y = char_height;
@@ -3232,6 +3405,7 @@ function _via_reg_canvas_keyup_handler(e) {
     if (e.ctrlKey) {
         _via_is_ctrl_pressed = false;
     }
+
 }
 
 function _via_reg_canvas_keydown_handler(e) {
@@ -3785,8 +3959,14 @@ function set_zoom(zoom_level_index) {
     }
 
     set_all_canvas_size(canvas_w, canvas_h);
+    _via_screen_ratio = canvas_w / 1247;
     _via_canvas_scale = _via_canvas_scale_without_zoom / zoom_scale;
     _via_canvas_scale = _via_canvas_scale_without_zoom / zoom_scale;
+
+    // var temp_height = $('#papayaContainer' + _via_current_file_num).css('height');
+    // var temp_width = 
+    
+
 
     _via_load_canvas_regions(); // image to canvas space transform
     _via_redraw_reg_canvas();
@@ -4172,19 +4352,11 @@ function update_labelling_list() {
 function labelling_list_ith_entry_html(i) {
     var htmli = '';
     var attr = _via_canvas_regions[i].shape_attributes;
-    var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
-    var posName = "";
-    if (slice === 'x'){
-        posName = "( " + attr['cx'] + ", " + attr['y'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
-    }else if (slice === 'y'){
-        posName = "( " + attr['x'] + ", " + attr['cy'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
-    }else if (slice === 'z'){
-        posName = "( " + attr['x'] + ", " + attr['y'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
-    }
+    var posName = "( " + attr['x'] + ", " + attr['y'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
     posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
 
     htmli += '<li id="fl' + i + '"';
-    htmli += ' onclick="jump_to_label(' + (i) + ')" >[' + (i + 1) + '] ' + posName + '</li>';
+    htmli += ' onclick="jump_to_label(' + (i) + ')" >[' + (i + 1) + ']' + posName + '</li>';
     return htmli;
 }
 function jump_to_label(i) {
@@ -4879,7 +5051,6 @@ function attribute_property_on_option_add(p) {
 function attribute_property_reset_new_entry_inputs() {
     var container = document.getElementById('attribute_options');
     var p = container.lastChild;
-    console.log(p.childNodes)
     if (p.childNodes[0]) {
         p.childNodes[0].value = '';
     }
@@ -6521,21 +6692,18 @@ function project_open_parse_json_file(project_file_data) {
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
-                var params = {};
-                // params['projec_names'] = _via_settings['project'].name;
-                for(var i = 0 ; i < _via_img_count ; i++){
-                    // params['file_names'] = _via_image_filename_list[i];
-
-                    var filePath = 'statics/test_img/11/'+ _via_settings['project'].name + '/' + _via_image_filename_list[i];
-                    var xmlhttp = new XMLHttpRequest();
-                    var result;
-
+                for(var i = 0 ; i < _via_img_count ;i++){
                     $.ajax({
                         type: 'GET',
                         url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
-                        contentType: 'application/json',
-                        success: function (result) {
-                            console.log(result);
+                        success: function (result) {                            
+                            // var blob = new Blob([result],{type:'text/plain'});
+                            console.log(_via_image_filename_list[0],typeof(_via_image_filename_list[0]));
+                            var file = new File([result],_via_image_filename_list[0],{
+                                lastModified: new Date(0)
+                            });
+                            filelist.push(file);
+                            
                             new Promise((res,rej)=>{
                                 $('#File').click();
                                 res();
@@ -6550,14 +6718,17 @@ function project_open_parse_json_file(project_file_data) {
                                 if (_via_current_file_num === 0){
                                     document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
+                                    filechoosers.file = file;
+                                    filechoosers.trigger('change', filelist);
                                 }
                                 else $('#File').click();
                             })
                             .then(()=>{
                                 if (_via_current_file_num != 0){
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.trigger('change',[result]);
+                                    filechoosers.file = file;
+
+                                    filechoosers.trigger('change', filelist);
                                 }
                             });
                         },
@@ -6566,15 +6737,7 @@ function project_open_parse_json_file(project_file_data) {
                             return result;
                         }
                     })
-
-                        
                 }
-                
-
-                
-                        
-
-                
             }
         }
     } else {
@@ -6879,6 +7042,9 @@ function project_file_add_local(event) {
                     if (_via_current_file_num === -1){
                         var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                         filechoosers.trigger('change',[event.target.files]);
+                    }else{
+                        var filechoosers = $('#fileChooserAdd_Image'+_via_current_file_num).eq(0);
+                        filechoosers.trigger('change', [event.target.files[i]]);
                     }
                 });
             }
@@ -8470,7 +8636,7 @@ function _via_show_img_from_buffer(img_index) {
         var arr_index = _via_buffer_img_index_list.indexOf(img_index);
         _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // update shown timestamp
         //
-        _via_current_image_width = _via_current_image.offsetWidth * 0.68;
+        _via_current_image_width = _via_current_image.offsetWidth;
         _via_current_image_height = _via_current_image.offsetHeight;
 
         // update the current state of application
@@ -8493,17 +8659,14 @@ function _via_show_img_from_buffer(img_index) {
         // set the size of canvas
         // based on the current dimension of browser window
         var de = document.documentElement;
-        var image_panel_width = de.clientWidth - leftsidebar.clientWidth - 20;
+        var image_panel_width = _via_current_image_width;
         if (leftsidebar.style.display === 'none') {
-            image_panel_width = de.clientWidth;
+            image_panel_width = _via_current_image_width;
         }
-        var image_panel_height = de.clientHeight - 2 * ui_top_panel.offsetHeight;
+        var image_panel_height = _via_current_image_height
 
         _via_canvas_width = _via_current_image_width;
         _via_canvas_height = _via_current_image_height;
-
-        _via_current_image_height = _via_canvas_height;
-        _via_current_image_width = _via_canvas_width;
 
         if (_via_current_image.tagName === "CANVAS") {
             _via_canvas_scale = _via_current_image.width / _via_canvas_width;
@@ -8514,7 +8677,7 @@ function _via_show_img_from_buffer(img_index) {
 
 
         set_all_canvas_size(_via_canvas_width, _via_canvas_height);
-        //set_all_canvas_scale(_via_canvas_scale_without_zoom);
+        //set_all_canvas_scale(_via_canvas_scale_without_zoom);;
 
         // reset all regions to "not selected" state
         toggle_all_regions_selection(false);
@@ -8545,11 +8708,11 @@ function via_canvas_toggle() {
     var display_class_list = document.getElementById('display_area').className;
     if (display_class_list.indexOf('display_none') != -1) document.getElementById('display_area').classList.remove('display_none');
     else document.getElementById('display_area').classList.add('display_none');
-
-    // if (_via_reg_canvas.className.indexOf('display_none') != -1) _via_reg_canvas.classList.remove('display_none');
-    // else _via_reg_canvas.classList.add('display_none');
-
-
+}
+function via_drawing_canvas_toggle() {
+    var display_class_list = document.getElementById('drawing_area').className;
+    if (display_class_list.indexOf('display_none') != -1) document.getElementById('drawing_area').classList.remove('display_none');
+    else document.getElementById('drawing_area').classList.add('display_none');
 }
 
 function _via_img_buffer_add_image(img_index) {
@@ -8595,23 +8758,9 @@ function _via_img_buffer_add_image(img_index) {
                 project_file_load_on_fail(img_index);
                 err_callback(img_index);
             });
-            bimg.addEventListener('load', function () {
-                console.log('load event');
-                // URL.revokeObjectURL(tmp_file_object_url);
-                // img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
-                // _via_img_panel.insertBefore(bimg, _via_reg_canvas);
-                // project_file_load_on_success(img_index);
-                // img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
-                // // add timestamp so that we can apply Least Recently Used (LRU)
-                // // scheme to remove elements when buffer is full
-                // var arr_index = _via_buffer_img_index_list.length;
-                // // _via_buffer_img_index_list.push(img_index);
-                // _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
-                // ok_callback(img_index);
-            });
             bimg.addEventListener('click', function () {
                 URL.revokeObjectURL(tmp_file_object_url);
-                console.log('click event');
+                // console.log('click event');
                 if (bimg.tagName === "CANVAS") {
                     img_stat_set(img_index, [bimg.width, bimg.height]);
                 } else {
@@ -8664,24 +8813,9 @@ function _via_img_buffer_add_image(img_index) {
                 err_callback(img_index);
             });
 
-            // Note: _via_current_image.{naturalWidth,naturalHeight} is only accessible after
-            // the "load" event. Therefore, all processing must happen inside this event handler.
-            bimg.addEventListener('load', function () {
-                console.log('load event');
-                // img_stat_set(img_index, [bimg.naturalWidth, bimg.naturalHeight]);
-                // _via_img_panel.insertBefore(bimg, _via_reg_canvas);
-                // project_file_load_on_success(img_index);
-                // img_fn_list_ith_entry_add_css_class(img_index, 'buffered')
-                // // add timestamp so that we can apply Least Recently Used (LRU)
-                // // scheme to remove elements when buffer is full
-                // var arr_index = _via_buffer_img_index_list.length;
-                // _via_buffer_img_index_list.push(img_index);
-                // _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
-                // ok_callback(img_index);
-            }, false);
 
             bimg.addEventListener('click', function () {
-                console.log('click event');
+                // console.log('click event');
                 if (bimg.tagName === "CANVAS") {
                     img_stat_set(img_index, [bimg.width, bimg.height]);
                 } else {

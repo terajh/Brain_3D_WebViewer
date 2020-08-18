@@ -355,8 +355,6 @@ papaya.viewer.ScreenSlice.prototype.updateSlice = function (slice, force) {
     }
 };
 
-
-
 papaya.viewer.ScreenSlice.prototype.repaint = function (slice, force, worldSpace) {
     /*jslint bitwise: true */
 
@@ -379,7 +377,6 @@ papaya.viewer.ScreenSlice.prototype.repaint = function (slice, force, worldSpace
             if (this.screenVolumes[ctr].hidden) {
                 continue;
             }
-
             rgb = this.screenVolumes[ctr].rgb;
             dti = this.screenVolumes[ctr].dti;
             dtiLines = this.screenVolumes[ctr].dtiLines;

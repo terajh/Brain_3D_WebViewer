@@ -278,7 +278,7 @@
                 status = zlib_inflate.inflateEnd(this.strm);
                 this.onEnd(status);
                 this.ended = true;
-                console.log('bim click');
+                // console.log('bim click');
                 var current_id = get_current_index();
                 $('#bim' + current_id).trigger('click');
 //                return status === c.Z_OK;

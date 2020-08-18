@@ -1257,13 +1257,9 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
     }
 };
 
-
-
 papaya.viewer.Viewer.prototype.hasSurface = function () {
     return (this.container.hasSurface() && this.surfaceView && this.surfaceView.initialized);
 };
-
-
 
 papaya.viewer.Viewer.prototype.drawScreenSlice = function (slice) {
     var textWidth, textWidthExample, offset, padding = 5;
@@ -1751,12 +1747,10 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
             this.incrementAxial(false);
             _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(false);
-            
+            this.incrementCoronal(false);            
             _via_redraw_reg_canvas();
         } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
             this.incrementSagittal(true);
-            
             _via_redraw_reg_canvas();
         }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN) {
@@ -1795,7 +1789,6 @@ papaya.viewer.Viewer.prototype.keyUpEvent = function (ke) {
     if ((papayaContainers.length > 1) && (papaya.Container.papayaLastHoveredViewer !== this)) {
         return;
     }
-
     this.isControlKeyDown = false;
     this.isAltKeyDown = false;
     this.isShiftKeyDown = false;
@@ -2194,7 +2187,9 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
             } else {
                 zoomFactorCurrent = ((this.previousMousePosition.y - currentMouseY) * 0.05);
                 this.setZoomFactor(this.zoomFactorPrevious - zoomFactorCurrent);
-
+                var degree = this.zoomFactorPrevious - zoomFactorCurrent; // zoom 
+                // this degree is used to zoom Labelling canvas
+                _via_labelling_zoom(degree);
                 this.axialSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocY, this.panAmountX,
                     this.panAmountY, this);
                 this.coronalSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocZ, this.panAmountX,
@@ -2923,7 +2918,7 @@ papaya.viewer.Viewer.prototype.scrolled = function (e) {
     e.returnValue = false;
 
     isSliceScroll = (this.container.preferences.scrollBehavior === "Increment Slice");
-    scrollSign = papaya.utilities.PlatformUtils.getScrollSign(e, !isSliceScroll);
+    scrollSign = papaya.utilities.PlatformUtils.getScrollSign(e, !isSliceScroll) * _via_slice_degree;
 
     if (isSliceScroll) {
         if (scrollSign < 0) {
@@ -3059,7 +3054,7 @@ papaya.viewer.Viewer.prototype.setZoomFactor = function (val) {
     }
 
     this.zoomFactor = val;
-
+    console.log(this.panAmountX, this.panAmountY, this.panAmountZ);
     if (this.zoomFactor === 1) {
         this.panAmountX = this.panAmountY = this.panAmountZ = 0;
     }

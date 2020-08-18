@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, render_template, json, request, redirect, session, send_from_directory, Blueprint, make_response
+from flask import send_file
 from flask_paginate import Pagination, get_page_parameter
 from flask.json import JSONEncoder
 import os, cv2, shutil
@@ -22,6 +23,7 @@ import scipy, numpy, shutil, os, nibabel
 import sys, getopt
 import mxnet as mx
 import imageio, base64
+import pathlib
 # change main path when copy to other device
 #main_path = '/home/crescom01/Downloads/via_final/Labeling'
 #os.chdir(main_path)
@@ -47,6 +49,7 @@ bcrypt = Bcrypt(app)
 app.config['UPLOAD_FOLDER'] = './statics/test_img/'
 app.config['UPLOAD_ROI'] = './statics/roid/'
 app.config['UPLOAD_TW3'] = './statics/tw3_roi/'
+app.config["CLIENT_IMAGES"] = '/home/ubuntu/Desktop/dev/Papaya-master/statics/test_img/'
 # app.config['MODAL'] = './static/Uploads/'
 app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'bmp'])
 app.config['DCM_EXTENSIONS'] = set(['dcm'])
@@ -58,6 +61,26 @@ app.secret_key = 'why would I tell you my secret key?'
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/get_image_data',methods=['GET'])
+def get_image_data():
+    print('get image data render')
+    if request.method == 'GET':
+        # print('##',request.args.get('file_names'))
+        file_name = request.args.get('file_names')
+        projec_name = request.args.get('projec_names')
+        image_path = 'statics/test_img/'
+        full_path = image_path+session['userID']+'/'+str(projec_name)+'/'+file_name
+        # img = nibabel.load(full_path)
+        # img_data = img.get_fdata()
+        try:
+            file = send_file(full_path, mimetype='application/octet-stream',as_attachment=True,  attachment_filename=file_name)
+            print(type(file))
+            return file
+        except FileNotFoundError:
+            abort(404)
+    else:
+        return json.dumps({"result": False})
 
 
 # connect first or select page
@@ -478,26 +501,6 @@ def new_project():
         return render_template('papaya3d.html', fname=_fname, direc=direc, first=first, proj='f', filedata = 'f')
     else : 
         return render_template('via2d.html', fname=_fname, direc=direc, first=first)
-
-@app.route('/get_image_data',methods=['GET'])
-def get_image_data():
-    print('get image data render')
-    if request.method == 'GET':
-        file_name = request.args.get('file_names')
-        projec_name = request.args.get('projec_names')
-        image_path = '/home/ubuntu/Desktop/dev/Papaya-master/statics/test_img/'
-        image_array = nibabel.load(image_path+session['userID']+'/'+str(projec_name)+'/'+str(file_name)).get_data()
-        s = base64.b64encode(image_array)
-        r = base64.decodebytes(s)
-        q = np.frombuffer(r, dtype=np.float64)
-
-        raws_data = {'result':q}
-        json_data = json.dumps(raw_data, indent=4)
-        return json_data
-    else:
-        return json.dumps({"result": False})
-                
-
 
                 
 

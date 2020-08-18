@@ -70,6 +70,7 @@ papaya.volume.Volume.prototype.fileIsCompressed = function (filename, data) {
 
 papaya.volume.Volume.prototype.readFiles = function (files, callback) {
     this.files = files;
+    console.log(typeof(files),files);
     if(files[0] === undefined){
         this.fileName = files.name;
         this.onFinishedRead = callback;
@@ -96,14 +97,13 @@ papaya.volume.Volume.prototype.readNextFile = function (vol, index) {
 
         try {
             var reader = new FileReader();
-
             reader.onloadend = papaya.utilities.ObjectUtils.bind(vol, function (evt) {
                 if (evt.target.readyState === FileReader.DONE) {
+                    console.log('wow',typeof(evt.target.result));
                     vol.rawData[index] = evt.target.result;
                     setTimeout(function () {vol.readNextFile(vol, index + 1); }, 0);
                 }
             });
-
             reader.onerror = papaya.utilities.ObjectUtils.bind(vol, function (evt) {
                 vol.error = new Error("There was a problem reading that file:\n\n" + evt.getMessage());
                 vol.finishedLoad();
@@ -157,7 +157,6 @@ papaya.volume.Volume.prototype.readURLs = function (urls, callback) {
 
 papaya.volume.Volume.prototype.loadURL = function (url, vol, index) {
     var supported, deferredLoading, xhr, progPerc, progressText;
-
     deferredLoading = jQuery.Deferred();
 
     supported = typeof new XMLHttpRequest().responseType === 'string';
