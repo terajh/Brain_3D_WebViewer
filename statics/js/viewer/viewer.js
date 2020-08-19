@@ -2187,12 +2187,12 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
             } else {
                 zoomFactorCurrent = ((this.previousMousePosition.y - currentMouseY) * 0.05);
                 this.setZoomFactor(this.zoomFactorPrevious - zoomFactorCurrent);
-                _via_zoom_degree = this.zoomFactorPrevious - zoomFactorCurrent; // zoom 
+                _via_zoom_degree = this.zoomFactor; // zoom 
                 // this degree is used to zoom Labelling canvas
                 _via_Loc.x = this.zoomLocX;
                 _via_Loc.y = this.zoomLocY;
                 _via_Loc.z = this.zoomLocZ;
-                
+                console.log(this.panAmountX, this.panAmountY, this.panAmountZ, this.zoomLocX, this.zoomLocY, this.zoomLocZ);
                 this.axialSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocY, this.panAmountX,
                     this.panAmountY, this);
                 this.coronalSlice.updateZoomTransform(this.zoomFactor, this.zoomLocX, this.zoomLocZ, this.panAmountX,
