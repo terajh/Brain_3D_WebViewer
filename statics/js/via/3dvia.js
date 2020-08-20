@@ -1375,10 +1375,6 @@ function show_annotation_data() {
     }.bind(this));
 }
 
-//
-// Image click handlers
-//
-
 // enter annotation mode on double click
 function _via_reg_canvas_dblclick_handler(e) {
     e.stopPropagation();
@@ -1680,6 +1676,7 @@ function _via_reg_canvas_mouseup_handler(e) {
         var new_region_added = false;
 
         var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
+        var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
 
 
         if (region_dx >= VIA_REGION_MIN_DIM && region_dy >= VIA_REGION_MIN_DIM) { // avoid regions with 0 dim
@@ -1696,11 +1693,22 @@ function _via_reg_canvas_mouseup_handler(e) {
                     }
 
                     if (_via_click_y0 < _via_click_y1) {
-                        region_y0 = _via_click_y0;
-                        region_y1 = _via_click_y1;
+                        if (case_slice === 'z'){
+                            region_y0 = _via_click_y0 - padding;
+                            region_y1 = _via_click_y1 - padding;
+                        }else{
+                            region_y0 = _via_click_y0;
+                            region_y1 = _via_click_y1;
+                        }
+                        
                     } else {
-                        region_y0 = _via_click_y1;
-                        region_y1 = _via_click_y0;
+                        if (case_slice === 'z'){
+                            region_y0 = _via_click_y1 - padding;
+                            region_y1 = _via_click_y0 - padding;
+                        }else{
+                            region_y0 = _via_click_y1;
+                            region_y1 = _via_click_y0;
+                        }
                     }
 
                     var x = Math.round(region_x0 * _via_canvas_scale);
@@ -2105,9 +2113,10 @@ function _via_reg_canvas_mousemove_handler(e) {
             _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
         }
         var padding = $('#region_canvas').css('padding-left').split('p')[0];
+        var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
 
         var region_x0 = _via_click_x0 - padding;
-        var region_y0 = _via_click_y0;
+        var region_y0 = (case_slice === 'z') ? _via_click_y0 - padding : _via_click_y0;
 
         var dx = Math.round(Math.abs(_via_current_x - _via_click_x0));
         var dy = Math.round(Math.abs(_via_current_y - _via_click_y0));
@@ -2121,18 +2130,20 @@ function _via_reg_canvas_mousemove_handler(e) {
                 if (_via_click_x0 < _via_current_x) {
                     if (_via_click_y0 < _via_current_y) {
                         region_x0 = _via_click_x0 - padding;
-                        region_y0 = _via_click_y0 ;
+                        region_y0 = (case_slice === 'z') ? _via_click_y0 - padding : _via_click_y0;
                     } else {
                         region_x0 = _via_click_x0 - padding;
-                        region_y0 = _via_current_y;
+                        region_y0 = (case_slice === 'z') ? _via_current_y - padding : _via_current_y;
+
                     }
                 } else {
                     if (_via_click_y0 < _via_current_y) {
                         region_x0 = _via_current_x - padding;
-                        region_y0 = _via_click_y0;
+                        region_y0 = (case_slice === 'z') ? _via_click_y0 - padding : _via_click_y0;
                     } else {
                         region_x0 = _via_current_x - padding;
-                        region_y0 = _via_current_y ;
+                        region_y0 = (case_slice === 'z') ? _via_current_y - padding : _via_current_y;
+
                     }
                 }
 
@@ -2573,38 +2584,51 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
 
 function _via_toggle_labelling_view(){
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
-    if (case_slice === 'y'){
+    if (case_slice === 'x'){
         var temp_padding = $('#region_canvas2').css('padding-top').split('p')[0];
         $('#region_canvas2').css('padding-top',0);
         $('#region_canvas2').css('padding-bottom',0);
-        _via_reg_canvas2.height = _via_reg_canvas2.height * 10 / 7;
+        $('#region_canvas2').css('height',(_via_reg_canvas2.height * 10) / 7);
+        $('#region_canvas2').css('width',_via_reg_canvas2.width + 2*temp_padding);
+        $('#region_canvas2').attr('height', $('#region_canvas2').css('height').split('p')[0]);
+        $('#region_canvas2').attr('width', $('#region_canvas2').css('width').split('p')[0]);
 
         $('#region_canvas3').css('padding-top',temp_padding);
         $('#region_canvas3').css('padding-bottom',temp_padding);
-        _via_reg_canvas3.height += 0.7;
+        $('#region_canvas3').attr('height',$('#region_canvas3').css('height').split('p')[0]*(0.7));
+        $('#region_canvas3').css('height',(_via_reg_canvas3.height));
 
+        _via_reg_canvas3.height *= 0.7;
     }
-    else if (case_slice === 'z'){
+    else if (case_slice === 'y'){
         var temp_padding = $('#region_canvas').css('padding-top').split('p')[0];
         $('#region_canvas').css('padding-top',0);
         $('#region_canvas').css('padding-bottom',0);
-        _via_reg_canvas.height = _via_reg_canvas.height * 10 / 7;
+        $('#region_canvas').css('height',(_via_reg_canvas.height * 10) / 7);
+        $('#region_canvas').css('width',_via_reg_canvas.width + 2*temp_padding);
+        $('#region_canvas').attr('height',$('#region_canvas').css('height').split('p')[0]);
+        $('#region_canvas').attr('width',$('#region_canvas').css('width').split('p')[0]);
 
 
         $('#region_canvas2').css('padding-top',temp_padding * 417 / 830);
         $('#region_canvas2').css('padding-bottom',temp_padding * 417 / 830);
-        _via_reg_canvas2.height += 0.7;
+        $('#region_canvas2').attr('height', $('#region_canvas2').css('height').split('p')[0]);
+        $('#region_canvas2').css('height',(_via_reg_canvas2.height));
 
     }
-    else if (case_slice === 'x'){
+    else if (case_slice === 'z'){
         var temp_padding = $('#region_canvas3').css('padding-top').split('p')[0];
         $('#region_canvas3').css('padding-top',0);
         $('#region_canvas3').css('padding-bottom',0);
-        _via_reg_canvas3.height = _via_reg_canvas3.height * 10 / 7;
+        $('#region_canvas3').css('height',(_via_reg_canvas3.height * 10) / 7);
+        $('#region_canvas3').css('width',_via_reg_canvas3.width + 2 * temp_padding);
+        $('#region_canvas3').attr('height',$('#region_canvas3').css('height').split('p')[0]);
+        $('#region_canvas3').attr('width',$('#region_canvas3').css('width').split('p')[0]);
 
-        $('#region_canvas2').css('padding-top',temp_padding * 830 / 417);
-        $('#region_canvas2').css('padding-bottom',temp_padding * 830 / 417);
-        _via_reg_canvas2.height += 0.7;
+        $('#region_canvas').css('padding-top',temp_padding * 830 / 417);
+        $('#region_canvas').css('padding-bottom',temp_padding * 830 / 417);
+        $('#region_canvas').attr('height',$('#region_canvas').css('height').split('p')[0]*(0.7));
+        $('#region_canvas').css('height',(_via_reg_canvas.height));
 
     }
 }
@@ -2629,7 +2653,6 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
     
     if (is_selected) {
         if (case_slice === 'x') {
-        
             if (_via_zoom_degree != degree){
                 if ( _via_zoom_degree > degree){
                     console.log(x/height_ratio,y/height_ratio,z/height_ratio,_via_Loc);
