@@ -1389,7 +1389,8 @@ function _via_reg_canvas_mousedown_handler(e) {
     if (e.currentTarget.getAttribute('class').indexOf('serve_canvas') != -1) {
         return;
     }
-    _via_click_x0 = e.offsetX; _via_click_y0 = e.offsetY;
+    _via_click_x0 = e.offsetX; 
+    _via_click_y0 = e.offsetY;
     _via_region_edge = is_on_region_corner(_via_click_x0, _via_click_y0);
     var region_id = is_inside_region(_via_click_x0, _via_click_y0);
 
@@ -1450,7 +1451,8 @@ function _via_reg_canvas_mousedown_handler(e) {
 function _via_reg_canvas_mouseup_handler(e) {
     e.stopPropagation();
     _via_mouse_down = false;
-    _via_click_x1 = e.offsetX; _via_click_y1 = e.offsetY;
+    _via_click_x1 = e.offsetX; 
+    _via_click_y1 = e.offsetY;
 
     var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
     var click_dy = Math.abs(_via_click_y1 - _via_click_y0);
@@ -1660,11 +1662,10 @@ function _via_reg_canvas_mouseup_handler(e) {
     // indicates that user has finished drawing a new region
     if (_via_is_user_drawing_region) {
 
-        var padding = $('#region_canvas').css('padding-left').split('p')[0];
         _via_is_user_drawing_region = false;
-        var region_x0 = _via_click_x0 - padding;
+        var region_x0 = _via_click_x0;
         var region_y0 = _via_click_y0;
-        var region_x1 = _via_click_x1 - padding;
+        var region_x1 = _via_click_x1;
         var region_y1 = _via_click_y1;
 
         var original_img_region = new file_region();
@@ -1683,17 +1684,17 @@ function _via_reg_canvas_mouseup_handler(e) {
                 case VIA_REGION_SHAPE.RECT:
                     // ensure that (x0,y0) is top-left and (x1,y1) is bottom-right
                     if (_via_click_x0 < _via_click_x1) {
-                        region_x0 = _via_click_x0 - padding;
-                        region_x1 = _via_click_x1 - padding;
+                        region_x0 = _via_click_x0;
+                        region_x1 = _via_click_x1;
                     } else {
-                        region_x0 = _via_click_x1 - padding;
-                        region_x1 = _via_click_x0 - padding;
+                        region_x0 = _via_click_x1;
+                        region_x1 = _via_click_x0;
                     }
 
                     if (_via_click_y0 < _via_click_y1) {
                         if (case_slice === 'z'){
-                            region_y0 = _via_click_y0 - padding;
-                            region_y1 = _via_click_y1 - padding;
+                            region_y0 = _via_click_y0;
+                            region_y1 = _via_click_y1;
                         }else{
                             region_y0 = _via_click_y0;
                             region_y1 = _via_click_y1;
@@ -1701,8 +1702,8 @@ function _via_reg_canvas_mouseup_handler(e) {
                         
                     } else {
                         if (case_slice === 'z'){
-                            region_y0 = _via_click_y1 - padding;
-                            region_y1 = _via_click_y0 - padding;
+                            region_y0 = _via_click_y1;
+                            region_y1 = _via_click_y0;
                         }else{
                             region_y0 = _via_click_y1;
                             region_y1 = _via_click_y0;
@@ -1758,7 +1759,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['dy'] = _via_zoom_degree * canvas_img_region.shape_attributes['dy'];
                                 canvas_img_region.shape_attributes['dz'] = _via_zoom_degree * canvas_img_region.shape_attributes['dz'];
                             }
-
                         }
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
@@ -1773,7 +1773,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dz'] = height;
                             original_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - (default_depth/2)) / _via_canvas_scale);
@@ -1785,7 +1784,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dy'] = Math.round(default_depth / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
-
 
                             if(_via_zoom_degree != 1){
                                 original_img_region.shape_attributes['x'] = _via_zoom_degree * original_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x;
@@ -1801,7 +1799,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['dx'] = _via_zoom_degree * canvas_img_region.shape_attributes['dx'];
                                 canvas_img_region.shape_attributes['dy'] = _via_zoom_degree * canvas_img_region.shape_attributes['dy'];
                                 canvas_img_region.shape_attributes['dz'] = _via_zoom_degree * canvas_img_region.shape_attributes['dz'];
-
                             }
                         }
                         else if (slice === 'z') {
@@ -1830,7 +1827,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dz'] = Math.round(default_depth / _via_canvas_scale);
                             canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-
                             if(_via_zoom_degree != 1){
                                 original_img_region.shape_attributes['x'] = _via_zoom_degree * original_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x;
                                 original_img_region.shape_attributes['y'] = _via_zoom_degree * original_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y;
@@ -1845,11 +1841,8 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['dx'] = _via_zoom_degree * canvas_img_region.shape_attributes['dx'];
                                 canvas_img_region.shape_attributes['dy'] = _via_zoom_degree * canvas_img_region.shape_attributes['dy'];
                                 canvas_img_region.shape_attributes['dz'] = _via_zoom_degree * canvas_img_region.shape_attributes['dz'];
-    
                             }
-                        }
-
-                        
+                        } 
                         new_region_added = true;
                         break;
                     }
@@ -2043,7 +2036,6 @@ function _via_reg_canvas_mousemove_handler(e) {
     if (!_via_current_image_loaded) {
         return;
     }
-    var padding = $('#region_canvas').css('padding-left').split('p')[0];
 
     _via_mouse_position.x = e.offsetX;
     _via_mouse_position.y = e.offsetY;
@@ -2110,16 +2102,14 @@ function _via_reg_canvas_mousemove_handler(e) {
             // first region being drawn, just clear the full region canvas
             _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
         }
-        var padding = $('#region_canvas').css('padding-left').split('p')[0];
         var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
 
-        var region_x0 = _via_click_x0 - padding;
-        var region_y0 = (case_slice === 'z') ? _via_click_y0 - padding : _via_click_y0;
+        var region_x0 = _via_click_x0;
+        var region_y0 = (case_slice === 'z') ? _via_click_y0 : _via_click_y0;
 
         var dx = Math.round(Math.abs(_via_current_x - _via_click_x0));
         var dy = Math.round(Math.abs(_via_current_y - _via_click_y0));
 
-        console.log(padding,dx, dy, _via_click_x0, _via_click_y0, _via_current_x - padding, _via_current_y - padding);
         _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
 
         switch (_via_current_shape) {
@@ -2127,20 +2117,20 @@ function _via_reg_canvas_mousemove_handler(e) {
             case VIA_REGION_SHAPE.RECT:
                 if (_via_click_x0 < _via_current_x) {
                     if (_via_click_y0 < _via_current_y) {
-                        region_x0 = _via_click_x0 - padding;
-                        region_y0 = (case_slice === 'z') ? _via_click_y0 - padding : _via_click_y0;
+                        region_x0 = _via_click_x0;
+                        region_y0 = (case_slice === 'z') ? _via_click_y0 : _via_click_y0;
                     } else {
-                        region_x0 = _via_click_x0 - padding;
-                        region_y0 = (case_slice === 'z') ? _via_current_y - padding : _via_current_y;
+                        region_x0 = _via_click_x0;
+                        region_y0 = (case_slice === 'z') ? _via_current_y : _via_current_y;
 
                     }
                 } else {
                     if (_via_click_y0 < _via_current_y) {
-                        region_x0 = _via_current_x - padding;
-                        region_y0 = (case_slice === 'z') ? _via_click_y0 - padding : _via_click_y0;
+                        region_x0 = _via_current_x;
+                        region_y0 = (case_slice === 'z') ? _via_click_y0 : _via_click_y0;
                     } else {
-                        region_x0 = _via_current_x - padding;
-                        region_y0 = (case_slice === 'z') ? _via_current_y - padding : _via_current_y;
+                        region_x0 = _via_current_x;
+                        region_y0 = (case_slice === 'z') ? _via_current_y : _via_current_y;
 
                     }
                 }
@@ -2857,9 +2847,11 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
+            _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
             _via_reg_ctx2.stroke();
 
+            _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 3); // z
             _via_reg_ctx3.stroke();
 
@@ -2871,9 +2863,11 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(x, z, dx, dz);
             _via_reg_ctx.stroke();
 
-            _via_draw_rect_sub((x)*ratio, z_top + (y)*ratio, dx*ratio, dy*ratio, 2); // z
+            _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+            _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 2); // z
             _via_reg_ctx2.stroke();
 
+            _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 3); // x
             _via_reg_ctx3.stroke();
         }
@@ -2884,9 +2878,11 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
+            _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 2); // x
             _via_reg_ctx2.stroke();
 
+            _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 3); // y
             _via_reg_ctx3.stroke();
         }
