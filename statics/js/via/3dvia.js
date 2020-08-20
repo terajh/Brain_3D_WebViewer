@@ -1260,22 +1260,20 @@ function select_region_shape(sel_shape_name) {
 function set_all_canvas_size(w, h) {
     _via_reg_canvas.height = (h - 20) * (0.7);
     _via_reg_canvas.width = (w * 830 / 1247) * (0.7);
-    $('#region_canvas').css('padding-left',(w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('padding-right',(w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('padding-top',(w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('padding-bottom',(w * 830 / 1247) * (0.15));
-
-
+    $('#region_canvas').css('margin-left',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-right',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-top',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-bottom',(w * 830 / 1247) * (0.15));
 
     _via_reg_canvas2.height = (h - 20)/2 + 8;
     _via_reg_canvas2.width = (w * 417 / 1247) * (0.7);
-    $('#region_canvas2').css('padding-left',(w * 417 / 1247) * (0.15));
-    $('#region_canvas2').css('padding-right',(w * 417 / 1247) * (0.15));
+    $('#region_canvas2').css('margin-left',(w * 417 / 1247) * (0.15));
+    $('#region_canvas2').css('margin-right',(w * 417 / 1247) * (0.15));
 
     _via_reg_canvas3.height = (h - 20)/2;
     _via_reg_canvas3.width = (w * 417 / 1247) * (0.7);
-    $('#region_canvas3').css('padding-left',(w * 417 / 1247) * (0.15));
-    $('#region_canvas3').css('padding-right',(w * 417 / 1247) * (0.15));
+    $('#region_canvas3').css('margin-left',(w * 417 / 1247) * (0.15));
+    $('#region_canvas3').css('margin-right',(w * 417 / 1247) * (0.15));
 
     image_panel.style.height = h - 20;
     image_panel.style.width = w;
@@ -2585,51 +2583,42 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
 function _via_toggle_labelling_view(){
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     if (case_slice === 'x'){
-        var temp_padding = $('#region_canvas2').css('padding-top').split('p')[0];
-        $('#region_canvas2').css('padding-top',0);
-        $('#region_canvas2').css('padding-bottom',0);
-        $('#region_canvas2').css('height',(_via_reg_canvas2.height * 10) / 7);
-        $('#region_canvas2').css('width',_via_reg_canvas2.width + 2*temp_padding);
-        $('#region_canvas2').attr('height', $('#region_canvas2').css('height').split('p')[0]);
-        $('#region_canvas2').attr('width', $('#region_canvas2').css('width').split('p')[0]);
-
-        $('#region_canvas3').css('padding-top',temp_padding);
-        $('#region_canvas3').css('padding-bottom',temp_padding);
-        $('#region_canvas3').attr('height',$('#region_canvas3').css('height').split('p')[0]*(0.7));
-        $('#region_canvas3').css('height',(_via_reg_canvas3.height));
-
-        _via_reg_canvas3.height *= 0.7;
+        var temp_margin = $('#region_canvas2').css('margin-top').split('p')[0];
+        $('#region_canvas2').css('margin-top',0);
+        $('#region_canvas2').css('margin-bottom',0);
+        $('#region_canvas2').css('height',Number((_via_reg_canvas2.height * 10) / 7));
+        $('#region_canvas2').attr('height', Number($('#region_canvas2').css('height').split('p')[0]));
+ 
+        $('#region_canvas3').css('margin-top', Number(temp_margin));
+        $('#region_canvas3').css('margin-bottom', Number(temp_margin));
+        $('#region_canvas3').attr('height',Number($('#region_canvas3').css('height').split('p')[0]) * (0.7));
+        $('#region_canvas3').css('height',Number(_via_reg_canvas3.height));
     }
+
     else if (case_slice === 'y'){
-        var temp_padding = $('#region_canvas').css('padding-top').split('p')[0];
-        $('#region_canvas').css('padding-top',0);
-        $('#region_canvas').css('padding-bottom',0);
-        $('#region_canvas').css('height',(_via_reg_canvas.height * 10) / 7);
-        $('#region_canvas').css('width',_via_reg_canvas.width + 2*temp_padding);
-        $('#region_canvas').attr('height',$('#region_canvas').css('height').split('p')[0]);
-        $('#region_canvas').attr('width',$('#region_canvas').css('width').split('p')[0]);
+        var temp_margin = $('#region_canvas').css('margin-top').split('p')[0];
+        $('#region_canvas').css('margin-top',0);
+        $('#region_canvas').css('margin-bottom',0);
+        $('#region_canvas').css('height',Number((_via_reg_canvas.height * 10) / 7));
+        $('#region_canvas').attr('height',Number($('#region_canvas').css('height').split('p')[0]));
 
-
-        $('#region_canvas2').css('padding-top',temp_padding * 417 / 830);
-        $('#region_canvas2').css('padding-bottom',temp_padding * 417 / 830);
-        $('#region_canvas2').attr('height', $('#region_canvas2').css('height').split('p')[0]);
-        $('#region_canvas2').css('height',(_via_reg_canvas2.height));
-
+        $('#region_canvas2').css('margin-top',temp_margin * 417 / 830);
+        $('#region_canvas2').css('margin-bottom',temp_margin * 417 / 830);
+        $('#region_canvas2').attr('height', Number($('#region_canvas2').css('height').split('p')[0]) - Number((2*temp_margin * 417 / 830)));
+        $('#region_canvas2').css('height', Number(_via_reg_canvas2.height));
     }
+
     else if (case_slice === 'z'){
-        var temp_padding = $('#region_canvas3').css('padding-top').split('p')[0];
-        $('#region_canvas3').css('padding-top',0);
-        $('#region_canvas3').css('padding-bottom',0);
-        $('#region_canvas3').css('height',(_via_reg_canvas3.height * 10) / 7);
-        $('#region_canvas3').css('width',_via_reg_canvas3.width + 2 * temp_padding);
-        $('#region_canvas3').attr('height',$('#region_canvas3').css('height').split('p')[0]);
-        $('#region_canvas3').attr('width',$('#region_canvas3').css('width').split('p')[0]);
+        var temp_margin = $('#region_canvas3').css('margin-top').split('p')[0];
+        $('#region_canvas3').css('margin-top',0);
+        $('#region_canvas3').css('margin-bottom',0);
+        $('#region_canvas3').css('height',Number((_via_reg_canvas3.height * 10) / 7));
+        $('#region_canvas3').attr('height',Number($('#region_canvas3').css('height').split('p')[0]));
 
-        $('#region_canvas').css('padding-top',temp_padding * 830 / 417);
-        $('#region_canvas').css('padding-bottom',temp_padding * 830 / 417);
-        $('#region_canvas').attr('height',$('#region_canvas').css('height').split('p')[0]*(0.7));
-        $('#region_canvas').css('height',(_via_reg_canvas.height));
-
+        $('#region_canvas').css('margin-top',Number(temp_margin * 830 / 417));
+        $('#region_canvas').css('margin-bottom',Number(temp_margin * 830 / 417));
+        $('#region_canvas').attr('height',Number($('#region_canvas').css('height').split('p')[0] * (0.7)));
+        $('#region_canvas').css('height', Number(_via_reg_canvas.height));
     }
 }
 
@@ -2647,10 +2636,6 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
     var all_left = _via_reg_canvas.width / 10  * (_via_screen_ratio);
     var z_top = 58 * _via_screen_ratio;
 
-    
-    
-
-    
     if (is_selected) {
         if (case_slice === 'x') {
             if (_via_zoom_degree != degree){
