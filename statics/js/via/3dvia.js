@@ -1258,12 +1258,24 @@ function select_region_shape(sel_shape_name) {
 }
 
 function set_all_canvas_size(w, h) {
-    _via_reg_canvas.height = h - 20;
-    _via_reg_canvas.width = w * 830 / 1247;
+    _via_reg_canvas.height = (h - 20) * (0.7);
+    _via_reg_canvas.width = (w * 830 / 1247) * (0.7);
+    $('#region_canvas').css('padding-left',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('padding-right',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('padding-top',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('padding-bottom',(w * 830 / 1247) * (0.15));
+
+
+
     _via_reg_canvas2.height = (h - 20)/2 + 8;
-    _via_reg_canvas2.width = w * 417 / 1247;
+    _via_reg_canvas2.width = (w * 417 / 1247) * (0.7);
+    $('#region_canvas2').css('padding-left',(w * 417 / 1247) * (0.15));
+    $('#region_canvas2').css('padding-right',(w * 417 / 1247) * (0.15));
+
     _via_reg_canvas3.height = (h - 20)/2;
-    _via_reg_canvas3.width = w * 417 / 1247;
+    _via_reg_canvas3.width = (w * 417 / 1247) * (0.7);
+    $('#region_canvas3').css('padding-left',(w * 417 / 1247) * (0.15));
+    $('#region_canvas3').css('padding-right',(w * 417 / 1247) * (0.15));
 
     image_panel.style.height = h - 20;
     image_panel.style.width = w;
@@ -1654,10 +1666,11 @@ function _via_reg_canvas_mouseup_handler(e) {
     // indicates that user has finished drawing a new region
     if (_via_is_user_drawing_region) {
 
+        var padding = $('#region_canvas').css('padding-left').split('p')[0];
         _via_is_user_drawing_region = false;
-        var region_x0 = _via_click_x0;
+        var region_x0 = _via_click_x0 - padding;
         var region_y0 = _via_click_y0;
-        var region_x1 = _via_click_x1;
+        var region_x1 = _via_click_x1 - padding;
         var region_y1 = _via_click_y1;
 
         var original_img_region = new file_region();
@@ -1667,9 +1680,6 @@ function _via_reg_canvas_mouseup_handler(e) {
         var new_region_added = false;
 
         var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
-        // current_viewer.currentCoord.x =_via_reg_position.x;
-        // current_viewer.currentCoord.y =_via_reg_position.y;
-        // current_viewer.currentCoord.z =_via_reg_position.z;
 
 
         if (region_dx >= VIA_REGION_MIN_DIM && region_dy >= VIA_REGION_MIN_DIM) { // avoid regions with 0 dim
@@ -1678,11 +1688,11 @@ function _via_reg_canvas_mouseup_handler(e) {
                 case VIA_REGION_SHAPE.RECT:
                     // ensure that (x0,y0) is top-left and (x1,y1) is bottom-right
                     if (_via_click_x0 < _via_click_x1) {
-                        region_x0 = _via_click_x0;
-                        region_x1 = _via_click_x1;
+                        region_x0 = _via_click_x0 - padding;
+                        region_x1 = _via_click_x1 - padding;
                     } else {
-                        region_x0 = _via_click_x1;
-                        region_x1 = _via_click_x0;
+                        region_x0 = _via_click_x1 - padding;
+                        region_x1 = _via_click_x0 - padding;
                     }
 
                     if (_via_click_y0 < _via_click_y1) {
@@ -1702,12 +1712,12 @@ function _via_reg_canvas_mouseup_handler(e) {
                         var default_depth = 20;
                         if (slice === 'x') {
                             original_img_region.shape_attributes['name'] = 'cube';
-                            original_img_region.shape_attributes['x'] = Number(current_viewer.currentCoord.x) - 3;
+                            original_img_region.shape_attributes['x'] = Math.round(current_viewer.currentCoord.x - (default_depth/2));
                             original_img_region.shape_attributes['y'] = x;
                             original_img_region.shape_attributes['z'] = y;
-                            original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
-                            original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
-                            original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
+                            original_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
+                            original_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
+                            original_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
                             original_img_region.shape_attributes['dx'] = default_depth;
                             original_img_region.shape_attributes['dy'] = width;
                             original_img_region.shape_attributes['dz'] = height;
@@ -1715,12 +1725,12 @@ function _via_reg_canvas_mouseup_handler(e) {
 
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
-                            canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x) - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x - (default_depth/2))) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
-                            canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
-                            canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
+                            canvas_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
+                            canvas_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
+                            canvas_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
                             canvas_img_region.shape_attributes['dx'] = Math.round(default_depth / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
@@ -1747,11 +1757,11 @@ function _via_reg_canvas_mouseup_handler(e) {
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
-                            original_img_region.shape_attributes['y'] = Number(current_viewer.currentCoord.y) - 3;
+                            original_img_region.shape_attributes['y'] = Math.round(Number(current_viewer.currentCoord.y - (default_depth/2)));
                             original_img_region.shape_attributes['z'] = y;
-                            original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
-                            original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
-                            original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
+                            original_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
+                            original_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
+                            original_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = default_depth;
                             original_img_region.shape_attributes['dz'] = height;
@@ -1760,11 +1770,11 @@ function _via_reg_canvas_mouseup_handler(e) {
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - 3) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - (default_depth/2)) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
-                            canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
-                            canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
+                            canvas_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
+                            canvas_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
+                            canvas_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(default_depth / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
@@ -1792,10 +1802,10 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = y;
-                            original_img_region.shape_attributes['z'] = current_viewer.currentCoord.z - 3;
-                            original_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
-                            original_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
-                            original_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
+                            original_img_region.shape_attributes['z'] = Math.round(current_viewer.currentCoord.z - (default_depth/2));
+                            original_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
+                            original_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
+                            original_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
                             original_img_region.shape_attributes['dx'] = width;
                             original_img_region.shape_attributes['dy'] = height;
                             original_img_region.shape_attributes['dz'] = default_depth;
@@ -1805,10 +1815,10 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['z'] = Math.round((current_viewer.currentCoord.z - 3) / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['cx'] = current_viewer.currentCoord.x;
-                            canvas_img_region.shape_attributes['cy'] = current_viewer.currentCoord.y;
-                            canvas_img_region.shape_attributes['cz'] = current_viewer.currentCoord.z;
+                            canvas_img_region.shape_attributes['z'] = Math.round((current_viewer.currentCoord.z - (default_depth/2)) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
+                            canvas_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
+                            canvas_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
                             canvas_img_region.shape_attributes['dx'] = Math.round(width / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dy'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['dz'] = Math.round(default_depth / _via_canvas_scale);
@@ -2027,6 +2037,8 @@ function _via_reg_canvas_mousemove_handler(e) {
     if (!_via_current_image_loaded) {
         return;
     }
+    var padding = $('#region_canvas').css('padding-left').split('p')[0];
+
     _via_mouse_position.x = e.offsetX;
     _via_mouse_position.y = e.offsetY;
     _via_current_x = e.offsetX;
@@ -2092,12 +2104,15 @@ function _via_reg_canvas_mousemove_handler(e) {
             // first region being drawn, just clear the full region canvas
             _via_reg_ctx.clearRect(0, 0, _via_reg_canvas.width, _via_reg_canvas.height);
         }
+        var padding = $('#region_canvas').css('padding-left').split('p')[0];
 
-        var region_x0 = _via_click_x0;
+        var region_x0 = _via_click_x0 - padding;
         var region_y0 = _via_click_y0;
 
         var dx = Math.round(Math.abs(_via_current_x - _via_click_x0));
         var dy = Math.round(Math.abs(_via_current_y - _via_click_y0));
+
+        console.log(padding,dx, dy, _via_click_x0, _via_click_y0, _via_current_x - padding, _via_current_y - padding);
         _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
 
         switch (_via_current_shape) {
@@ -2105,19 +2120,19 @@ function _via_reg_canvas_mousemove_handler(e) {
             case VIA_REGION_SHAPE.RECT:
                 if (_via_click_x0 < _via_current_x) {
                     if (_via_click_y0 < _via_current_y) {
-                        region_x0 = _via_click_x0;
-                        region_y0 = _via_click_y0;
+                        region_x0 = _via_click_x0 - padding;
+                        region_y0 = _via_click_y0 ;
                     } else {
-                        region_x0 = _via_click_x0;
+                        region_x0 = _via_click_x0 - padding;
                         region_y0 = _via_current_y;
                     }
                 } else {
                     if (_via_click_y0 < _via_current_y) {
-                        region_x0 = _via_current_x;
+                        region_x0 = _via_current_x - padding;
                         region_y0 = _via_click_y0;
                     } else {
-                        region_x0 = _via_current_x;
-                        region_y0 = _via_current_y;
+                        region_x0 = _via_current_x - padding;
+                        region_y0 = _via_current_y ;
                     }
                 }
 
@@ -2127,6 +2142,7 @@ function _via_reg_canvas_mousemove_handler(e) {
                 if (rf != null && _via_is_region_info_visible) {
                     rf.innerHTML += ',' + ' W:' + dx + ',' + ' H:' + dy;
                 }
+
                 break;
         }
         _via_reg_canvas.focus();
@@ -2555,26 +2571,45 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
     }
 }
 
-function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selected) {
+function _via_toggle_labelling_view(){
+    var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
+    if (case_slice === 'y'){
+        var temp_padding = $('#region_canvas2').css('padding-top').split('p')[0];
+        $('#region_canvas2').css('padding-top',0);
+        $('#region_canvas2').css('padding-bottom',0);
+        _via_reg_canvas2.height = _via_reg_canvas2.height * 10 / 7;
 
-    if (_via_zoom_degree != degree){
-        if ( _via_zoom_degree > degree){
-            console.log(_via_Loc);
-            x =  (_via_zoom_degree * x) - ((_via_zoom_degree - degree) * _via_Loc.x);
-            x /= degree;
-            y =  (_via_zoom_degree * y) - ((_via_zoom_degree - degree) * _via_Loc.y);
-            y /= degree;
-            z =  (_via_zoom_degree * z) - ((_via_zoom_degree - degree) * _via_Loc.z);
-            z /= degree;
-            dx *= _via_zoom_degree;
-            dy *= _via_zoom_degree;
-            dz *= _via_zoom_degree;
-        }else{
-            x = ((degree * x) - (_via_zoom_degree*_via_Loc.x))/(degree-_via_zoom_degree);
-            y = ((degree * y) - (_via_zoom_degree*_via_Loc.y))/(degree-_via_zoom_degree);
-            z = ((degree * z) - (_via_zoom_degree*_via_Loc.z))/(degree-_via_zoom_degree);
-        }
+        $('#region_canvas3').css('padding-top',temp_padding);
+        $('#region_canvas3').css('padding-bottom',temp_padding);
+        _via_reg_canvas3.height += 0.7;
+
     }
+    else if (case_slice === 'z'){
+        var temp_padding = $('#region_canvas').css('padding-top').split('p')[0];
+        $('#region_canvas').css('padding-top',0);
+        $('#region_canvas').css('padding-bottom',0);
+        _via_reg_canvas.height = _via_reg_canvas.height * 10 / 7;
+
+
+        $('#region_canvas2').css('padding-top',temp_padding * 417 / 830);
+        $('#region_canvas2').css('padding-bottom',temp_padding * 417 / 830);
+        _via_reg_canvas2.height += 0.7;
+
+    }
+    else if (case_slice === 'x'){
+        var temp_padding = $('#region_canvas3').css('padding-top').split('p')[0];
+        $('#region_canvas3').css('padding-top',0);
+        $('#region_canvas3').css('padding-bottom',0);
+        _via_reg_canvas3.height = _via_reg_canvas3.height * 10 / 7;
+
+        $('#region_canvas2').css('padding-top',temp_padding * 830 / 417);
+        $('#region_canvas2').css('padding-bottom',temp_padding * 830 / 417);
+        _via_reg_canvas2.height += 0.7;
+
+    }
+}
+
+function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selected) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     var _via_reg_ctx2 = _via_reg_canvas2.getContext('2d');
     var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
@@ -2583,13 +2618,36 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
 
     var ratio = (417/830);
+    var height_ratio = $('#region_canvas').attr('height') / (592);
     _via_screen_ratio = (_via_reg_canvas.width+_via_reg_canvas2.width) / 1247;
     var all_left = _via_reg_canvas.width / 10  * (_via_screen_ratio);
     var z_top = 58 * _via_screen_ratio;
 
     
+    
+
+    
     if (is_selected) {
         if (case_slice === 'x') {
+        
+            if (_via_zoom_degree != degree){
+                if ( _via_zoom_degree > degree){
+                    console.log(x/height_ratio,y/height_ratio,z/height_ratio,_via_Loc);
+                    x =  (_via_zoom_degree * x / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.x);
+                    x /= degree;
+                    y =  (_via_zoom_degree * y / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.y);
+                    y /= degree;
+                    z =  (_via_zoom_degree * z / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.z);
+                    z /= degree;
+                    dx *= _via_zoom_degree;
+                    dy *= _via_zoom_degree;
+                    dz *= _via_zoom_degree;
+                }else{
+                    x = ((degree * x / height_ratio) - (_via_zoom_degree * _via_Loc.x)) / (degree - _via_zoom_degree);
+                    y = ((degree * y / height_ratio) - (_via_zoom_degree * _via_Loc.y)) / (degree - _via_zoom_degree);
+                    z = ((degree * z / height_ratio) - (_via_zoom_degree * _via_Loc.z)) / (degree - _via_zoom_degree);
+                }
+            }
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
             
             _via_draw_rect(y, z, dy, dz);
@@ -2613,7 +2671,7 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_control_point(y, z + dz / 2);
             _via_draw_control_point(y + dy, z + dz / 2);
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
+            _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2624,16 +2682,16 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio + dz*ratio / 2, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio / 2, 2);
+            _via_draw_control_spoint_sub((x)*ratio, z*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, z*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio, z*ratio + dz*ratio / 2, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*ratio + dz*ratio / 2, 2);
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio,(y)*ratio, dx*ratio, dy*ratio, 3); // z
+            _via_draw_rect_sub((x)*ratio,(y)*ratio, dx*ratio, dy*ratio, 3); // z
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2644,19 +2702,20 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
             
-
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio + dy*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio / 2, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio / 2, 3);
+            _via_draw_control_spoint_sub((x)*ratio, (y)*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, (y)*ratio + dy*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio, (y)*ratio + dy*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, (y)*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, (y)*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, (y)*ratio + dy*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio, (y)*ratio + dy*ratio / 2, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, (y)*ratio + dy*ratio / 2, 3);
         }
         else if (case_slice === 'y') {
-            var y_ratio = 465 / 830;
+            
+
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
+
             _via_draw_rect(x, z, dx, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2677,7 +2736,7 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_control_point(x, z + dz / 2);
             _via_draw_control_point(x + dx, z + dz / 2);
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 2); // z
+            _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 2); // z
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2688,16 +2747,16 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, (y)*ratio + dy*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, (y)*ratio + dy*ratio / 2, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, (y)*ratio + dy*ratio / 2, 2);
+            _via_draw_control_spoint_sub((x)*ratio, (y)*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, (y)*ratio + dy*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio, (y)*ratio + dy*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, (y)*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, (y)*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, (y)*ratio + dy*ratio, 2);
+            _via_draw_control_spoint_sub((x)*ratio, (y)*ratio + dy*ratio / 2, 2);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, (y)*ratio + dy*ratio / 2, 2);
 
-            _via_draw_rect_sub(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio, 3); // x
+            _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 3); // x
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2708,16 +2767,18 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio + dz*ratio / 2, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio / 2, 3);
+            _via_draw_control_spoint_sub((y)*ratio, z*ratio, 3);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*ratio + dz*ratio, 3);
+            _via_draw_control_spoint_sub((y)*ratio, z*ratio + dz*ratio, 3);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*ratio, 3);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio / 2, z*ratio, 3);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio / 2, z*ratio + dz*ratio, 3);
+            _via_draw_control_spoint_sub((y)*ratio, z*ratio + dz*ratio / 2, 3);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*ratio + dz*ratio / 2, 3);
         }
         else if (case_slice === 'z') {
+            
+
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
             _via_draw_rect(x, y, dx, dy);
 
@@ -2739,7 +2800,7 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_control_point(x, y + dy / 2);
             _via_draw_control_point(x + dx, y + dy / 2);
 
-            _via_draw_rect_sub(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio, 2); // x
+            _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 2); // x
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2750,16 +2811,16 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio / 2, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio, z*ratio + dz*ratio / 2, 2);
-            _via_draw_control_spoint_sub(all_left*ratio + (y)*ratio + dy*ratio, z*ratio + dz*ratio / 2, 2);
+            _via_draw_control_spoint_sub((y)*ratio, z*ratio, 2);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub((y)*ratio, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*ratio, 2);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio / 2, z*ratio, 2);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio / 2, z*ratio + dz*ratio, 2);
+            _via_draw_control_spoint_sub((y)*ratio, z*ratio + dz*ratio / 2, 2);
+            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*ratio + dz*ratio / 2, 2);
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio, 3); // y
+            _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 3); // y
 
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2771,14 +2832,14 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio / 2, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio, z*ratio + dz*ratio / 2, 3);
-            _via_draw_control_spoint_sub(all_left*ratio + (x)*ratio + dx*ratio, z*ratio + dz*ratio / 2, 3);
+            _via_draw_control_spoint_sub((x)*ratio, z*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*ratio + dz*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio, z*ratio + dz*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, z*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, z*ratio + dz*ratio, 3);
+            _via_draw_control_spoint_sub((x)*ratio, z*ratio + dz*ratio / 2, 3);
+            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*ratio + dz*ratio / 2, 3);
         }
     } else {
         if (case_slice === 'x') {
@@ -2788,10 +2849,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
+            _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
             _via_reg_ctx2.stroke();
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 3); // z
+            _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 3); // z
             _via_reg_ctx3.stroke();
 
         }
@@ -2802,10 +2863,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(x, z, dx, dz);
             _via_reg_ctx.stroke();
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, z_top + (y)*ratio, dx*ratio, dy*ratio, 2); // z
+            _via_draw_rect_sub((x)*ratio, z_top + (y)*ratio, dx*ratio, dy*ratio, 2); // z
             _via_reg_ctx2.stroke();
 
-            _via_draw_rect_sub(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio, 3); // x
+            _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 3); // x
             _via_reg_ctx3.stroke();
         }
         else if (case_slice === 'z') {
@@ -2815,10 +2876,10 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
-            _via_draw_rect_sub(all_left*ratio + (y)*ratio, z*ratio, dy*ratio, dz*ratio, 2); // x
+            _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 2); // x
             _via_reg_ctx2.stroke();
 
-            _via_draw_rect_sub(all_left*ratio + (x)*ratio, z*ratio, dx*ratio, dz*ratio, 3); // y
+            _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 3); // y
             _via_reg_ctx3.stroke();
         }
     }
@@ -3370,6 +3431,7 @@ function _via_handle_global_keydown_event(e) {
 
         if (e.key === "r" || e.key === "R"){
             papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
+            _via_toggle_labelling_view();
         }
 
         if (e.key === "g" || e.key === "G"){
