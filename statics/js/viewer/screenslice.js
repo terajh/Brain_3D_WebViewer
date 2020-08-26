@@ -393,6 +393,7 @@ papaya.viewer.ScreenSlice.prototype.repaint = function (slice, force, worldSpace
                 }
             }
 
+            
             for (ctrY = 0; ctrY < this.yDim; ctrY += 1) {
                 for (ctrX = 0; ctrX < this.xDim; ctrX += 1) {
                     value = this.imageData[ctr][index];
