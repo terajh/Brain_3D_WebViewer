@@ -1451,8 +1451,8 @@ function _via_reg_canvas_mousedown_handler(e) {
 function _via_reg_canvas_mouseup_handler(e) {
     e.stopPropagation();
     _via_mouse_down = false;
-    _via_click_x1 = e.offsetX; 
-    _via_click_y1 = e.offsetY;
+    _via_click_x1 = e.offsetX;
+     _via_click_y1 = e.offsetY;
 
     var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
     var click_dy = Math.abs(_via_click_y1 - _via_click_y0);
@@ -1842,7 +1842,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['dy'] = _via_zoom_degree * canvas_img_region.shape_attributes['dy'];
                                 canvas_img_region.shape_attributes['dz'] = _via_zoom_degree * canvas_img_region.shape_attributes['dz'];
                             }
-                        } 
+                        }                    
                         new_region_added = true;
                         break;
                     }
@@ -2847,10 +2847,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
+            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
             _via_reg_ctx2.stroke();
 
+            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 3); // z
             _via_reg_ctx3.stroke();
@@ -2863,10 +2865,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(x, z, dx, dz);
             _via_reg_ctx.stroke();
 
+            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 2); // z
             _via_reg_ctx2.stroke();
 
+            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 3); // x
             _via_reg_ctx3.stroke();
@@ -2878,10 +2882,12 @@ function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is_selec
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
+            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((y)*ratio, z*ratio, dy*ratio, dz*ratio, 2); // x
             _via_reg_ctx2.stroke();
 
+            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 3); // y
             _via_reg_ctx3.stroke();
@@ -3436,6 +3442,7 @@ function _via_handle_global_keydown_event(e) {
         if (e.key === "r" || e.key === "R"){
             papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
             _via_toggle_labelling_view();
+            _via_redraw_reg_canvas();
         }
 
         if (e.key === "g" || e.key === "G"){
