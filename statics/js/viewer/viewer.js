@@ -1830,13 +1830,13 @@ papaya.viewer.Viewer.prototype.rotateViews = function () {
         this.mainImage = temp;
     }
 
-    var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
+    var slice = $('#papayaContainer' + _via_current_temp_num).attr('slice');
     if (slice === 'x'){
-        $('#papayaContainer' + _via_current_file_num).attr('slice', 'z');
+        $('#papayaContainer' + _via_current_temp_num).attr('slice', 'z');
     }else if (slice === 'y'){
-        $('#papayaContainer' + _via_current_file_num).attr('slice', 'x');
+        $('#papayaContainer' + _via_current_temp_num).attr('slice', 'x');
     }else{
-        $('#papayaContainer' + _via_current_file_num).attr('slice', 'y');
+        $('#papayaContainer' + _via_current_temp_num).attr('slice', 'y');
     }
     _via_redraw_reg_canvas();
 
