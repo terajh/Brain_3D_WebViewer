@@ -554,12 +554,12 @@ papaya.Container.buildHeader = function(){
     var headers = $('#ui_top_panel');
     this.headerHtml += "<a href='/' class='logo'>CRESCOM</a>";
     this.headerHtml += "<div class='header-right'>";
-    this.headerHtml += "<a href='/study_record'><img src='../statics/icon/history-icon.png' \
-                srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
-                Fracture</a>";
-    this.headerHtml += "<a href='/knee_record'><img src='../statics/icon/history-icon.png'\
-                srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
-                Knee OA</a>";
+    // this.headerHtml += "<a href='/study_record'><img src='../statics/icon/history-icon.png' \
+    //             srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
+    //              Fracture</a>";
+    // this.headerHtml += "<a href='/knee_record'><img src='../statics/icon/history-icon.png'\
+    //             srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
+    //             Knee OA</a>";
     this.headerHtml += "<a href='/record'><img src='../statics/icon/history-icon.png'\
                 srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
                 Project</a></div></div>";
@@ -698,8 +698,6 @@ papaya.Container.buildLeftsidebar = function() {
                                     title='Remove selected file (i.e. file currently being shown) from project'>Remove</span>\
                                 <span class='button' onclick='project_save_with_confirm()' title='save project'>Save Project</span>\
                                 <br><br>\
-                                <span class='button' onclick='zoom_in()'><i class='fas fa-search-plus'></i>&nbsp;&nbsp;Zoom In</span>\
-                                <span class='button' onclick='zoom_out()'><i class='fas fa-search-minus'></i>&nbsp;&nbsp;Zoom Out</span>\
                                 <span class='button' onclick='via_canvas_toggle()'>&nbsp;Label</span>\
                                 <br><br>\
                                 <span class='button' onclick='via_drawing_canvas_toggle()'>&nbsp;Draw</span>\
