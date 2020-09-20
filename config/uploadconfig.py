@@ -1,4 +1,4 @@
-
+from config.default import *
 
 UPLOAD_FOLDER = '../statics/test_img/'
 UPLOAD_ROI = '../statics/roid/'
