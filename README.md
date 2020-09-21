@@ -43,3 +43,12 @@ Acknowledgments
 -----
 
 ### ... Currently in Progress
+
+
+Run server
+-----
+
+>> source nb/venv/bin/activate
+>> export FLASK_APP=nb
+>> export FLASK_ENV=development
+>> flask run

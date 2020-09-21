@@ -265,7 +265,6 @@ def save_project():
 @bp.route('/new_project', methods=['GET'])
 def new_project():
     print('new project render')
-
     first = request.args.get('first', type=int, default=5)   #new 'fracture' project -> first=0, new 'kneeOA' project -> first=3
     _userId = session['userID']
     _date = datetime.now()
@@ -288,7 +287,6 @@ def upload_img():
         wrong_list = wrong_list.split(',')
         if not os.path.isdir("statics/temp_img/"+session['userID']+"/"):
             os.mkdir("C:/Users/teraj/Desktop/dev/Papavia/NewJack_viewer/nb/statics/temp_img/"+session['userID'])
-# C:\Users\teraj\Desktop\dev\Papavia\NewJack_viewer\nb\statics\temp_img
         for file in img_files:
             filename = secure_filename(file.filename)
             if filename not in wrong_list:
