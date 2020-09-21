@@ -28,13 +28,10 @@ from nb.modules.json_seperator import json_seperator
 bp = Blueprint('authen',__name__,url_prefix='/authen',template_folder='templates')
 
 
+
 @bp.route('/login')
 def loginpage():
-    if session.get('user'):
-        return redirect('/record')
-    else: 
-        return render_template('login/login.html')
-
+    return render_template('login/login.html');
 # checking login information under DB
 @bp.route('/validateLogin', methods=['POST'])
 def validateLogin():

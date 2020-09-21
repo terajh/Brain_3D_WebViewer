@@ -36,6 +36,13 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in bp.config['ALLOWED_EXTENSIONS']
 
+@bp.route('/')
+def loginpage():
+    if session.get('user'):
+        return redirect('/record')
+    else: 
+        return redirect('/authen/login')
+
 @bp.route('/get_image_data',methods=['GET'])
 def get_image_data():
     print('get image data render')
@@ -64,15 +71,15 @@ def sel_project():
 
     filename = request.args.get('filename', type=str, default="None")
     print(filename)
-    with open("./statics/test_json/" +_userId + "/" + filename, 'r') as json_file:
+    with open("../statics/test_json/" +_userId + "/" + filename, 'r') as json_file:
         js_file = json_file.readline()
     
-    file = pathlib.Path("./statics/test_json/" +_userId + "/" + filename)
+    file = pathlib.Path("../statics/test_json/" +_userId + "/" + filename)
     file_text = file.read_text(encoding='utf-8')
     json_data = json.loads(file_text)
     _filenames = json_data['_via_img_metadata'][list(json_data['_via_img_metadata'].keys())[0]]['filename']
 
-    fname = os.path.splitext("./statics/test_json/" + _userId + "/" +filename)
+    fname = os.path.splitext("../statics/test_json/" + _userId + "/" +filename)
     fname = os.path.split(fname[0])
     _fname = fname[1] #확장자 없는 load할 파일명
 
@@ -82,7 +89,7 @@ def sel_project():
                 cursor.execute("SELECT project_type FROM user_info WHERE email = '" + session['user'] +"' and project_name = '" +str(_fname) +".json';")
                 data = cursor.fetchall()
                 print(data)
-                direc = "./statics/test_img/" + _userId + "/" + filename.split(".")[0] + "/"
+                direc = "../statics/test_img/" + _userId + "/" + filename.split(".")[0] + "/"
                 data[0][0] == 'Brain' # select a Brain project
                 
     return render_template('papaya3d.html', js_file=str(js_file), fname=_fname, direc=direc, first=first, proj='f', filedata = 'f')
@@ -104,15 +111,15 @@ def save_project():
         _date = datetime.now()
         _nowdate = _date.strftime('%Y-%m-%d %H:%M:%S')
         _userId = session['userID']
-        _dic_img = "./statics/test_img/" + _userId + "/" + _fname + "/"
-        _dic_xml = "./statics/test_xml/" + _userId + "/" + _fname + "/"
-        _dic_json = "./statics/test_json/" + _userId + "/"
+        _dic_img = "../statics/test_img/" + _userId + "/" + _fname + "/"
+        _dic_xml = "../statics/test_xml/" + _userId + "/" + _fname + "/"
+        _dic_json = "../statics/test_json/" + _userId + "/"
         _dic_sep_json = _dic_json + _fname + "/"
 
         _image_filename_list = request.json['_via_image_filename_list'] # 해당 프로젝트에 저장되는 이미지 리스트
 
-        if not os.path.isdir("./statics/test_xml/" + _userId + "/"):
-            os.mkdir("./statics/test_xml/" + _userId + "/")
+        if not os.path.isdir("../statics/test_xml/" + _userId + "/"):
+            os.mkdir("../statics/test_xml/" + _userId + "/")
         if not os.path.isdir(_dic_xml):
             os.mkdir(_dic_xml)
         if not os.path.isdir(_dic_json):
@@ -147,17 +154,17 @@ def save_project():
                     conn.commit()
 
                 # temp_img => test_img
-                if os.path.isdir("./statics/temp_img/" + _userId):
-                    filenames = os.listdir("./statics/temp_img/" + _userId + "/")
+                if os.path.isdir("../statics/temp_img/" + _userId):
+                    filenames = os.listdir("../statics/temp_img/" + _userId + "/")
                     for filename in filenames:
                         if filename not in _image_filename_list:  # test_img 폴더에 복사해야하는 이미지 외 다른 이미지가 존재할 시 삭제
-                            os.remove("./statics/temp_img/"+_userId+"/"+filename)
+                            os.remove("../statics/temp_img/"+_userId+"/"+filename)
                     distutils.dir_util._path_created = {}
-                    distutils.dir_util.copy_tree("./statics/temp_img/" + _userId + "/", _dic_img)
-                    shutil.rmtree("./statics/temp_img/" + _userId + "/")
+                    distutils.dir_util.copy_tree("../statics/temp_img/" + _userId + "/", _dic_img)
+                    shutil.rmtree("../statics/temp_img/" + _userId + "/")
 
                 # test_img 내 파일목록
-                _filenames = os.listdir("./statics/test_img/" + _userId + "/" + _fname)
+                _filenames = os.listdir("../statics/test_img/" + _userId + "/" + _fname)
 
                 # 기존 age, gender list 생성
                 _db_age_list = []
@@ -247,9 +254,9 @@ def save_project():
 
                         json_data = cursor.fetchall()
                         conn.commit()
-                        os.remove("./statics/test_img/" + _userId + "/" + _fname + "/" + filename)
-                        os.remove("./statics/test_json/" + _userId + "/" + _fname + "/" + filename.split(".")[0] + ".json")
-                        os.remove("./statics/test_xml/" + _userId + "/" + _fname + "/" + filename.split(".")[0] + ".xml")
+                        os.remove("../statics/test_img/" + _userId + "/" + _fname + "/" + filename)
+                        os.remove("../statics/test_json/" + _userId + "/" + _fname + "/" + filename.split(".")[0] + ".json")
+                        os.remove("../statics/test_xml/" + _userId + "/" + _fname + "/" + filename.split(".")[0] + ".xml")
 
         return json.dumps({"result": True})
     else:
@@ -259,13 +266,12 @@ def save_project():
 def new_project():
     print('new project render')
 
-    first = request.args.get('first', type=int, default=0)   #new 'fracture' project -> first=0, new 'kneeOA' project -> first=3
+    first = request.args.get('first', type=int, default=5)   #new 'fracture' project -> first=0, new 'kneeOA' project -> first=3
     _userId = session['userID']
     _date = datetime.now()
     _nowdate = _date.strftime('%Y%m%d%H%M')
     _fname = "project_"+_nowdate
-    print(first, _fname)
-    direc = "./statics/test_img/" + _userId + "/" + _fname + "/"
+    direc = "../statics/test_img/" + _userId + "/" + _fname + "/"
     return render_template('papaya3d.html', fname=_fname, direc=direc, first=first, proj='f', filedata = 'f')
 
                 
@@ -280,13 +286,13 @@ def upload_img():
         #잘못된 규칙의 파일명 upload시 temp_img 폴더에 저장되는것 방지
         wrong_list = request.form['_via_wrong_img_list[]']
         wrong_list = wrong_list.split(',')
-        if not os.path.isdir("./statics/temp_img/"+session['userID']+"/"):
-            os.mkdir("./statics/temp_img/"+session['userID'])
-
+        if not os.path.isdir("statics/temp_img/"+session['userID']+"/"):
+            os.mkdir("C:/Users/teraj/Desktop/dev/Papavia/NewJack_viewer/nb/statics/temp_img/"+session['userID'])
+# C:\Users\teraj\Desktop\dev\Papavia\NewJack_viewer\nb\statics\temp_img
         for file in img_files:
             filename = secure_filename(file.filename)
             if filename not in wrong_list:
-                file.save("./statics/temp_img/"+session['userID']+"/"+filename) # 유저마다의 파일에 저장된다.
+                file.save("../statics/temp_img/"+session['userID']+"/"+filename) # 유저마다의 파일에 저장된다.
 
         return json.dumps({"result": True})
 
@@ -405,14 +411,14 @@ def del_project():
                         dataDB = cursor.fetchall()
                         project_name = dataDB[0][0].split(".")[0]
                         # 해당 프로젝트의 폴더, 파일 삭제
-                        if os.path.isdir("./statics/test_img/"+_userId+"/"+project_name):
-                            shutil.rmtree("./statics/test_img/"+_userId+"/"+project_name+"/")
-                        if os.path.isdir("./statics/test_xml/"+_userId+"/"+project_name):
-                            shutil.rmtree("./statics/test_xml/"+_userId+"/"+project_name+"/")
-                        if os.path.isdir("./statics/test_json/"+_userId+"/"+project_name):
-                            shutil.rmtree("./statics/test_json/"+_userId+"/"+project_name+"/")
-                        if os.path.exists("./statics/test_json/"+_userId+"/"+dataDB[0][0]):
-                            os.remove("./statics/test_json/"+_userId+"/"+dataDB[0][0])
+                        if os.path.isdir("../statics/test_img/"+_userId+"/"+project_name):
+                            shutil.rmtree("../statics/test_img/"+_userId+"/"+project_name+"/")
+                        if os.path.isdir("../statics/test_xml/"+_userId+"/"+project_name):
+                            shutil.rmtree("../statics/test_xml/"+_userId+"/"+project_name+"/")
+                        if os.path.isdir("../statics/test_json/"+_userId+"/"+project_name):
+                            shutil.rmtree("../statics/test_json/"+_userId+"/"+project_name+"/")
+                        if os.path.exists("../statics/test_json/"+_userId+"/"+dataDB[0][0]):
+                            os.remove("../statics/test_json/"+_userId+"/"+dataDB[0][0])
                         # 해당 프로젝트 DB 삭제
                         cursor.execute("DELETE FROM brain_info WHERE project_img = '" + project_name + "';")
                         cursor.execute("DELETE FROM user_info WHERE rid = '" + rid + "';")
