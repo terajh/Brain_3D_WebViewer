@@ -12,6 +12,5 @@ nb/statics/temp_img/*
 nb/statics/test_img/*
 nb/statics/test_json/*
 nb/statics/test_xml/*
-nb/statics/vendor/*
 nb/test/*
 nb/tests/*
