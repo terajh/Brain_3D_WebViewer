@@ -19,15 +19,9 @@ module.exports = {
           'css-loader',
         ],
       },
-      {
-        test: /\.(png|ip(e*)g)$/,
-        loader:'url-loader',
-        options:{
-          limit:8000,
-          name: './statics/images/[hash]-[name].[ext]'
-        }
-      }
     ],
   },
-
+  resolve: {
+    extensions: ['.js', '.jsx', '.css']
+  }
 };
