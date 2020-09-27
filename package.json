@@ -1,0 +1,22 @@
+{
+  "name": "three_tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "three_tutorial.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "three": "^0.120.1",
+    "webpack": "^4.44.2"
+  },
+  "devDependencies": {
+    "file-loader": "^6.1.0",
+    "imports-loader": "^1.1.0",
+    "url-loader": "^4.1.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
