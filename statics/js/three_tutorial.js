@@ -1,6 +1,7 @@
 import  {OrbitControls, MapControls} from './OrbitControls.js';
 import * as THREE from './three.js'
 import css from '../css/main.css'
+import ObjectLoader from '../../src/loaders/ObjectLoader.js'
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -92,7 +93,7 @@ directionalLight.position.set( 0, 1, 0 );
 scene.add(directionalLight);
 // 이런식으로 광원의 위치를 설정해줄 수도 있다.
 
-var spotLight = new THREE.spotLight( 0xff45f6, 25 );
+var spotLight = new THREE.SpotLight( 0xff45f6, 25 );
 spotLight.position.set( 0, 3, 0);
 scene.add( spotLight );
 
