@@ -2,6 +2,7 @@ import  {OrbitControls, MapControls} from './OrbitControls.js';
 import * as THREE from './three.js'
 import css from '../css/main.css'
 import ObjectLoader from '../../src/loaders/ObjectLoader.js'
+import {GLTFLoader} from '../../src/loaders/GLTFLoader.js'
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -21,6 +22,15 @@ window.addEventListener('resize', function () {
 var controls = new OrbitControls( camera, renderer.domElement);
 // camera, renderer의 dom 요소로 control 생성
 
+var loader = new GLTFLoader();
+loader.load(
+    'statics/models/skull_downloadable/scene.gltf',
+    function( gltf ){
+        scene.add( gltf.scene );
+    }
+
+);
+
 // create the shape
 var geometry = new THREE.BoxGeometry(2, 2, 2);
 var cubeMaterials = [ 
@@ -33,50 +43,50 @@ var cubeMaterials = [
 ]
 
 // create a material, color or image texture
-var cube = new THREE.Mesh(geometry, cubeMaterials);
-scene.add(cube);
-// 설정한 material 추가
+// var cube = new THREE.Mesh(geometry, cubeMaterials);
+// scene.add(cube);
+// // 설정한 material 추가
 
 
-// floor
-var floorGeometry = new THREE.CubeGeometry( 10, 1, 10 );
-var floorMaterial = new THREE.MeshLambertMaterial( {
-    map: new THREE.TextureLoader( ).load('statics/imgs/floor.jpg'),
-    side: THREE.DoubleSide
-});
-var floorCube = new THREE.Mesh( floorGeometry, floorMaterial);
-floorCube.position.y = -5;
-scene.add(floorCube);
+// // floor
+// var floorGeometry = new THREE.CubeGeometry( 10, 1, 10 );
+// var floorMaterial = new THREE.MeshLambertMaterial( {
+//     map: new THREE.TextureLoader( ).load('statics/imgs/floor.jpg'),
+//     side: THREE.DoubleSide
+// });
+// var floorCube = new THREE.Mesh( floorGeometry, floorMaterial);
+// floorCube.position.y = -5;
+// scene.add(floorCube);
 
-// ceil
-var ceilGeometry = new THREE.CubeGeometry( 10, 1, 10 );
-var ceilMaterial = new THREE.MeshLambertMaterial({
-    map: new THREE.TextureLoader( ).load('statics/imgs/ceil.jpg'),
-    side: THREE.DoubleSide
-});
-var ceilCube = new THREE.Mesh( ceilGeometry, ceilMaterial );
-ceilCube.position.y = 5;
-scene.add(ceilCube);
+// // ceil
+// var ceilGeometry = new THREE.CubeGeometry( 10, 1, 10 );
+// var ceilMaterial = new THREE.MeshLambertMaterial({
+//     map: new THREE.TextureLoader( ).load('statics/imgs/ceil.jpg'),
+//     side: THREE.DoubleSide
+// });
+// var ceilCube = new THREE.Mesh( ceilGeometry, ceilMaterial );
+// ceilCube.position.y = 5;
+// scene.add(ceilCube);
 
-// Left Wall
-var leftWallGeometry = new THREE.CubeGeometry( 1, 10, 10);
-var leftWallMaterial = new THREE.MeshLambertMaterial({
-    map: new THREE.TextureLoader( ).load('statics/imgs/wall.jpg'),
-    side: THREE.DoubleSide
-});
-var leftWallCube = new THREE.Mesh( leftWallGeometry, leftWallMaterial );
-leftWallCube.position.x = -5;
-scene.add(leftWallCube);
+// // Left Wall
+// var leftWallGeometry = new THREE.CubeGeometry( 1, 10, 10);
+// var leftWallMaterial = new THREE.MeshLambertMaterial({
+//     map: new THREE.TextureLoader( ).load('statics/imgs/wall.jpg'),
+//     side: THREE.DoubleSide
+// });
+// var leftWallCube = new THREE.Mesh( leftWallGeometry, leftWallMaterial );
+// leftWallCube.position.x = -5;
+// scene.add(leftWallCube);
 
-// Right Wall
-var rightWallGeometry = new THREE.CubeGeometry( 1, 10, 10 );
-var rightWallMaterial = new THREE.MeshLambertMaterial({
-    map: new THREE.TextureLoader().load('statics/imgs/wall.jpg'),
-    side: THREE.DoubleSide
-});
-var rightWallCube = new THREE.Mesh( rightWallGeometry, rightWallMaterial );
-rightWallCube.position.x = 5;
-scene.add(rightWallCube);
+// // Right Wall
+// var rightWallGeometry = new THREE.CubeGeometry( 1, 10, 10 );
+// var rightWallMaterial = new THREE.MeshLambertMaterial({
+//     map: new THREE.TextureLoader().load('statics/imgs/wall.jpg'),
+//     side: THREE.DoubleSide
+// });
+// var rightWallCube = new THREE.Mesh( rightWallGeometry, rightWallMaterial );
+// rightWallCube.position.x = 5;
+// scene.add(rightWallCube);
 
 
 
