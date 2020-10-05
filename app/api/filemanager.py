@@ -19,6 +19,5 @@ import sys, getopt
 import mxnet as mx
 import imageio, base64
 import pathlib
-from nb import mysql
 
 bp = Blueprint('file',__name__,url_prefix='/file',template_folder='templates')

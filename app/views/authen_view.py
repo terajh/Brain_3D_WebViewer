@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, json, request, redirect, session, send_from_directory, Blueprint, make_response
 from flask import send_file
 from flask_paginate import Pagination, get_page_parameter
@@ -19,12 +20,14 @@ import sys, getopt
 import mxnet as mx
 import imageio, base64
 import pathlib
+
 from flask import current_app as app
 from sqlalchemy import text
 
 from app.lib.fill_json import fill_json
 from app.lib.transform_to_xml import transform_to_xml
 from app.lib.json_seperator import json_seperator
+
 
 bp = Blueprint('authen',__name__,url_prefix='/authen',template_folder='templates')
 

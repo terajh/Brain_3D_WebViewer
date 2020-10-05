@@ -1713,7 +1713,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                     var y = Math.round(region_y0 * _via_canvas_scale);
                     var width = Math.round(region_dx * _via_canvas_scale);
                     var height = Math.round(region_dy * _via_canvas_scale);
-                    if (firstTry === 5 || firstTry === 6) {
+                    if (firstTry === "5" || firstTry === "6") {
                         var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                         var default_depth = 20;
                         if (slice === 'x') {
@@ -1842,26 +1842,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dz']);
                             }
                         }                    
-                        new_region_added = true;
-                        break;
-                    }
-                    else {
-                        original_img_region.shape_attributes['name'] = 'rect';
-                        original_img_region.shape_attributes['x'] = x;
-                        original_img_region.shape_attributes['y'] = y;
-                        original_img_region.shape_attributes['width'] = width;
-                        original_img_region.shape_attributes['height'] = height;
-                        original_img_region.shape_attributes['degree'] = _via_zoom_degree;
-
-
-                        canvas_img_region.shape_attributes['name'] = 'rect';
-                        canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
-                        canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
-                        canvas_img_region.shape_attributes['width'] = Math.round(width / _via_canvas_scale);
-                        canvas_img_region.shape_attributes['height'] = Math.round(height / _via_canvas_scale);
-                        canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
-
-
                         new_region_added = true;
                         break;
                     }
@@ -2619,6 +2599,14 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     var _via_reg_ctx2 = _via_reg_canvas2.getContext('2d');
     var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
+
+    // get canvas's height
+    
+
+
+
+
+
 
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
