@@ -13,7 +13,7 @@ manager = Manager(app)
 
 @manager.command
 def run():
-	app.run()
+	app.run(debug=True)
 
 @manager.command
 def test():

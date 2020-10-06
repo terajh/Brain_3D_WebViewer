@@ -20,14 +20,14 @@ import sys, getopt
 import mxnet as mx
 import imageio, base64
 import pathlib
-
+import string
 from flask import current_app as app
 from sqlalchemy import text
 
 from app.lib.fill_json import fill_json
 from app.lib.transform_to_xml import transform_to_xml
 from app.lib.json_seperator import json_seperator
-from app import BASE_DIR
+from app import BASE_DIR, db
 bp = Blueprint('main',__name__,url_prefix='/',template_folder='templates')
 
 
@@ -84,7 +84,8 @@ def sel_project():
     _fname = fname[1] #확장자 없는 load할 파일명
 
     if len(filename.split("/")) == 1:    # select a fracture or kneeOA project (ex)project_20190809.json)
-        data = app.database.execute(text("SELECT project_type FROM user_info WHERE email = '" + session['user'] +"' and project_name = '" +str(_fname) +".json';")).fetchall()
+        user_name = session['user']
+        data = db.executeAll(text("""SELECT project_type FROM user_info WHERE email = '${user_name}' and project_name = '${_fname}.json';""")).fetchall()
         
         print(data)
         direc = BASE_DIR + "/statics/test_img/" + _userId + "/" + filename.split(".")[0] + "/"
@@ -101,9 +102,8 @@ def save_project():
         _filename = request.json['filename']
         _fname = _filename.split(".")[0]
         _first = request.json['_first']
-       
-        if _first == 5 or _first == 6:
-            project_type = 'Brain'
+        
+        project_type = 'Brain'
         _email = session['user']
         _project_name = _filename
         _date = datetime.now()
@@ -126,7 +126,8 @@ def save_project():
             os.mkdir(_dic_sep_json)
 
         # update project on DB
-        data = app.database.execute(text("""SELECT project_name FROM user_info WHERE email = ${session['user']};""")).fetchall()
+        user_name = session['user']
+        data = db.executeAll("""SELECT project_name FROM user_info WHERE email = '${user_name}';""").fetchall()
         
 
         dataDB = []
@@ -134,18 +135,20 @@ def save_project():
             dataDB.append(x[0])
         if len(data) != 0:
             if str(_filename) in dataDB:
-                data = app.database.execute(  # 기존 프로젝트를 로드해서 수정할 때
-                    text("UPDATE user_info SET date = '" + _nowdate + "' WHERE project_name = '" + _filename + "';")).fetchall()
+                # 기존 프로젝트를 로드해서 수정할 때
+                data = db.executeAll("""UPDATE user_info SET date = '${_nowdate}' WHERE project_name = '${_filename}';""").fetchall()
                 with app.database.connect() as conn:
                     conn.commit()
             else:
-                data = app.database.execute(    #기존에 프로젝트를 생성한 적 있던 사용자가 새 프로젝트를 만들 때
-                    text("INSERT INTO user_info(email, project_name, project_type, date) VALUES('" + _email + "', '" + _project_name + "','" + project_type + "','"+ _nowdate + "');")).fetchall()
+                data = db.executeAll(    #기존에 프로젝트를 생성한 적 있던 사용자가 새 프로젝트를 만들 때
+                    "INSERT INTO user_info(email, project_name, project_type, date) VALUES('" + str(_email) + "', '" + str(_project_name) + "','" + str(project_type) + "'," + str(_nowdate) + ");").fetchall()
+                
                 with app.database.connect() as conn:
                     conn.commit()
         else:
-            data = app.database.execute(   #사용자가 첫 프로젝트를 생성할 때
-                text("INSERT INTO user_info(email, project_name, project_type, date) VALUES('" + _email + "', '" + _project_name + "','" + project_type + "','"+ _nowdate + "');")).fetchall()
+            data = db.executeAll(   #사용자가 첫 프로젝트를 생성할 때
+                text("INSERT INTO user_info(email, project_name, project_type, date) VALUES('" + str(_email) + "', '" + str(_project_name) + "','" + str(project_type) + "','" + _nowdate + "');")).fetchall()
+            print(data)
             with app.database.connect() as conn:
                 conn.commit()
 
@@ -172,8 +175,7 @@ def save_project():
 
         
         # brain 프로젝트 저장시
-        study_Data = app.database.execute(text("SELECT img_name, age, gender FROM brain_info WHERE email = '" + session[
-            'user'] + "' AND project_img = '" + _project_name.split('.')[0] + "';")).fetchall()
+        study_Data = db.executeAll(text("SELECT img_name, age, gender FROM brain_info WHERE email = '" + session['user'] + "' AND project_img = '" + _project_name.split('.')[0] + "';")).fetchall()
         for idx, data in enumerate(study_data):
             _study_num=data[0].split(".")[0][0:5]
             _db_age_list.append([_study_num, data[1]])
@@ -226,18 +228,18 @@ def save_project():
 
                 # save brain project on DB
                 print(project_content['_via_img_metadata'])
-                json_data = app.database.execute(text("SELECT * FROM brain_info WHERE email = '" + session[
+                json_data = db.executeAll(text("SELECT * FROM brain_info WHERE email = '" + session[
                     'user'] + "' AND project_img = '" + _sep_project_name + "' AND img_name = '" + json_name + "';")).fethall()
 
                 # 기존 data가 없을 때
                 if len(json_data) == 0:
-                    json_data = app.database.execute(
+                    json_data = db.executeAll(
                         text("INSERT INTO brain_info(email, img_name, project_img, age, gender) VALUES('" + _email + "', '" + json_name + "', '" + str(_sep_project_name) + "', '" + str(_age) + "', '" + str(_gender) + "');")).fecthall()
                     
                     with app.database.connect() as conn:
                         conn.commit()
                 else:
-                    json_data = app.database.execute(text("UPDATE brain_info SET" + " age = '" + str(_age) + "', gender = '" + str(_gender) + "' WHERE email = '" + session['user'] + "' AND project_img = '" + str(_sep_project_name) + "' AND img_name = '" + str(json_name) + "';")).fecthall()
+                    json_data = db.executeAll(text("UPDATE brain_info SET" + " age = '" + str(_age) + "', gender = '" + str(_gender) + "' WHERE email = '" + session['user'] + "' AND project_img = '" + str(_sep_project_name) + "' AND img_name = '" + str(json_name) + "';")).fecthall()
                     with app.database.connect() as conn:
                         conn.commit()
 
@@ -245,7 +247,7 @@ def save_project():
         # 이미지 리스트에서 삭제한 이미지에 대한 DB와 서버에 있는 파일들을 삭제 (DB 삭제전 서버파일 먼저 삭제시 오류 발생)
         for filename in _filenames:
             if filename not in _image_filename_list:
-                json_data = app.database.execute(text("DELETE FROM brain_info WHERE project_img='"+_fname+"' AND img_name LIKE '" + filename.split(".")[0] + ".json';")).fecthall()
+                json_data = db.executeAll(text("DELETE FROM brain_info WHERE project_img='"+_fname+"' AND img_name LIKE '" + filename.split(".")[0] + ".json';")).fecthall()
                 with app.database.connect() as conn:
                     conn.commit()
                 os.remove(BASE_DIR + "/statics/test_img/" + _userId + "/" + _fname + "/" + filename)
@@ -302,13 +304,13 @@ def record():
 
         page = request.args.get(get_page_parameter(), type=int, default=1)
         start_article = (page - 1) * NumArticle
-        ownrecord = app.database.execute(text("SELECT SUBSTRING_INDEX(project_name, '.', 1) as project_name_print, rid, project_name, project_type, date FROM user_info WHERE email = '" + str(
+        ownrecord = db.executeAll("SELECT SUBSTRING_INDEX(project_name, '.', 1) as project_name_print, rid, project_name, project_type, date FROM user_info WHERE email = '" + str(
             userId) + "' ORDER BY rid DESC" + " LIMIT " + str(
-            start_article) + ", " + str(NumArticle) + ";")).fetchall()
+            start_article) + ", " + str(NumArticle) + ";")
 
         # get DB list from selected option in history page
 
-        total_cnt = app.database.execute(text("SELECT COUNT(*) FROM user_info WHERE email = '" + str(userId) + "';")).fetchall()
+        total_cnt = db.executeAll("SELECT COUNT(*) FROM user_info WHERE email = '" + str(userId) + "';")
 
         pagination = Pagination(page=page, total=total_cnt[0][0], search=search, per_page=NumArticle,
                                 record_name='ownrecord', css_framework='bootstrap3')
@@ -367,11 +369,11 @@ def study_record():
             option = "email = '" + userId + "' AND styloid = 1 AND scaphoid = 1 ORDER BY jid DESC "
         elif chose_opt == 18:
             option = "email = '" + userId + "' AND radius = 1 AND styloid = 1 AND scaphoid = 1 ORDER BY jid DESC "
-        ownrecord = app.database.execute(
-            text("SELECT SUBSTRING_INDEX(filename, '.', 1) as filename_print,filename, project_name, direction, age, gender FROM json_info WHERE "
+        ownrecord = db.executeAll(
+            "SELECT SUBSTRING_INDEX(filename, '.', 1) as filename_print,filename, project_name, direction, age, gender FROM json_info WHERE "
             + option + " LIMIT " + str(
-                start_article) + ", " + str(NumArticle) + ";")).fetchall()
-        total_cnt = app.database.execute(text("SELECT COUNT(*) FROM json_info WHERE " + option + ";")).fetchall()
+                start_article) + ", " + str(NumArticle) + ";")
+        total_cnt = db.executeAll("SELECT COUNT(*) FROM json_info WHERE " + option + ";")
 
         pagination = Pagination(page=page, total=total_cnt[0][0], search=search, per_page=NumArticle, record_name='ownrecord', css_framework='bootstrap3')
 
@@ -389,7 +391,7 @@ def del_project():
 
         for rid in request.json['deleteList']:
             if rid:
-                dataDB = app.database.execute(text("SELECT project_name, project_type FROM user_info WHERE rid='"+rid+"';")).fetchall()
+                dataDB = db.executeAll("SELECT project_name, project_type FROM user_info WHERE rid='"+rid+"';")
                 project_name = dataDB[0][0].split(".")[0]
                 # 해당 프로젝트의 폴더, 파일 삭제
                 if os.path.isdir(BASE_DIR + "/statics/test_img/"+_userId+"/"+project_name):
@@ -401,10 +403,9 @@ def del_project():
                 if os.path.exists(BASE_DIR + "/statics/test_json/"+_userId+"/"+dataDB[0][0]):
                     os.remove(BASE_DIR + "/statics/test_json/"+_userId+"/"+dataDB[0][0])
                 # 해당 프로젝트 DB 삭제
-                app.database.execute("DELETE FROM brain_info WHERE project_img = '" + project_name + "';")
-                app.database.execute("DELETE FROM user_info WHERE rid = '" + rid + "';")
-                with app.database.connect() as conn:
-                    conn.commit()
+                db.execute("DELETE FROM brain_info WHERE project_img = '" + project_name + "';")
+                db.execute("DELETE FROM user_info WHERE rid = '" + rid + "';")
+                db.commit()
 
         return json.dumps({'success': success}) # python 객체를 json 형태로 변환
     else:

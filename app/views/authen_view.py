@@ -12,7 +12,7 @@ from PIL import Image
 from datetime import datetime
 from flaskext.mysql import MySQL
 from contextlib import closing
-from flask_bcrypt import Bcrypt
+from app import flask_bcrypt
 import distutils.core
 import re
 import scipy, numpy, shutil, os, nibabel
@@ -28,6 +28,7 @@ from app.lib.fill_json import fill_json
 from app.lib.transform_to_xml import transform_to_xml
 from app.lib.json_seperator import json_seperator
 
+from app import db
 
 bp = Blueprint('authen',__name__,url_prefix='/authen',template_folder='templates')
 
@@ -45,7 +46,7 @@ def validateLogin():
             _username = request.form['inputEmail']
             _password = request.form['inputPassword']
             
-            data = app.database.execute(text("SELECT * FROM member WHERE email = '" + _username + "';")).fetchall()
+            data = db.executeAll("SELECT * FROM member WHERE email = '" + _username + "';")
             
             if len(data) > 0:
                     if data[0][4] == 1:
@@ -76,7 +77,7 @@ def checkId():
     if request.method == 'POST':
         _checkEmail = request.json['dueId']
 
-        data = app.database.execute(text("SELECT COUNT(*) FROM member WHERE email = '" + str(_checkEmail) + "';")).fetchall()
+        data = db.executeAll("SELECT COUNT(*) FROM member WHERE email = '" + str(_checkEmail) + "';")
         return json.dumps(data[0][0])
     else:
         return render_template('error.html', error='Bad try to access')
@@ -93,19 +94,19 @@ def signUp():
             now = datetime.now()
             _nowDatetime = now.strftime('%Y/%m/%d %H:%M:%S')
             if _name and _email and _password:
-                _hashed_password = bcrypt.generate_password_hash(_password).decode('utf-8')
-                chkMem = app.database.execute(text("SELECT name FROM member WHERE email = '" + str(_email) + "';")).fetchall()
+                _hashed_password = flask_bcrypt.generate_password_hash(_password).decode('utf-8')
+                chkMem = db.executeAll("SELECT name FROM member WHERE email = '" + str(_email) + "';")
                 if len(chkMem) == 0:
-                    data = app.database.execute(text("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")).fetchall()
-                    with app.database.connect() as conn:
-                        conn.commit()
-                    content = "New boneage applyer name: " + _name + " and email: " + _email
+                    data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
+                    db.commit()
+                    content = "New applyer name: " + _name + " and email: " + _email
                     # mail_apache(1, content, "nanjun1@naver.com")
                 return render_template('response.html', result='Success to join, please wait to receive authorision email')
             else:
                 return render_template('error.html', error='Wrong and miss information for join')
 
         except Exception as e:
+            print(e)
             return render_template('error.html', error='Try login. If not, join again please.')
     else:
         return render_template('error.html', error='Bad try to access')

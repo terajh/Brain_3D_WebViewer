@@ -49,6 +49,7 @@ name varchar(50) not null,
 email varchar(100) not null,
 password longtext not null,
 authorize int(2) not null,
+joinDate DATETIME not null,
 primary key(mid)
 );
 

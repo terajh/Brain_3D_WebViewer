@@ -4,14 +4,16 @@ from flaskext.mysql import MySQL
 from contextlib import closing
 from flask_bcrypt import Bcrypt
 from .models import models
+import pymysql
 import os
 # from .config import config_by_name
 from sqlalchemy import create_engine, text
+from dbModule import Database
 
 # import config
-flask_bcrypt = Bcrypt()
+flask_bcrypt = None
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-database = None
+db = Database()
 
 class NDArrayEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -21,15 +23,13 @@ class NDArrayEncoder(json.JSONEncoder):
 
 def create_app():
     app = Flask(__name__, static_url_path="/statics", static_folder="statics")
-
+    global flask_bcrypt
+    flask_bcrypt = Bcrypt(app)
     from .views import main_view, authen_view
     from .api import filemanager
     # from .api import big_file
     app.config.from_pyfile('config.py')
-    global database
-    database = create_engine(app.config['DB_URL'], encoding = 'utf-8')
-    app.database = database
-
+    
     app.register_blueprint(main_view.bp, url_prefix='/')
     app.register_blueprint(authen_view.bp, url_prefix='/authen')
 

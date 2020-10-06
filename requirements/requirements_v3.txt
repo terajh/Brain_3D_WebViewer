@@ -1,0 +1,12 @@
+flask_script
+flask-mysql
+flask_bcrypt
+sqlalchemy
+flask_paginate
+opencv-python
+pillow
+scipy
+nibabel
+mxnet
+imageio
+mysql-connector-python

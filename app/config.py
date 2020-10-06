@@ -1,4 +1,5 @@
 # db config file
+import pymysql
 
 db = {
     'user'     : 'root',
