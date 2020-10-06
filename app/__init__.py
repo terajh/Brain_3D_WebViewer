@@ -8,7 +8,7 @@ import pymysql
 import os
 # from .config import config_by_name
 from sqlalchemy import create_engine, text
-from dbModule import Database
+from .dbModule import Database
 
 # import config
 flask_bcrypt = None

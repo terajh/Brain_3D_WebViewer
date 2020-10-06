@@ -1,5 +1,5 @@
 import pymysql
-from config import db
+from .config import db
 
 class Database():
     def __init__(self):

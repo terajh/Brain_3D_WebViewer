@@ -47,12 +47,12 @@ def validateLogin():
             _password = request.form['inputPassword']
             
             data = db.executeAll("SELECT * FROM member WHERE email = '" + _username + "';")
-            
+            print(data[0])
             if len(data) > 0:
-                    if data[0][4] == 1:
+                    if data[0]['authorize'] == 1:
                         # if bcrypt.check_password_hash(str(data[0][3]), _password):
-                        if str(data[0][3]==_password):
-                            session['user'] = data[0][2]
+                        if str(data[0]['password']==_password):
+                            session['user'] = data[0]['email']
                             _id01 = session['user'].split("@")
                             _id02 = _id01[1].split(".")
                             _userId = _id01[0] + _id02[0]
@@ -66,7 +66,7 @@ def validateLogin():
                 return render_template('error.html', error='Wrong Email address or Non-member.')
 
         except Exception as e:
-            print(e)
+            print("vali error", e)
             return render_template('error.html', error=str(e))
     else:
         return render_template('error.html', error='Bad try to access')

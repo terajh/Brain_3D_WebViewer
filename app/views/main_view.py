@@ -47,11 +47,12 @@ def loginpage():
 def get_image_data():
     print('get image data render')
     if request.method == 'GET':
+        print("###",session)
         # print('##',request.args.get('file_names'))
         file_name = request.args.get('file_names')
         projec_name = request.args.get('projec_names')
         image_path = 'statics/test_img/'
-        full_path = image_path+session['userID']+'/'+str(projec_name)+'/'+file_name
+        full_path = image_path + session['userID']+'/'+str(projec_name)+'/'+file_name
         # img_data = img.get_fdata()
         try:
             file = send_file(full_path, mimetype='application/octet-stream',as_attachment=True,  attachment_filename=file_name)
@@ -261,7 +262,8 @@ def save_project():
 @bp.route('/new_project', methods=['GET'])
 def new_project():
     print('new project render')
-    first = request.args.get('first', type=int, default=5)   #new 'fracture' project -> first=0, new 'kneeOA' project -> first=3
+    print("###",session)
+    first = request.args.get('first', type=int, default=5)   #new 'fracture' project -> first=0
     _userId = session['userID']
     _date = datetime.now()
     _nowdate = _date.strftime('%Y%m%d%H%M')
@@ -300,6 +302,8 @@ def record():
         userId = session['user']
         _userId = userId.split("@")[0]
         NumArticle = 10
+
+        
         search = False
 
         page = request.args.get(get_page_parameter(), type=int, default=1)
@@ -311,8 +315,10 @@ def record():
         # get DB list from selected option in history page
 
         total_cnt = db.executeAll("SELECT COUNT(*) FROM user_info WHERE email = '" + str(userId) + "';")
-
-        pagination = Pagination(page=page, total=total_cnt[0][0], search=search, per_page=NumArticle,
+        print(total_cnt)
+        
+        total_cnt = total_cnt[0]['COUNT(*)']
+        pagination = Pagination(page=page, total=total_cnt, search=search, per_page=NumArticle,
                                 record_name='ownrecord', css_framework='bootstrap3')
         return render_template('select/sel_pro.html', ownrecord=ownrecord, pagination=pagination)
     else:
