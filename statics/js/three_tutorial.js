@@ -4,11 +4,15 @@ import css from '../css/main.css'
 import ObjectLoader from '../../src/loaders/ObjectLoader.js'
 
 var scene = new THREE.Scene();
+// 1. 장면 생성
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// 2. 카메라 생성
 
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer(); // 랜더링하는데 그래픽카드를 사용하도록 WebGLRender 생성
+// 3. 랜더러 생성
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+// 설정한 랜더러 body 에 추가
 
 // window size 바뀔 때마다 renderer size 재설정
 window.addEventListener('resize', function () {
@@ -19,10 +23,11 @@ window.addEventListener('resize', function () {
     camera.updateProjectionMatrix();
 })
 var controls = new OrbitControls( camera, renderer.domElement);
-// camera, renderer의 dom 요소로 control 생성
+// camera, renderer의 dom 요소로 control 추가
 
-// create the shape
+/***  create the shape  ***/
 var geometry = new THREE.BoxGeometry(2, 2, 2);
+// 크기 설정
 var cubeMaterials = [ 
     new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("statics/imgs/5.jpg"), side: THREE.DoubleSide}), // RIGHT SIDE
     new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load('statics/imgs/7.jpg'), side: THREE.DoubleSide}), // LEFT SIDE
@@ -37,6 +42,7 @@ var cube = new THREE.Mesh(geometry, cubeMaterials);
 scene.add(cube);
 // 설정한 material 추가
 
+// 이런식으로 랜더러, 카메라, 컨트롤을 추가한 장면에 cube 와 같은 객체를 만들어 추가해준다.
 
 // floor
 var floorGeometry = new THREE.CubeGeometry( 10, 1, 10 );
@@ -132,8 +138,10 @@ var render = function () {
 // run game loop (update, render, repeat)
 var GameLoop = function () {
     requestAnimationFrame(GameLoop);
-    update();
-    render();
+    // 원래는 setInterval로 간격정해서 해주어야 하는데 이는 CPU 사용량과 나쁜 성능을 초래할 수 있기 떄문에 
+    // 브라우저에서 지원하는 requestAnimationFrame 함수를 사용한다.
+    update(); // 애니메이션 추가
+    render(); // 랜더러에게 랜더링 요청  
 };
 
 GameLoop();
