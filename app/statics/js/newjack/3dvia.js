@@ -346,7 +346,6 @@ function show_image_grid_view() {
         set_display_area_content(VIA_DISPLAY_AREA_CONTENT_NAME.PAGE_START_INFO);
     }
 }
-
 //
 // Handlers for top navigation bar
 //
@@ -1451,8 +1450,9 @@ function _via_reg_canvas_mouseup_handler(e) {
     e.stopPropagation();
     _via_mouse_down = false;
     _via_click_x1 = e.offsetX;
-     _via_click_y1 = e.offsetY;
+    _via_click_y1 = e.offsetY;
 
+    papaya.viewer.Viewer.prototype.drawViewer(true, false);
     var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
     var click_dy = Math.abs(_via_click_y1 - _via_click_y0);
 
@@ -1714,6 +1714,8 @@ function _via_reg_canvas_mouseup_handler(e) {
                     var width = Math.round(region_dx * _via_canvas_scale);
                     var height = Math.round(region_dy * _via_canvas_scale);
                     if (firstTry === "5" || firstTry === "6") {
+                        console.log(current_viewer);
+                            debugger;
                         var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                         var default_depth = 20;
                         if (slice === 'x') {
@@ -1729,7 +1731,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['dz'] = height;
                             original_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x - (default_depth/2))) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
@@ -1742,7 +1743,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-                            if(_via_zoom_degree != 1){
+                            if(_via_zoom_degree != 1){ // when zoom in
                                 original_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 original_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 original_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
@@ -1756,8 +1757,8 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
                                 canvas_img_region.shape_attributes['dx'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dx']);
                                 canvas_img_region.shape_attributes['dy'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dy']);
-                                canvas_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dz']);
-                            }
+                                canvas_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dz']);  
+                            }    
                         }
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
@@ -4539,13 +4540,13 @@ function labelling_list_ith_entry_html(i) {
 
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     if (case_slice === 'x'){
-        var posName = "( " + attr['cx'] + ", " + attr['y'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
+        var posName = "( " + attr['cx'] + ", " + attr['cy'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
         posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
     }else if (case_slice === 'y'){
-        var posName = "( " + attr['x'] + ", " + attr['cy'] + ", " + attr['z'] + " ) dx : " + attr['dx'];
+        var posName = "( " + attr['cx'] + ", " + attr['cy'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
         posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
     }else if (case_slice === 'z'){
-        var posName = "( " + attr['x'] + ", " + attr['y'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
+        var posName = "( " + attr['cx'] + ", " + attr['cy'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
         posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
     }
 
@@ -7145,10 +7146,7 @@ async function project_file_add_local(event) {
     if(_via_current_file_num != -1) {
         document.getElementById('papayaContainer'+_via_current_file_num).classList.add('display_none');
         document.getElementById('bim'+_via_current_file_num).classList.add('display_none');
-
         document.getElementById('papayaContainer'+(_via_max_file_num)).classList.remove('display_none');
-        // document.getElementById('bim'+(_via_current_file_num+1)).classList.remove('display_none');
-
     }
     
     var user_selected_images = event.target.files;

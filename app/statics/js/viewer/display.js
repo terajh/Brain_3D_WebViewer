@@ -8,7 +8,6 @@
 var papaya = papaya || {};
 papaya.viewer = papaya.viewer || {};
 
-
 /*** Constructor ***/
 papaya.viewer.Display = papaya.viewer.Display || function (container, width) {
     this.container = container;
@@ -28,22 +27,16 @@ papaya.viewer.Display = papaya.viewer.Display || function (container, width) {
     this.progressTimeout = null;
     this.drawingProgress = false;
     this.errorMessage = "";
-
     this.drawUninitializedDisplay();
 };
-
 
 /*** Static Pseudo-constants ***/
 
 papaya.viewer.Display.SIZE = 50;
-
 papaya.viewer.Display.MINI_LABELS_THRESH = 700;
-
 papaya.viewer.Display.PADDING = 8;
-
 papaya.viewer.Display.FONT_COLOR_WHITE = "white";
 papaya.viewer.Display.FONT_COLOR_ORANGE = "rgb(182, 59, 0)";
-
 papaya.viewer.Display.FONT_SIZE_COORDINATE_LABEL = 12;
 papaya.viewer.Display.FONT_COLOR_COORDINATE_LABEL = papaya.viewer.Display.FONT_COLOR_WHITE;
 papaya.viewer.Display.FONT_TYPE_COORDINATE_LABEL = "sans-serif";
@@ -73,7 +66,6 @@ papaya.viewer.Display.PROGRESS_LABEL_DEFAULT = "Loading";
 
 
 /*** Prototype Methods ***/
-
 papaya.viewer.Display.prototype.drawUninitializedDisplay = function () {
     this.context.fillStyle = "#000000";
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -85,8 +77,6 @@ papaya.viewer.Display.prototype.canDraw = function () {
     return !(this.drawingError || this.drawingProgress);
 };
 
-
-
 papaya.viewer.Display.prototype.drawEmptyDisplay = function () {
     if (this.canDraw()) {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -96,8 +86,6 @@ papaya.viewer.Display.prototype.drawEmptyDisplay = function () {
         this.drawError(this.errorMessage);
     }
 };
-
-
 
 papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
     var locY, val, viewerOrigin, height, atlasNumLabels, atlasLabelWidth, atlasLabel, ctr, metricsAtlas, sizeRatio,
@@ -110,14 +98,11 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
         coordinateItemWidth = halfWidth / 5.0;
         height = this.canvas.height;
         smallViewer = (halfWidth < 300);
-
         if (this.container.preferences.atlasLocks !== "Mouse") {
             xLoc = this.viewer.currentCoord.x;
             yLoc = this.viewer.currentCoord.y;
             zLoc = this.viewer.currentCoord.z;
         }
-        
-
         // canvas background
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = "#000000";
@@ -134,7 +119,6 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
         this.context.fillText("y", 1.5 * papaya.viewer.Display.PADDING + coordinateItemWidth, locY);
         this.context.fillText("z", 1.5 * papaya.viewer.Display.PADDING + (2 * coordinateItemWidth), locY);
 
-
         // coordinate values
         locY += papaya.viewer.Display.FONT_SIZE_COORDINATE_VALUE + papaya.viewer.Display.PADDING / 2;
 
@@ -149,6 +133,7 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
                 (Math.round(papaya.viewer.Display.PRECISION_COORDINATE_VALUE * sizeRatio)));
             this.context.fillText(parseFloat(((xLoc - viewerOrigin.x) * viewerVoxelDims.xSize).toString().substr(0,
                 precision)), 1.5 * papaya.viewer.Display.PADDING, locY);
+            
             this.context.fillText(parseFloat(((viewerOrigin.y - yLoc) * viewerVoxelDims.ySize).toString().substr(0,
                 precision)), 1.5 * papaya.viewer.Display.PADDING + coordinateItemWidth, locY);
             this.context.fillText(parseFloat(((viewerOrigin.z - zLoc) * viewerVoxelDims.zSize).toString().substr(0,
@@ -159,7 +144,9 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
                 coordinateItemWidth, locY);
             this.context.fillText(Math.round(zLoc).toString(), 1.5 * papaya.viewer.Display.PADDING +
                 (2 * coordinateItemWidth), locY);
+            console.log(xLoc, yLoc);
         }
+
 
 
         // image value
