@@ -105,31 +105,41 @@
         <div id="message_panel_content" class="content"></div>
     </div>
     <div id="annotation_editor_panel"></div>
-    <div class="top_header" id="ui_top_panel"></div>
-    <div class="toolbar" style="display: None;" id="toolbar"></div>
-    <div id="leftsidebar"></div>
-    <div id="display_area">
-        <div id="image_panel" class="display_area_content">
-            <canvas id="region_canvas" width="1247" height="813" tabindex="1" class="main_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
-            <div id="sub_canvases">
-                <canvas id="region_canvas2" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
-                <canvas id="region_canvas3" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+
+
+    <header class="top_header" id="ui_top_panel">
+
+        <div class="toolbar" style="display: None;" id="toolbar"></div>
+    </header>
+    <nav>
+        <div id="leftsidebar1"></div>
+        <div id="leftsidebar"></div>
+    </nav>
+    <section>
+        <div id="display_area">
+            <div id="image_panel" class="display_area_content">
+                <canvas id="region_canvas" width="1247" height="813" tabindex="1" class="main_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+                <div id="sub_canvases">
+                    <canvas id="region_canvas2" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+                    <canvas id="region_canvas3" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="drawing_area">
-        <canvas id="drawing_canvas" width="750" height="724" tabindex="1" class="main_drawing_canvas display_none"></canvas>
-    </div>
-    <div class="papaya" data-params="params"></div>
-    <div class="papaya display_none" data-params="params"></div>
-    <div class="papaya display_none" data-params="params"></div>
-    <div class="papaya display_none" data-params="params"></div>
-    <div class="papaya display_none" data-params="params"></div>
-
+        <div id="drawing_area">
+            <canvas id="drawing_canvas" width="750" height="724" tabindex="1" class="main_drawing_canvas display_none"></canvas>
+        </div>
+        <div class="papaya" data-params="params"></div>
+        <div class="papaya display_none" data-params="params"></div>
+        <div class="papaya display_none" data-params="params"></div>
+        <div class="papaya display_none" data-params="params"></div>
+        <div class="papaya display_none" data-params="params"></div>
+    </section>
 
     <div id="image_grid_panel" class="display_area_content display_none"></div>
     <div id="settings_panel" class="display_area_content display_none"></div>
-    <div id="labelling_sidebar" style="display:table-cell; width: 305px;"></div>
+
+    <div id="labelling_sidebar"></div>
+    <aside></aside>
     <div id="page_start_info" class="display_area_content display_none narrow_page_content"></div>
     <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
 
@@ -152,7 +162,7 @@
         // UI html elements
 
         var invisible_file_input = document.getElementById("invisible_file_input");
-        var invisible_submit = document.getElementById("invisible_submit");
+        var invisible_subt = document.getElementById("invisible_submit");
         var display_area = document.getElementById("display_area");
         var ui_top_panel = document.getElementById("ui_top_panel");
         var image_panel = document.getElementById("image_panel");

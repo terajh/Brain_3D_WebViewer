@@ -163,6 +163,7 @@ var _via_is_save_ongoing = false;
 // currently accessible by the user. The img_fn_list is visible in the
 // left side toolbar. image_grid, next/prev, etc operations depend on
 // the contents of _via_img_fn_list_img_index_list.
+
 var _via_image_id_list = []; // array of all image id (in order they were added by user)
 var _via_image_filename_list = []; // array of all image filename
 var _via_image_load_error = []; // {true, false}

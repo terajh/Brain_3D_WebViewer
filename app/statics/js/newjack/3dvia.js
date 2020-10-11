@@ -76,11 +76,7 @@ function _via_init() {
     show_message(VIA_NAME + ' (' + VIA_SHORT_NAME + ') version ' + VIA_VERSION +
         '. Ready !', 2 * VIA_THEME_MESSAGE_TIMEOUT_MS);
 
-    if (_via_is_debug_mode) {
-        document.getElementById('ui_top_panel').innerHTML += '<span>DEBUG MODE</span>';
-    }
-
-    document.getElementById('img_fn_list').style.display = 'block';
+    // document.getElementById('img_fn_list').style.display = 'block';
     document.getElementById('leftsidebar').style.display = 'table-cell';
 
     // initialize default project
@@ -115,6 +111,64 @@ function _via_init() {
     
 
 }
+
+
+function leftsidebar_accordian_show_project() {
+    // Todo PRoject가 보이게 하기
+    document.getElementById("project_panel_title").setAttribute("style","display:inline-block");
+    document.getElementById("hidden02").setAttribute("style","display:none");
+    document.getElementById("project_panel_tools").setAttribute("style","display:none");
+    document.getElementById("project_panel_tools").className="leftsidebar_accordion";
+    document.getElementById("tools_fn_list_panel").className="leftsidebar_accordion_panel";
+    document.getElementById("hidden03").setAttribute("style","display:none");
+    document.getElementById("hidden03").className="leftsidebar_accordion";
+    document.getElementById("hidden04").className="leftsidebar_accordion_panel";
+}
+function leftsidebar_accordian_show_tools() {
+    // Todo tools가 보이게 하기
+    document.getElementById("project_panel_tools").setAttribute("style","display:inline-block");
+    document.getElementById("project_panel_title").setAttribute("style","display:none");
+    document.getElementById("project_panel_title").className="leftsidebar_accordion";
+    document.getElementById("img_fn_list_panel").className="leftsidebar_accordion_panel";
+    document.getElementById("hidden02").setAttribute("style","display:none");
+    document.getElementById("hidden03").setAttribute("style","display:none");
+    document.getElementById("hidden03").className="leftsidebar_accordion";
+    document.getElementById("hidden04").className="leftsidebar_accordion_panel";
+}
+function leftsidebar_accordian_show_toggle() {
+    // Todo toggle이 보이게 하기 
+    document.getElementById("project_panel_title").setAttribute("style","display:none");
+    document.getElementById("project_panel_title").className="leftsidebar_accordion";
+    document.getElementById("img_fn_list_panel").className="leftsidebar_accordion_panel";
+    document.getElementById("project_panel_tools").setAttribute("style","display:none");
+    document.getElementById("project_panel_tools").className="leftsidebar_accordion";
+    document.getElementById("tools_fn_list_panel").className="leftsidebar_accordion_panel";
+    document.getElementById("hidden02").setAttribute("style","display:inline-block");
+    document.getElementById("hidden03").setAttribute("style","display:none");
+    document.getElementById("hidden03").className="leftsidebar_accordion";
+    document.getElementById("hidden04").className="leftsidebar_accordion_panel";
+
+}
+function leftsidebar_accordian_show_shortcut() {
+    // Todo shotcut가 보이게 하기
+    document.getElementById("project_panel_tools").setAttribute("style","display:none");
+    document.getElementById("project_panel_tools").className="leftsidebar_accordion";
+    document.getElementById("tools_fn_list_panel").className="leftsidebar_accordion_panel";
+    document.getElementById("project_panel_title").setAttribute("style","display:none");
+    document.getElementById("project_panel_title").className="leftsidebar_accordion";
+    document.getElementById("img_fn_list_panel").className="leftsidebar_accordion_panel";
+    document.getElementById("hidden02").setAttribute("style","display:none");
+    document.getElementById("hidden03").setAttribute("style","display:inline-block");
+}
+
+
+
+
+
+
+
+
+
 
 function uploadImg() {
     var form = $('#img_form')[0];
@@ -4338,8 +4392,8 @@ function leftsidebar_toggle() {
 function leftsidebar_increase_width() {
     var leftsidebar = document.getElementById('leftsidebar');
     var new_width = _via_settings.ui.leftsidebar_width + VIA_LEFTSIDEBAR_WIDTH_CHANGE;
-    leftsidebar.style.width = new_width + 'rem';
-    _via_settings.ui.leftsidebar_width = new_width;
+    // leftsidebar.style.width = new_width + 'rem';
+    // _via_settings.ui.leftsidebar_width = new_width;
     if (_via_current_image_loaded) {
         _via_show_img(_via_image_index);
     }
@@ -4349,8 +4403,8 @@ function leftsidebar_decrease_width() {
     var leftsidebar = document.getElementById('leftsidebar');
     var new_width = _via_settings.ui.leftsidebar_width - VIA_LEFTSIDEBAR_WIDTH_CHANGE;
     if (new_width >= 5) {
-        leftsidebar.style.width = new_width + 'rem';
-        _via_settings.ui.leftsidebar_width = new_width;
+        // leftsidebar.style.width = new_width + 'rem';
+        // _via_settings.ui.leftsidebar_width = new_width;
         if (_via_current_image_loaded) {
             _via_show_img(_via_image_index);
         }
@@ -4366,7 +4420,7 @@ function leftsidebar_show() {
 // source: https://www.w3schools.com/howto/howto_js_accordion.asp
 function init_leftsidebar_accordion() {
     var leftsidebar = document.getElementById('leftsidebar');
-    leftsidebar.style.width = _via_settings.ui.leftsidebar_width + 'rem';
+    // leftsidebar.style.width = _via_settings.ui.leftsidebar_width + 'rem';
     var acc = document.getElementsByClassName('leftsidebar_accordion');
     var i;
     for (i = 0; i < acc.length; ++i) {

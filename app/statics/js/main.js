@@ -552,17 +552,16 @@ papaya.Container.buildPanel = function(){
 }
 papaya.Container.buildHeader = function(){
     var headers = $('#ui_top_panel');
-    this.headerHtml += "<a href='/' class='logo'>CRESCOM</a>";
-    this.headerHtml += "<div class='header-right'>";
-    // this.headerHtml += "<a href='/study_record'><img src='../statics/icon/history-icon.png' \
-    //             srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
-    //              Fracture</a>";
-    // this.headerHtml += "<a href='/knee_record'><img src='../statics/icon/history-icon.png'\
-    //             srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
-    //             Knee OA</a>";
-    this.headerHtml += "<a href='/record'><img src='../statics/icon/history-icon.png'\
-                srcset='../statics/icon/history-icon@2x.png 2x,../statics/icon/history-icon@3x.png 3x' class='icon_help'>\
-                Project</a></div></div>";
+    this.headerHtml = `<div class="top_header row" id="ui_top_panel">
+                            <a href="/" class="logo" style="width:20%;" style="justify-content: flex-start;">CRESCOM</a>
+                            <div class="float-right row top_header_button_panel" id="img_size" style="width:80%;">
+                                <div class="top_header_button button" title="File"><img src=statics/image/view.png /></div>
+                                <div class="top_header_button button" title="view"><img src=statics/image/view.png /></div>
+                                <div class="top_header_button button" title="Settings"><img src=statics/image/settings.png /></div>
+                                <div class="top_header_button button" title="Help"><img src=statics/image/power.png /></div>
+                                <div class="top_header_button button" title="Logout"><img src=statics/image/power.png /></div>
+                            </div>
+                        </div>`;
     headers.append(this.headerHtml);
 }
 
@@ -662,139 +661,185 @@ papaya.Container.buildAnnotation = function() {
     annot.append(annotHtml);
 }
 papaya.Container.buildLeftsidebar = function() {
+    var leftsidebar1 = $('#leftsidebar1');
+    var leftsideHtml1 = null;
+
+
+    leftsideHtml1 =`<button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_project()" id="leftsidebar1_accordian_project1"><img src=statics/image/project.png /></button>
+                    <button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_tools()" ><i>tools</i></button>
+                    <button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_toggle()" ><img src=statics/image/toggle.png /></button>
+                    <button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_shortcut()"><i class="fas fa-search" ></i></button>
+                    `;
+    leftsidebar1.append(leftsideHtml1);
+
+
     var leftsidebar = $('#leftsidebar');
     var leftsideHtml = null;
-    leftsideHtml ="<div id='leftsidebar'>\
-                    <br>\
-                    <button class='leftsidebar_accordion active' id='project_panel_title'>Project</button>\
-                    <div class='leftsidebar_accordion_panel show' id='img_fn_list_panel'>\
-                        <div id='project_info_panel'>\
-                            <div class='row'>\
-                                <span class='col'><label for='project_name'>Name: </label></span>\
-                                <span class='col'><input type='text' value='' onchange='project_on_name_update('project_202007161644')'\
-                                    id='project_name' title='VIA project name' readonly></span>\
-                            </div>\
-                        </div>\
-                        <div id='project_tools_panel'>\
-                            <div class='button_panel' style='margin:0.1rem 0;'>\
-                                <select style='width:48%' id='filelist_preset_filters_list' onchange='img_fn_list_onpresetfilter_select()'\
-                                title='Filter file list using predefined filters'>\
-                                    <option value='all'>All files</option>\
-                                    <option value='files_without_region'>Show files without regions</option>\
-                                    <option value='files_missing_region_annotations'>Show files missing region annotations</option>\
-                                    <option value='files_missing_file_annotations'>Show files missing file annotations</option>\
-                                    <option value='files_error_loading'>Files that could not be loaded</option>\
-                                    <option value='regex'>Regular Expression</option>\
-                                </select>\
-                                <input style='width:50%' type='text' placeholder='regular expression' oninput='img_fn_list_onregex()'\
-                                id='img_fn_list_regex' title='Filter using regular expression'>\
-                            </div>\
-                        </div>\
-                        <div id='img_fn_list'></div>\
-                        <p>\
-                            <div class='button_panel'>\
-                                <span class='button' onclick='sel_local_images()' title='Add new file from local disk'>Add Files</span>\
-                                <span class='button' onclick='project_file_remove_with_confirm()'\
-                                    title='Remove selected file (i.e. file currently being shown) from project'>Remove</span>\
-                                <span class='button' onclick='project_save_with_confirm()' title='save project'>Save Project</span>\
-                                <br><br>\
-                                <span class='button' onclick='via_canvas_toggle()'>&nbsp;Label</span>\
-                                <br><br>\
-                                <span class='button' onclick='via_drawing_canvas_toggle()'>&nbsp;Draw</span>\
-                                <br><br>\
-                            </div>\
-                        </p>\
-                    </div>\
-                    <button class='leftsidebar_accordion' id='attributes_editor_panel_title' style='display:none'>Attributes</button>\
-                    <div class='leftsidebar_accordion_panel' id='attributes_editor_panel' style='display:none'>\
-                        <div class='button_panel' style='padding:1rem 0;'>\
-                            <span class='text_button' onclick='show_region_attributes_update_panel()' id='button_show_region_attributes'\
-                                title='Show region attributes'>Region Attributes</span>\
-                            <span class='text_button' onclick='show_file_attributes_update_panel()' id='button_show_file_attributes'\
-                                title='Show file attributes'>File Attributes</span>\
-                        </div>\
-                        <div id='attributes_update_panel'>\
-                            <div class='button_panel'>\
-                                <input style='width:70%' type='text' placeholder='attribute name' id='user_input_attribute_id' value=''>\
-                                <span id='button_add_new_attribute' class='button' onclick='add_new_attribute_from_user_input()'\
-                                title='Add new attribute'>&plus;</span>\
-                                <span id='button_del_attribute' class='button' onclick='delete_existing_attribute_with_confirm()'\
-                                title='Delete existing attribute'>&minus;</span>\
-                            </div>\
-                            <div class='button_panel' style='margin:0.1rem 0;'>\
-                                <select style='width:100%' id='attributes_name_list' onchange='update_current_attribute_id(this)'\
-                                title='List of existing attributes'></select>\
-                            </div>\
-                            <div id='attribute_properties'></div>\
-                            <div id='attribute_options'></div>\
-                            <p style='text-align:center'>\
-                                <span class='text_button' title='Show a spreadsheet like editor for all manual annotations'\
-                                onclick='annotation_editor_toggle_all_regions_editor()'>Toggle Annotation Editor</span>\
-                            </p>\
-                        </div>\
-                    </div>\
-                    <button id='hidden02' class='text_button01' onclick='annotation_editor_toggle_all_regions_editor()'>Toggle\
-                        Annotation Editor</button><br>\
-                    <button class='leftsidebar_accordion'>Keyboard Shortcuts</button>\
-                    <div class='leftsidebar_accordion_panel' id='keyboard_setting'>\
-                        <div style='display:block; text-align:center; padding:1rem;'>Available only on image focus</div>\
-                            <table>\
-                                <tr>\
-                                    <td style='width:8em;'><span class='key'>&larr;</span>&nbsp;<span class='key'>&uarr;</span>&nbsp;<span\
-                                        class='key'>&rarr;</span>&nbsp;<span class='key'>&darr;</span></td>\
-                                    <td>Move selected region by 1 px (Shift to jump)</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>a</span></td>\
-                                    <td>Select all regions</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>t</span></td>\
-                                    <td>Show labelling canvas regions</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>r</span></td>\
-                                    <td>Toggle nii view</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>g</span></td>\
-                                    <td>Increase slice value</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>f</span></td>\
-                                    <td>Decrease slice value</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>c</span></td>\
-                                    <td>Copy selected regions</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>v</span></td>\
-                                    <td>Paste selected regions</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>d</span></td>\
-                                    <td>Delete selected regions</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Alt</span> + MouseMove</td>\
-                                    <td>Zoom in/out (mouse cursor is over image and move up/down)</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Ctrl</span> + MouseMove</td>\
-                                    <td>Zoom in/out (mouse cursor is over image and move up/down)</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>l</span></td>\
-                                    <td>Toggle labelling region</td>\
-                                </tr>\
-                                <tr>\
-                                    <td><span class='key'>Spacebar</span></td>\
-                                    <td>Toggle annotation editor (Ctrl to toggle on image editor)</td>\
-                                </tr>\
-                            </table>\
-                        </div>\
-                    </div>";
+    leftsideHtml = `
+                    <button class="leftsidebar_accordion active" id="project_panel_title">Project</button>
+                    <div class="leftsidebar_accordion_panel show" id="img_fn_list_panel">
+                        <div id="project_info_panel">
+                            <div class="row">
+                                <span class="col"><label for="project_name">Name: </label></span>
+                                <span class="col"><input type="text" value="" onchange="project_on_name_update(this)" id="project_name" title="VIA project name"></span>
+                                
+                            </div>
+                        </div>
+                        <div id="project_tools_panel">
+                            <div class="button_panel" style="margin:0.1rem 0;">
+                                <select style="width:48%" id="filelist_preset_filters_list" onchange="img_fn_list_onpresetfilter_select()" title="Filter file list using predefined filters">
+                                    <option value="all">All files</option>
+                                    <option value="files_without_region">Show files without regions</option>
+                                    <option value="files_missing_region_annotations">Show files missing region annotations</option>
+                                    <option value="files_missing_file_annotations">Show files missing file annotations</option>
+                                    <option value="files_error_loading">Files that could not be loaded</option>
+                                    <option value="regex">Regular Expression</option>
+                                </select>
+                                <input style="width:50%" type="text" placeholder="regular expression" oninput="img_fn_list_onregex()" id="img_fn_list_regex" title="Filter using regular expression">
+                            </div>
+                        </div>
+                        
+                        <div id="img_fn_list"></div>
+                    </div>
+                    <!-- Attributes -->
+                    <button class="leftsidebar_accordion" id="attributes_editor_panel_title" style="display:none">Attributes</button>
+                    <div class="leftsidebar_accordion_panel" id="attributes_editor_panel" style="display:none">
+                        <div class="button_panel" style="padding:1rem 0;">
+                            <span class="text_button" onclick="show_region_attributes_update_panel()" id="button_show_region_attributes" title="Show region attributes">Region Attributes</span>
+                            <span class="text_button" onclick="show_file_attributes_update_panel()" id="button_show_file_attributes" title="Show file attributes">File Attributes</span>
+                        </div>
+                        <div id="attributes_update_panel">
+                            <div class="button_panel">
+                                <input style="width:70%" type="text" placeholder="attribute name" id="user_input_attribute_id" value="">
+                                <span id="button_add_new_attribute" class="button" onclick="add_new_attribute_from_user_input()" title="Add new attribute">&plus;</span>
+                                <span id="button_del_attribute" class="button" onclick="delete_existing_attribute_with_confirm()" title="Delete existing attribute">&minus;</span>
+                            </div>
+                            <div class="button_panel" style="margin:0.1rem 0;">
+                                <select style="width:100%" id="attributes_name_list" onchange="update_current_attribute_id(this)" title="List of existing attributes"></select>
+                            </div>
+                            <div id="attribute_properties"></div>
+                            <div id="attribute_options"></div>
+                            <p style="text-align:center">
+                                <span class="text_button" style="display:none"  title="Show a spreadsheet like editor for all manual annotations" onclick="annotation_editor_toggle_all_regions_editor()">Toggle Annotation Editor</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- tools-->
+                    <button class="leftsidebar_accordion"  id="project_panel_tools">Tools</button>
+                    <div class="leftsidebar_accordion_panel" id="tools_fn_list_panel">
+                        <table class="border_remove">
+                            <tr>
+                                <br>
+                                <td><span class="button" onclick="sel_local_images()" title="Add new file from local disk"><img src=statics/image/addfiles.png width="100" height="100"/></span></td>
+                                <td><span class="button" onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project"><img src=statics/image/remove.png width="100" height="100"/></span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="button" onclick="project_save_with_confirm()" title="save project"><img src=statics/image/save.png width="100" height="100"/></span></td>
+                                <td><span class="button" onclick="zoom_in()"><img src=statics/image/zoomin.png width="100" height="100"/></span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="button" onclick="zoom_out()"><img src=statics/image/zoomout.png width="100" height="100"/></span><br><br></td>
+                                <td><span class="button" onclick="zoom_out()"><img src=statics/image/draw.png width="100" height="100"/></span><br><br></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--tools end-->
+
+                    <button id="hidden02" class="text_button01" style="display:none" onclick="annotation_editor_toggle_all_regions_editor()">Toggle Annotation Editor</button>
+                    <button id="hidden03" class="leftsidebar_accordion" style="display:none">Keyboard Shortcuts</button>
+                    <div id="hidden04" class="leftsidebar_accordion_panel">
+                        <div style="display:block; text-align:center; padding:1rem;">Available only on image focus</div>
+                        <table>
+                            <tr>
+                                <td style="width:8em;"><span class="key">&larr;</span>&nbsp;<span class="key">&uarr;</span>&nbsp;<span class="key">&rarr;</span>&nbsp;<span class="key">&darr;</span></td>
+                                <td>Move selected region by 1 px (Shift to jump)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">a</span></td>
+                                <td>Select all regions</td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="key">c</span></td>
+                                <td>Copy selected regions</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">v</span></td>
+                                <td>Paste selected regions</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">d</span></td>
+                                <td>Delete selected regions</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">Ctrl</span> + Wheel</td>
+                                <td>Zoom in/out (mouse cursor is over image)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">l</span></td>
+                                <td>Toggle region label</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">b</span></td>
+                                <td>Toggle region boundary</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">Enter</span></td>
+                                <td>Finish drawing polyshape</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">Backspace</span></td>
+                                <td>Delete last polyshape vertex</td>
+                            </tr>
+                        </table>
+
+                        <div style="display:block; text-align:center; padding:1rem;">Always Available</div>
+                        <table>
+                            <tr>
+                                <td style="width:8em;"><span class="key">&larr;</span>&nbsp;<span class="key">&rarr;</span></td>
+                                <td>Move to next/previous image</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">+</span>&nbsp;<span class="key">-</span>&nbsp;<span class="key">=</span></td>
+                                <td>Zoom in/out/reset</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">&uarr;</span></td>
+                                <td>Update region label</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">&darr;</span></td>
+                                <td>Update region colour</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">Spacebar</span></td>
+                                <td>Toggle annotation editor (Ctrl to toggle on image editor)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">Home</span> / <span class="key">h</span></td>
+                                <td>Jump to first image</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">End</span> / <span class="key">e</span></td>
+                                <td>Jump to last image</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">PgUp</span> / <span class="key">u</span></td>
+                                <td>Jump several images</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key">PgDown</span> / <span class="key">d</span></td>
+                                <td>Jump several images</td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="key">Esc</span></td>
+                                <td>Cancel ongoing task</td>
+                            </tr>
+                        </table>
+                    </div> 
+                    `;
     leftsidebar.append(leftsideHtml);
 }
 papaya.Container.build404 = function() {
@@ -848,10 +893,10 @@ papaya.Container.buildGrid = function() {
 papaya.Container.buildRightsidebar = function() {
     var rightsidebar = $('#labelling_sidebar');
     var rightsidebarHtml = null;
-    rightsidebarHtml = "<br>\
+    rightsidebarHtml = `
                         <button class='leftsidebar_accordion active' id='labelling_panel_title'>Labelling List</button>\
                         <div class='leftsidebar_accordion_panel show' id='labelling_fn_list_panel'>\
-                        <div id='labelling_list'></div>";
+                        <div id='labelling_list'></div>`;
     rightsidebar.append(rightsidebarHtml);
 }
 papaya.Container.buildPlusContainer = function() {

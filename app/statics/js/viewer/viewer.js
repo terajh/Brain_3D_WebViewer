@@ -22,7 +22,7 @@ papaya.viewer.Viewer = papaya.viewer.Viewer || function (container, width, heigh
     this.context = this.canvas.getContext("2d");
     this.canvas.style.padding = 0;
     this.canvas.style.margin = 0;
-    this.canvas.style.border = "none";
+    this.canvas.style.border = "1px solid red";
     this.atlas = null;
     this.initialized = false;
     this.pageLoaded = false;
@@ -1159,7 +1159,7 @@ papaya.viewer.Viewer.prototype.drawEmptyViewer = function () {
         this.context.font = fontSize + "px sans-serif";
         locY = this.canvas.height - 20;
 
-        text = "Papaya (Build " + PAPAYA_BUILD_NUM + ")";
+        text = "NewJack viewer";
         metrics = this.context.measureText(text);
         textWidth = metrics.width;
         this.context.fillText(text, this.canvas.width - textWidth - 20, locY);

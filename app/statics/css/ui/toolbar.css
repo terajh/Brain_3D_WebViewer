@@ -3,6 +3,7 @@
     text-align: left;
     box-sizing: content-box;
     position: relative;
+    display: none;
 }
 
 
