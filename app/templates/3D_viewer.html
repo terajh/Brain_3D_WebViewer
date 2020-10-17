@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
     <link rel="stylesheet" type="text/css" href="../../statics/css/base.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/via.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/ui/toolbar.css" />
@@ -42,7 +43,7 @@
     <script type="text/javascript" src="../../statics/lib/GLU.js"></script>
 
     <script type="text/javascript" src="../../statics/js/constants.js"></script>
-
+    <script type="text/javascript" src="../../statics/js/newjack/toolbarclick.js"></script>
     <script type="text/javascript" src="../../statics/js/newjack/3dvia.js"></script>
 
     <script type="text/javascript" src="../../statics/js/utilities/array-utils.js"></script>
@@ -96,15 +97,12 @@
 
     <script type="text/javascript" src="../../statics/js/main.js"></script>
 
+
     <title>Crescom</title>
 </head>
 
 <body>
-    <div id="user_input_panel"></div>
-    <div id="message_panel">
-        <div id="message_panel_content" class="content"></div>
-    </div>
-    <div id="annotation_editor_panel"></div>
+
 
 
     <header class="top_header" id="ui_top_panel">
@@ -118,39 +116,47 @@
     <section>
         <div id="display_area">
             <div id="image_panel" class="display_area_content">
-                <canvas id="region_canvas" width="1247" height="813" tabindex="1" class="main_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+                <canvas id="region_canvas" width="1247" height="813" tabindex="1" class="main_canvas">Sorry, your
+                    browser does not support HTML5 Canvas </canvas>
                 <div id="sub_canvases">
-                    <canvas id="region_canvas2" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
-                    <canvas id="region_canvas3" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your browser does not support HTML5 Canvas </canvas>
+                    <canvas id="region_canvas2" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your
+                        browser does not support HTML5 Canvas </canvas>
+                    <canvas id="region_canvas3" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your
+                        browser does not support HTML5 Canvas </canvas>
                 </div>
             </div>
         </div>
         <div id="drawing_area">
-            <canvas id="drawing_canvas" width="750" height="724" tabindex="1" class="main_drawing_canvas display_none"></canvas>
+            <canvas id="drawing_canvas" width="750" height="724" tabindex="1"
+                class="main_drawing_canvas display_none"></canvas>
         </div>
         <div class="papaya" data-params="params"></div>
-        <div class="papaya display_none" data-params="params"></div>
-        <div class="papaya display_none" data-params="params"></div>
-        <div class="papaya display_none" data-params="params"></div>
-        <div class="papaya display_none" data-params="params"></div>
     </section>
-
-    <div id="image_grid_panel" class="display_area_content display_none"></div>
-    <div id="settings_panel" class="display_area_content display_none"></div>
-
-    <div id="labelling_sidebar"></div>
     <aside></aside>
-    <div id="page_start_info" class="display_area_content display_none narrow_page_content"></div>
-    <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
+    <details>
+        <div id="user_input_panel"></div>
+        <div id="message_panel">
+            <div id="message_panel_content" class="content"></div>
+        </div>
+        <div id="annotation_editor_panel"></div>
+        <div id="image_grid_panel" class="display_area_content display_none"></div>
+        <div id="settings_panel" class="display_area_content display_none"></div>
 
-    <div style='width: 100%;' id='vertical_space'></div>
-    <div id="plus_container"></div>
-    <div id="page_404" class="display_area_content display_none narrow_page_content"></div>
-    <div id="share_position" class="display_none">
-        <input id="x_position" class="positions" type="hidden">
-        <input id="y_position" class="positions" type="hidden">
-        <input id="z_position" class="positions" type="hidden">
-    </div>
+        <div id="labelling_sidebar"></div>
+        
+        <div id="page_start_info" class="display_area_content display_none narrow_page_content"></div>
+        <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
+
+        <div style='width: 100%;' id='vertical_space'></div>
+        <div id="plus_container"></div>
+        <div id="page_404" class="display_area_content display_none narrow_page_content"></div>
+        <div id="share_position" class="display_none">
+            <input id="x_position" class="positions" type="hidden">
+            <input id="y_position" class="positions" type="hidden">
+            <input id="z_position" class="positions" type="hidden">
+        </div>
+    </details>
+
 
     <script>
         "use strict";
@@ -222,16 +228,16 @@
         canvas_context.strokeStyle = "red";
 
         // 마우스 리스너 등록. e는 MouseEvent 객체
-        drawing_canvas.addEventListener("mousemove", function(e) {
+        drawing_canvas.addEventListener("mousemove", function (e) {
             move(e)
         }, false);
-        drawing_canvas.addEventListener("mousedown", function(e) {
+        drawing_canvas.addEventListener("mousedown", function (e) {
             down(e)
         }, false);
-        drawing_canvas.addEventListener("mouseup", function(e) {
+        drawing_canvas.addEventListener("mouseup", function (e) {
             up(e)
         }, false);
-        drawing_canvas.addEventListener("mouseout", function(e) {
+        drawing_canvas.addEventListener("mouseout", function (e) {
             out(e)
         }, false);
     </script>

@@ -556,10 +556,10 @@ papaya.Container.buildHeader = function(){
                             <a href="/" class="logo" style="width:20%;" style="justify-content: flex-start;">CRESCOM</a>
                             <div class="float-right row top_header_button_panel" id="img_size" style="width:80%;">
                                 <div class="top_header_button button" title="File"><img src=statics/image/view.png /></div>
-                                <div class="top_header_button button" title="view"><img src=statics/image/view.png /></div>
-                                <div class="top_header_button button" title="Settings"><img src=statics/image/settings.png /></div>
-                                <div class="top_header_button button" title="Help"><img src=statics/image/power.png /></div>
-                                <div class="top_header_button button" title="Logout"><img src=statics/image/power.png /></div>
+                                <div class="top_header_button button" title="view" onClick="view_click()"><img src=statics/image/view.png /></div>
+                                <div class="top_header_button button" title="Settings" onClick="setting_click()"><img src=statics/image/settings.png /></div>
+                                <div class="top_header_button button" title="Help" onClick="help_click()"><img src=statics/image/power.png /></div>
+                                <div class="top_header_button button" title="Logout" onClick="logout_click()><img src=statics/image/power.png /></div>
                             </div>
                         </div>`;
     headers.append(this.headerHtml);
@@ -978,15 +978,7 @@ papaya.Container.startPapaya = function () {
     
     _via_init();
     (function () {
-        if (firstTry == 1 || firstTry == 4 || firstTry == 6) {
-            console.log('click hidden01');
-            $("#hidden01").trigger('click');
-        }
-        else if (firstTry == 2) {
-            document.getElementById("hidden01").click();
-            document.getElementById("hidden02").click();
-            document.getElementById("button_edit_file_metadata").click();
-        }
+       $('.papaya-toolbar').appendTo($('#img_size'));
     }());
 };
 

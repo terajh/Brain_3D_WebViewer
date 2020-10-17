@@ -144,7 +144,7 @@ papaya.viewer.Display.prototype.drawDisplay = function (xLoc, yLoc, zLoc) {
                 coordinateItemWidth, locY);
             this.context.fillText(Math.round(zLoc).toString(), 1.5 * papaya.viewer.Display.PADDING +
                 (2 * coordinateItemWidth), locY);
-            console.log(xLoc, yLoc);
+            // console.log(xLoc, yLoc);
         }
 
 

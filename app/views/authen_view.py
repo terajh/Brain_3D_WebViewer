@@ -45,9 +45,9 @@ def validateLogin():
         try:
             _username = request.form['inputEmail']
             _password = request.form['inputPassword']
-            
+            print(_username, _password)
             data = db.executeAll("SELECT * FROM member WHERE email = '" + _username + "';")
-            print(data[0])
+            print(data)
             if len(data) > 0:
                     if data[0]['authorize'] == 1:
                         # if bcrypt.check_password_hash(str(data[0][3]), _password):
@@ -78,7 +78,7 @@ def checkId():
         _checkEmail = request.json['dueId']
 
         data = db.executeAll("SELECT COUNT(*) FROM member WHERE email = '" + str(_checkEmail) + "';")
-        return json.dumps(data[0][0])
+        return json.dumps(data[0]['COUNT(*)'])
     else:
         return render_template('error.html', error='Bad try to access')
 
@@ -87,6 +87,7 @@ def checkId():
 def signUp():
     if request.method == 'POST':
         try:
+            print('signUp');
             _name = request.form['inputName']
             _email = request.form['inputEmail']
             _password = request.form['inputPassword']
@@ -98,7 +99,7 @@ def signUp():
                 chkMem = db.executeAll("SELECT name FROM member WHERE email = '" + str(_email) + "';")
                 if len(chkMem) == 0:
                     data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
-                    db.commit()
+                    # db.commit()
                     content = "New applyer name: " + _name + " and email: " + _email
                     # mail_apache(1, content, "nanjun1@naver.com")
                 return render_template('response.html', result='Success to join, please wait to receive authorision email')

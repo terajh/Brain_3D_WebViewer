@@ -7284,6 +7284,10 @@ async function project_file_add_local(event) {
                         var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                         filechoosers.trigger('change',[event.target.files]);
                     })
+                    .then(()=>{
+                        $('.papaya-toolbar').appendTo($('#img_size'));
+
+                    })
                 }
                 else if (_via_current_temp_num === 0){
                     _via_current_temp_num = _via_current_file_num + 1;
@@ -7301,6 +7305,10 @@ async function project_file_add_local(event) {
                     })
                     .then(()=>{
                         filechoosers.trigger('change',[event.target.files]);
+                    })
+                    .then(()=>{
+                        $('.papaya-toolbar').appendTo($('#img_size'));
+
                     })
                 }
                 else {
