@@ -7285,7 +7285,8 @@ async function project_file_add_local(event) {
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
-                        $('.papaya-toolbar').appendTo($('#img_size'));
+                        $('.papaya-toolbar').removeClass('display_none');
+                        $('#img_size').prepend($('.papaya-toolbar'));
 
                     })
                 }
@@ -7307,7 +7308,9 @@ async function project_file_add_local(event) {
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
-                        $('.papaya-toolbar').appendTo($('#img_size'));
+                        $('.papaya-toolbar').removeClass('display_none');
+                        $('#img_size').prepend($('.papaya-toolbar'));
+
 
                     })
                 }

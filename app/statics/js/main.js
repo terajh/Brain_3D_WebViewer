@@ -978,7 +978,8 @@ papaya.Container.startPapaya = function () {
     
     _via_init();
     (function () {
-       $('.papaya-toolbar').appendTo($('#img_size'));
+    //    $('.papaya-toolbar').appendTo($('#img_size'));
+        $('.papaya-toolbar').addClass('display_none');
     }());
 };
 
@@ -1304,8 +1305,8 @@ papaya.Container.prototype.resizeViewerComponents = function (resize) {
     dims = this.getViewerDimensions();
     padding = this.getViewerPadding();
 
-    this.toolbarHtml.css({width: dims[0] + "px"});
-    this.toolbarHtml.css({height: "0px"});
+    // this.toolbarHtml.css({width: dims[0] + "px"});
+    // this.toolbarHtml.css({height: "0px"});
     this.toolbarHtml.css({paddingLeft: "0px"});
     this.toolbarHtml.css({paddingBottom: PAPAYA_SPACING + "px"});
 
