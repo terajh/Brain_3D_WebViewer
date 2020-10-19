@@ -7278,10 +7278,15 @@ async function project_file_add_local(event) {
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
+<<<<<<< HEAD
                         // $('.papaya-toolbar').removeAttribute('class','display_none');
                         $('.papaya-toolbar').prependTo($('#img_size'));
                         $('.papaya-toolbar').attr('style','');
                         display_block_sizing();
+=======
+                        $('.papaya-toolbar').removeClass('display_none');
+                        $('#img_size').prepend($('.papaya-toolbar'));
+>>>>>>> 9ca3f7322a59f9fb05c105c36783984c8c88add3
 
                     })
                 }
@@ -7300,9 +7305,15 @@ async function project_file_add_local(event) {
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
+<<<<<<< HEAD
                         $('.papaya-toolbar').prependTo($('#img_size'));
                         $('.papaya-toolbar').attr('style','');
                         display_block_sizing();
+=======
+                        $('.papaya-toolbar').removeClass('display_none');
+                        $('#img_size').prepend($('.papaya-toolbar'));
+
+>>>>>>> 9ca3f7322a59f9fb05c105c36783984c8c88add3
 
                     })
                 }
