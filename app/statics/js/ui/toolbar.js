@@ -745,20 +745,17 @@ papaya.ui.Toolbar.prototype.doAction = function (action, file, keepopen) {
             folder = [];
             for (ctr = 0; ctr < file.length; ctr += 1) {
                 ignored = false;
-
                 for (ctrI = 0; ctrI < papaya.Container.ignorePatterns.length; ctrI += 1) {
                     if (papaya.Container.ignorePatterns[ctrI].test(file[ctr].name)) {
                         ignored = true;
                     }
                 }
-
                 if (ignored) {
                     console.log("Ignoring file " + file[ctr].name);
                 } else {
                     folder.push(file[ctr]);
                 }
             }
-
             this.container.display.drawProgress(0.1, "Loading");
             this.viewer.loadImage(folder);
         } else if (action.startsWith("ColorTable")) {

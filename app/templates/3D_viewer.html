@@ -116,24 +116,20 @@
     <section>
         <div id="display_area">
             <div id="image_panel" class="display_area_content">
-                <canvas id="region_canvas" width="1247" height="813" tabindex="1" class="main_canvas">Sorry, your
+                <canvas id="region_canvas" tabindex="1" class="main_canvas">Sorry, your
                     browser does not support HTML5 Canvas </canvas>
                 <div id="sub_canvases">
-                    <canvas id="region_canvas2" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your
+                    <canvas id="region_canvas2" tabindex="1" class="sub_canvas">Sorry, your
                         browser does not support HTML5 Canvas </canvas>
-                    <canvas id="region_canvas3" width="1247" height="813" tabindex="1" class="sub_canvas">Sorry, your
+                    <canvas id="region_canvas3" tabindex="1" class="sub_canvas">Sorry, your
                         browser does not support HTML5 Canvas </canvas>
                 </div>
             </div>
         </div>
-        <div id="drawing_area">
-            <canvas id="drawing_canvas" width="750" height="724" tabindex="1"
-                class="main_drawing_canvas display_none"></canvas>
-        </div>
         <div class="papaya" data-params="params"></div>
     </section>
     <aside></aside>
-    <details>
+    <details class="display_none">
         <div id="user_input_panel"></div>
         <div id="message_panel">
             <div id="message_panel_content" class="content"></div>
@@ -191,55 +187,6 @@
             startY = 0; // 드래깅동안, 처음 마우스가 눌러진 좌표
         var drawing = false;
 
-
-        var drawing_canvas = document.getElementById("drawing_canvas");
-        var canvas_context = drawing_canvas.getContext("2d");
-
-        function draw(curX, curY) {
-            canvas_context.beginPath();
-            canvas_context.moveTo(startX, startY);
-            canvas_context.lineTo(curX, curY);
-            canvas_context.stroke();
-        }
-
-        function down(e) {
-            startX = e.offsetX;
-            startY = e.offsetY;
-            drawing = true;
-        }
-
-        function up(e) {
-            drawing = false;
-        }
-
-        function move(e) {
-            if (!drawing) return; // 마우스가 눌러지지 않았으면 리턴
-            var curX = e.offsetX,
-                curY = e.offsetY;
-            draw(curX, curY);
-            startX = curX;
-            startY = curY;
-        }
-
-        function out(e) {
-            drawing = false;
-        }
-        canvas_context.lineWidth = 2; // 선 굵기를 2로 설정
-        canvas_context.strokeStyle = "red";
-
-        // 마우스 리스너 등록. e는 MouseEvent 객체
-        drawing_canvas.addEventListener("mousemove", function (e) {
-            move(e)
-        }, false);
-        drawing_canvas.addEventListener("mousedown", function (e) {
-            down(e)
-        }, false);
-        drawing_canvas.addEventListener("mouseup", function (e) {
-            up(e)
-        }, false);
-        drawing_canvas.addEventListener("mouseout", function (e) {
-            out(e)
-        }, false);
     </script>
 </body>
 

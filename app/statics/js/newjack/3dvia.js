@@ -1506,7 +1506,7 @@ function _via_reg_canvas_mouseup_handler(e) {
     _via_click_x1 = e.offsetX;
     _via_click_y1 = e.offsetY;
 
-    papaya.viewer.Viewer.prototype.drawViewer(true, false);
+    // papaya.viewer.Viewer.prototype.drawViewer(true, false);
     var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
     var click_dy = Math.abs(_via_click_y1 - _via_click_y0);
 
@@ -2656,12 +2656,6 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
     var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
 
     // get canvas's height
-    
-
-
-
-
-
 
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
@@ -7203,6 +7197,7 @@ async function project_file_add_local(event) {
         document.getElementById('papayaContainer'+(_via_max_file_num)).classList.remove('display_none');
     }
     
+
     var user_selected_images = event.target.files;
     var original_image_count = _via_img_count;
     
@@ -7264,8 +7259,6 @@ async function project_file_add_local(event) {
                 }
                 new_img_index_list.push(_via_image_id_list.indexOf(img_id));
 
-                // await promise_file(_via_current_file_num);
-
                 if (_via_current_temp_num === -1){
                     _via_current_temp_num = _via_current_file_num + 1;
 
@@ -7285,14 +7278,15 @@ async function project_file_add_local(event) {
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
-                        $('.papaya-toolbar').appendTo($('#img_size'));
+                        // $('.papaya-toolbar').removeAttribute('class','display_none');
+                        $('.papaya-toolbar').prependTo($('#img_size'));
+                        $('.papaya-toolbar').attr('style','');
+                        display_block_sizing();
 
                     })
                 }
                 else if (_via_current_temp_num === 0){
                     _via_current_temp_num = _via_current_file_num + 1;
-
-
                     var filechoosers;
                     await new Promise((res,rej)=>{
                         $('#File').click();
@@ -7301,13 +7295,14 @@ async function project_file_add_local(event) {
                     .then(()=>{
                         filechoosers = $('#fileChooserAdd_Image'+_via_current_temp_num).eq(0);
                         $('#papayaContainer'+_via_current_temp_num).attr('class','display_none');
-                        
                     })
                     .then(()=>{
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
-                        $('.papaya-toolbar').appendTo($('#img_size'));
+                        $('.papaya-toolbar').prependTo($('#img_size'));
+                        $('.papaya-toolbar').attr('style','');
+                        display_block_sizing();
 
                     })
                 }
@@ -7325,6 +7320,11 @@ async function project_file_add_local(event) {
                     .then(()=>{
                         filechoosers.trigger('change', [event.target.files[_via_current_temp_num]]);
                     })
+                    .then(()=>{
+                        $('.papaya-toolbar').prependTo($('#img_size'));
+                        $('.papaya-toolbar').attr('style','');
+                        display_block_sizing();
+                    })
                 }
             }
             else {
@@ -7339,7 +7339,6 @@ async function project_file_add_local(event) {
             _via_wrong_img_list.push(user_selected_images[i].name);
         }
     }
-
     
     if (filetype != 'image') {
         var status_msg = 'Loading ' + new_img_index_list.length + ' NIFTI images.';
@@ -7367,6 +7366,16 @@ async function project_file_add_local(event) {
         show_message("Please upload some image files!");
     }
     invisible_submit.click();
+}
+
+function display_block_sizing () {
+    let height = $('#papayaViewer'+_via_current_temp_num).offsetHeight;
+    let width = $('#papayaViewer'+_via_current_temp_num).offsetWidth;
+    console.log(height, width);
+    $('#display_area').css('width')= width + 'px';
+    $('#display_area').css('height') = height + 'px';
+
+
 }
 async function promise_file(cid){
     new Promise((res,rej)=>{

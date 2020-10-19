@@ -21,6 +21,7 @@ papaya.viewer.Viewer = papaya.viewer.Viewer || function (container, width, heigh
     this.canvas.height = height;
     this.context = this.canvas.getContext("2d");
     this.canvas.style.padding = 0;
+    
     this.canvas.style.margin = 0;
     this.canvas.style.border = "1px solid red";
     this.atlas = null;

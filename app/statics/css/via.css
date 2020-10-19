@@ -125,9 +125,6 @@ textarea {
 }
 
 #display_area {
-  display: table-cell;
-  width: 100%;
-  z-index: 1;
   margin: 0;
   padding-left: 1em;
   vertical-align: top;
@@ -138,6 +135,7 @@ textarea {
 #image_panel {
   position: relative;
   outline: none;
+  z-index:1;
 }
 
 #image_panel img {
@@ -155,6 +153,7 @@ textarea {
   position: absolute;
   top: 0px;
   left: 0px;
+  z-index:1;
   outline: none;
 }
 
@@ -172,12 +171,15 @@ textarea {
   outline: none;
 }
 
-/* image buffer
-#image_panel .fadein { visibility:visible; opacity:1; transition: visibility 0s linear 0s, opacity 300ms; }
-#image_panel .fadeout { visibility:hidden; opacity:0; transition: visibility 0s linear 300ms, opacity 300ms; }
+/* 
+  image buffer
+  #image_panel .fadein { visibility:visible; opacity:1; transition: visibility 0s linear 0s, opacity 300ms; }
+  #image_panel .fadeout { visibility:hidden; opacity:0; transition: visibility 0s linear 300ms, opacity 300ms; }
+*/
+/* 
+  image grid view 
 */
 
-/* image grid view */
 
 #image_grid_panel {
   position: relative;
