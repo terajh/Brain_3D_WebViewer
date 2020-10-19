@@ -126,7 +126,9 @@ textarea {
 
 #display_area {
   margin: 0;
-  padding-left: 1em;
+  padding-left: 8px;
+  position: absolute;
+  z-index:1;
   vertical-align: top;
 }
 
@@ -136,6 +138,9 @@ textarea {
   position: relative;
   outline: none;
   z-index:1;
+  width : 100%;
+  height:100%;
+
 }
 
 #image_panel img {
@@ -150,11 +155,9 @@ textarea {
 }
 
 #image_panel canvas {
-  position: absolute;
-  top: 0px;
-  left: 0px;
   z-index:1;
   outline: none;
+  float:left;
 }
 
 #image_panel .visible {

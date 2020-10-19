@@ -1322,10 +1322,12 @@ function set_all_canvas_size(w, h) {
     $('#region_canvas2').css('margin-left',(w * 417 / 1247) * (0.15));
     $('#region_canvas2').css('margin-right',(w * 417 / 1247) * (0.15));
 
-    _via_reg_canvas3.height = (h - 20)/2;
+    _via_reg_canvas3.height = (h - 20)/2 + 8;
     _via_reg_canvas3.width = (w * 417 / 1247) * (0.7);
     $('#region_canvas3').css('margin-left',(w * 417 / 1247) * (0.15));
     $('#region_canvas3').css('margin-right',(w * 417 / 1247) * (0.15));
+    $('#region_canvas3').css('margin-top',8);
+
 
     image_panel.style.height = h - 20;
     image_panel.style.width = w;
@@ -1769,7 +1771,6 @@ function _via_reg_canvas_mouseup_handler(e) {
                     var height = Math.round(region_dy * _via_canvas_scale);
                     if (firstTry === "5" || firstTry === "6") {
                         console.log(current_viewer);
-                            debugger;
                         var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                         var default_depth = 20;
                         if (slice === 'x') {
@@ -6972,7 +6973,6 @@ function project_open_parse_json_file(project_file_data) {
                                 if (_via_current_file_num != 0){
                                     var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                                     filechoosers.file = file;
-
                                     filechoosers.trigger('change', filelist);
                                 }
                             });
@@ -7278,15 +7278,9 @@ async function project_file_add_local(event) {
                         filechoosers.trigger('change',[event.target.files]);
                     })
                     .then(()=>{
-<<<<<<< HEAD
                         // $('.papaya-toolbar').removeAttribute('class','display_none');
                         $('.papaya-toolbar').prependTo($('#img_size'));
                         $('.papaya-toolbar').attr('style','');
-                        display_block_sizing();
-=======
-                        $('.papaya-toolbar').removeClass('display_none');
-                        $('#img_size').prepend($('.papaya-toolbar'));
->>>>>>> 9ca3f7322a59f9fb05c105c36783984c8c88add3
 
                     })
                 }
@@ -7300,21 +7294,15 @@ async function project_file_add_local(event) {
                     .then(()=>{
                         filechoosers = $('#fileChooserAdd_Image'+_via_current_temp_num).eq(0);
                         $('#papayaContainer'+_via_current_temp_num).attr('class','display_none');
+                        // res();
                     })
                     .then(()=>{
                         filechoosers.trigger('change',[event.target.files]);
+                        // res();
                     })
                     .then(()=>{
-<<<<<<< HEAD
                         $('.papaya-toolbar').prependTo($('#img_size'));
                         $('.papaya-toolbar').attr('style','');
-                        display_block_sizing();
-=======
-                        $('.papaya-toolbar').removeClass('display_none');
-                        $('#img_size').prepend($('.papaya-toolbar'));
-
->>>>>>> 9ca3f7322a59f9fb05c105c36783984c8c88add3
-
                     })
                 }
                 else {
@@ -7327,14 +7315,15 @@ async function project_file_add_local(event) {
                     .then(()=>{
                         $('#papayaContainer'+_via_current_temp_num).attr('class','display_none');
                         filechoosers = $('#fileChooserAdd_Image'+_via_current_temp_num).eq(0);
+                        // res();
                     })
                     .then(()=>{
                         filechoosers.trigger('change', [event.target.files[_via_current_temp_num]]);
+                        // res();
                     })
                     .then(()=>{
                         $('.papaya-toolbar').prependTo($('#img_size'));
                         $('.papaya-toolbar').attr('style','');
-                        display_block_sizing();
                     })
                 }
             }
@@ -7371,7 +7360,6 @@ async function project_file_add_local(event) {
             _via_show_img(_via_image_index);
         }
         update_img_fn_list();
-        //
     }
     else {
         show_message("Please upload some image files!");
@@ -7379,14 +7367,10 @@ async function project_file_add_local(event) {
     invisible_submit.click();
 }
 
-function display_block_sizing () {
-    let height = $('#papayaViewer'+_via_current_temp_num).offsetHeight;
-    let width = $('#papayaViewer'+_via_current_temp_num).offsetWidth;
-    console.log(height, width);
-    $('#display_area').css('width')= width + 'px';
-    $('#display_area').css('height') = height + 'px';
-
-
+function display_block_sizing (wid, hei) {
+    // console.log(height, width);
+    $('#display_area').css('width',wid+8);
+    $('#display_area').css('height',hei);
 }
 async function promise_file(cid){
     new Promise((res,rej)=>{
@@ -9008,8 +8992,10 @@ function _via_show_img_from_buffer(img_index) {
         }
         _via_canvas_scale_without_zoom = _via_canvas_scale;
 
+        // file upload 이후
 
         set_all_canvas_size(_via_canvas_width, _via_canvas_height);
+        display_block_sizing(_via_canvas_width, _via_canvas_height);
         //set_all_canvas_scale(_via_canvas_scale_without_zoom);;
 
         // reset all regions to "not selected" state
