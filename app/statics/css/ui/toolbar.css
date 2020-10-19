@@ -3,7 +3,7 @@
     text-align: left;
     box-sizing: content-box;
     position: relative;
-    display: none;
+    /* display: none; */
 }
 
 
@@ -15,7 +15,7 @@
 
 .papaya-toolbar input[type=file] {
     text-align: right;
-    display:none;
+    /* display:none; */
 }
 
 

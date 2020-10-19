@@ -293,7 +293,7 @@ def upload_img():
         return json.dumps({"result": True})
 
     else:
-        return json.dumps({"result": False})
+        return json.dumps({"result": True})
 
 # connect sel_pro02 page and UX
 @bp.route('/record', methods=['GET', 'POST'])

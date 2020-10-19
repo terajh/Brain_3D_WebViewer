@@ -107,9 +107,6 @@ function _via_init() {
             await _via_load_submodules();
         }, 100);
     }
-
-    
-
 }
 
 
@@ -161,15 +158,6 @@ function leftsidebar_accordian_show_shortcut() {
     document.getElementById("hidden03").setAttribute("style","display:inline-block");
 }
 
-
-
-
-
-
-
-
-
-
 function uploadImg() {
     var form = $('#img_form')[0];
     var formData = new FormData(form);
@@ -186,7 +174,6 @@ function uploadImg() {
     });
 }
 
-// 2019su // Region attributes, File Annotation 수정
 function _set_attributes() {
     ////
     //Attribute 추가
@@ -7284,6 +7271,11 @@ async function project_file_add_local(event) {
                         var filechoosers = $('#fileChooserAdd_Image0').eq(0);
                         filechoosers.trigger('change',[event.target.files]);
                     })
+                    .then(()=>{
+                        $('.papaya-toolbar').removeClass('display_none');
+                        $('#img_size').prepend($('.papaya-toolbar'));
+
+                    })
                 }
                 else if (_via_current_temp_num === 0){
                     _via_current_temp_num = _via_current_file_num + 1;
@@ -7301,6 +7293,12 @@ async function project_file_add_local(event) {
                     })
                     .then(()=>{
                         filechoosers.trigger('change',[event.target.files]);
+                    })
+                    .then(()=>{
+                        $('.papaya-toolbar').removeClass('display_none');
+                        $('#img_size').prepend($('.papaya-toolbar'));
+
+
                     })
                 }
                 else {

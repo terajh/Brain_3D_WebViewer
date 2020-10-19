@@ -28,6 +28,6 @@ class Database():
         row = self.cursor.fetchall()
         return row
 
-    def commit():
+    def commit(self):
         self.db.commit()
 

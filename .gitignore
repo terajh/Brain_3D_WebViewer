@@ -4,3 +4,4 @@ app/statics/temp_img/*
 app/statics/test_img/*
 
 tests/*
+*.pyc
