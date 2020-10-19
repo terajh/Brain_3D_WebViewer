@@ -101,8 +101,13 @@ def signUp():
                 if len(chkMem) == 0:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
                     db.commit()
+=======
+                    data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
+                    # db.commit()
+>>>>>>> 0b65a5870c86800880eb09a90bf36c00ba90184c
 =======
                     data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
                     # db.commit()
