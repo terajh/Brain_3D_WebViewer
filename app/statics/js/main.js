@@ -555,11 +555,7 @@ papaya.Container.buildHeader = function () {
     this.headerHtml = `<div class="top_header row" id="ui_top_panel">
                             <a href="/" class="logo" style="width:20%;" style="justify-content: flex-start;">CRESCOM</a>
                             <div class="float-right row top_header_button_panel" id="img_size" style="width:80%;">
-                                <div class="top_header_button button" title="File"><img src=statics/image/view.png /></div>
-                                <div class="top_header_button button" title="view" onClick="view_click()"><img src=statics/image/view.png /></div>
-                                <div class="top_header_button button" title="Settings" onClick="setting_click()"><img src=statics/image/settings.png /></div>
-                                <div class="top_header_button button" title="Help" onClick="help_click()"><img src=statics/image/power.png /></div>
-                                <div class="top_header_button button" title="Logout" onClick="logout_click()><img src=statics/image/power.png /></div>
+                                <div class="top_header_button button" title="Logout" onClick="location.href='/authen/logout'"><img src=statics/image/power.png /></div>
                             </div>
                         </div>`;
     headers.append(this.headerHtml);
@@ -731,16 +727,16 @@ papaya.Container.buildLeftsidebar = function () {
                         <table class="border_remove">
                             <tr>
                                 <br>
-                                <td><span class="button" onclick="sel_local_images()" title="Add new file from local disk"><img src=statics/image/addfiles.png width="100" height="100"/></span></td>
-                                <td><span class="button" onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project"><img src=statics/image/remove.png width="100" height="100"/></span></td>
+                                <td class="left_button"><span onclick="sel_local_images()" title="Add new file from local disk"><img src=statics/image/addfiles.png width="100" height="100"/></span></td>
+                                <td class="left_button"><span onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project"><img src=statics/image/remove.png width="100" height="100"/></span></td>
                             </tr>
                             <tr>
-                                <td><span class="button" onclick="project_save_with_confirm()" title="save project"><img src=statics/image/save.png width="100" height="100"/></span></td>
-                                <td><span class="button" onclick="zoom_in()"><img src=statics/image/zoomin.png width="100" height="100"/></span></td>
+                                <td class="left_button"><span onclick="project_save_with_confirm()" title="save project"><img src=statics/image/save.png width="100" height="100"/></span></td>
+                                <td class="left_button"><span onclick="zoom_in()"><img src=statics/image/zoomin.png width="100" height="100"/></span></td>
                             </tr>
                             <tr>
-                                <td><span class="button" onclick="zoom_out()"><img src=statics/image/zoomout.png width="100" height="100"/></span><br><br></td>
-                                <td><span class="button" onclick="zoom_out()"><img src=statics/image/draw.png width="100" height="100"/></span><br><br></td>
+                                <td class="left_button"><span onclick="zoom_out()"><img src=statics/image/zoomout.png width="100" height="100"/></span><br><br></td>
+                                <td class="left_button"><span onclick="via_canvas_toggle()"><img src=statics/image/draw.png width="100" height="100"/></span><br><br></td>
                             </tr>
                         </table>
                     </div>

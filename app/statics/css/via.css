@@ -35,6 +35,13 @@ nav, section, aside {
   box-sizing: border-box;
 }
 
+.left_button:active {
+  background-color: #c0d1e0;
+}
+.left_button:hover {
+  background-color: #c0d1e0;
+}
+
 #labelling_sidebar {
    display:none;
 }

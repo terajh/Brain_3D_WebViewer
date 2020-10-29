@@ -106,7 +106,7 @@ papaya.viewer.ColorTable.TABLE_ALL = [
 
 papaya.viewer.ColorTable.LUT_MIN = 0;
 papaya.viewer.ColorTable.LUT_MAX = 255;
-papaya.viewer.ColorTable.ICON_SIZE = 18;
+papaya.viewer.ColorTable.ICON_SIZE = 30;
 papaya.viewer.ColorTable.COLOR_BAR_WIDTH = 100;
 papaya.viewer.ColorTable.COLOR_BAR_HEIGHT = 15;
 

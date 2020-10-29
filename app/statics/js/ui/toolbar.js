@@ -21,7 +21,7 @@ papaya.ui.Toolbar = papaya.ui.Toolbar || function (container) {
 
 /*** Static Fields ***/
 
-papaya.ui.Toolbar.SIZE = 22;
+papaya.ui.Toolbar.SIZE = 30;
 
 
 // http://dataurl.net/#dataurlmaker
@@ -104,26 +104,24 @@ papaya.ui.Toolbar.RGB_FILE_MENU_DATA = {"label": "File", "icons": null,
 papaya.ui.Toolbar.MENU_DATA = {
     "menus": [
         papaya.ui.Toolbar.FILE_MENU_DATA,
-        {"label": "View", "icons": null,
+        {"label": "View", "icons": ["statics/image/view.png"],
             "items": [
                 {"label": "Orientation", "action": "ShowOrientation", "type": "checkbox", "method": "isShowingOrientation"},
                 {"label": "Crosshairs", "action": "ShowCrosshairs", "type": "checkbox", "method": "isShowingCrosshairs"},
                 {"label": "Ruler", "action": "ShowRuler", "type": "checkbox", "method": "isShowingRuler"},
-                {"type": "spacer", "required": "hasSurface"},
-                {"label": "Surface Planes", "action": "ShowSurfacePlanes", "type": "checkbox", "method": "isShowingSurfacePlanes", "required" : "hasSurface"}
+                {"type": "spacer", "required": "hasSurface"}
             ]
         },
-        {"label": "Settings", "icons": null,
+        {"label": "Settings", "icons": ["statics/image/settings.png"],
             "items": [
                 {"label": "Viewer Preferences", "action": "Preferences"},
                 {"label": "Surface Preferences", "action": "SurfacePreferences", "required" : "hasSurface"}
             ]
         },
-        {"label": "Help", "icons": null,
+        {"label": "Help", "icons": ["statics/image/draw.png"],
             "items": [
                 {"label": "Show Keyboard Reference", "action": "KeyboardRef"},
-                {"label": "Show Mouse Reference", "action": "MouseRef"},
-                {"label": "Show License", "action": "License"}
+                {"label": "Show Mouse Reference", "action": "MouseRef"}
             ]
         },
         {"label": "TITLE", "icons": null, "titleBar": "true" },
@@ -581,7 +579,7 @@ papaya.ui.Toolbar.prototype.doUpdateImageButtons = function () {
 
             data = {
                 "menus" : [
-                    {"label": "ImageButton", "icons": [dataUrl], "items": null, "imageButton": true}
+                    {"label": "ImageButton", "icons": ["statics/image/color.png"], "items": null, "imageButton": true}
                 ]
             };
 

@@ -58,9 +58,9 @@ papaya.ui.Menu.doShowMenu = function (viewer, el, menu, right) {
     left = pos.left - parentPos.left + (right ? ((-1 * mWidth) + eWidth) : 0) + "px";
 
     if (viewer.container.showControlBar && viewer.container.kioskMode && viewer.container.showImageButtons) {
-        top = (-1 * PAPAYA_SPACING - mHeight) + "px";
+        top = (-1 * PAPAYA_SPACING - mHeight) + 10 + "px";
     } else {
-        top = ($(el).outerHeight() + (right ? 0 : PAPAYA_SPACING)) + "px";
+        top = ($(el).outerHeight() + (right ? 0 : PAPAYA_SPACING)) + 10 + "px";
     }
 
     //show the menu directly over the placeholder
@@ -116,11 +116,11 @@ papaya.ui.Menu.prototype.buildMenuButton = function () {
             "' style='width:" + papaya.viewer.ColorTable.ICON_SIZE + "px; height:" +
             papaya.viewer.ColorTable.ICON_SIZE + "px; vertical-align:bottom; ";
 
-        if (!this.isSurfaceButton && this.dataSource.isSelected(parseInt(this.imageIndex, 10))) {
-            html += "border:2px solid #FF5A3D;background-color:#eeeeee;padding:1px;";
-        } else {
-            html += "border:2px outset lightgray;background-color:#eeeeee;padding:1px;";
-        }
+        // if (!this.isSurfaceButton && this.dataSource.isSelected(parseInt(this.imageIndex, 10))) {
+        //     html += "background-color:#eeeeee;padding:1px;";
+        // } else {
+        //     html += "background-color:#eeeeee;padding:1px;";
+        // }
 
         if (this.method) {
             html += ("' src='" + this.icons[papaya.utilities.ObjectUtils.bind(this.viewer, papaya.utilities.ObjectUtils.dereferenceIn(this.viewer, this.method))() ? 1 : 0] +
@@ -161,26 +161,26 @@ papaya.ui.Menu.prototype.buildMenuButton = function () {
             buttonImgHtml.hover(
                 function () {
                     if (menu.icons.length > 1) {
-                        $(this).css({"border-color": "gray"});
+                        // $(this).css({"border-color": "gray"});
                     } else {
-                        $(this).css({"border-color": "#FF5A3D"});
+                        // $(this).css({"border-color": "#FF5A3D"});
                     }
                 },
                 papaya.utilities.ObjectUtils.bind(menu, function () {
                     if (menu.dataSource.isSelected(parseInt(menu.imageIndex, 10)) && menu.dataSource.isSelectable()) {
-                        $("#" + menu.buttonId + " > img").css({"border": "2px solid #FF5A3D"});
+                        // $("#" + menu.buttonId + " > img").css({"border": "2px solid #FF5A3D"});
                     } else {
-                        $("#" + menu.buttonId + " > img").css({"border": "2px outset lightgray"});
+                        // $("#" + menu.buttonId + " > img").css({"border": "2px outset lightgray"});
                     }
                 })
             );
 
             buttonImgHtml.mousedown(function () {
-                $(this).css({ 'border': '2px inset lightgray' });
+                // $(this).css({ 'border': '2px inset lightgray' });
             });
 
             buttonImgHtml.mouseup(function () {
-                $(this).css({ 'border': '2px outset lightgray' });
+                // $(this).css({ 'border': '2px outset lightgray' });
             });
         } else if (!this.isTitleBar) {
             buttonHtml.hover(function () {$(this).toggleClass(PAPAYA_MENU_BUTTON_HOVERING_CSS); });

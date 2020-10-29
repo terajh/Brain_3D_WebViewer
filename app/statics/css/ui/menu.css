@@ -4,7 +4,7 @@
     background: #222;
     z-index: 100;
     position: absolute;
-    border: solid 2px darkgray;
+    /* border: solid 2px darkgray; */
     padding: 4px;
     margin: 0;
 }
