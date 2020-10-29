@@ -95,7 +95,7 @@ papaya.ui.Toolbar.FILE_MENU_DATA = {"label": "File", "icons": null,
     ]
 };
 
-papaya.ui.Toolbar.RGB_FILE_MENU_DATA = {"label": "File", "icons": null,
+papaya.ui.Toolbar.RGB_FILE_MENU_DATA = {"label": "Remove", "icons": null,
     "items": [
         {"label": "Close All", "action": "CloseAllImages"}
     ]

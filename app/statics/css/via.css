@@ -875,11 +875,10 @@ ul.region_shape .selected {
 /* Loaded image list shown in leftsidebar panel */
 
 #img_fn_list {
-  display: none;
+  /* display: none; */
   font-size: small;
   overflow: scroll;
   min-height: 10rem;
-  max-height: 25rem;
 }
 
 #img_fn_list ul {

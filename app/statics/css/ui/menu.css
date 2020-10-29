@@ -99,3 +99,12 @@ li .papaya-menu-slider {
     padding: 0;
     margin: 0;
 }
+
+
+#File {
+    display:none;
+}
+
+.papaya-menu-icon:hover {
+    background-color: azure;
+}
