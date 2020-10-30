@@ -43,12 +43,11 @@ Acknowledgments
 -----
 
 ### ... Currently in Progress
+---
 
+## Pages
+![ex_screenshot](./docs/images/login_page.png)
 
-Run server
------
+![ex_screenshot](./docs/images/project_list.png)
 
->> source nb/venv/bin/activate
->> export FLASK_APP=nb
->> export FLASK_ENV=development
->> flask run
+![ex_screenshot](./docs/images/viewer_page.png)
