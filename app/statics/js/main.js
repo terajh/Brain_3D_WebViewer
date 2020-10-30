@@ -736,9 +736,39 @@ papaya.Container.buildLeftsidebar = function () {
                             </tr>
                             <tr>
                                 <td class="left_button"><span onclick="zoom_out()"><img src=statics/image/zoomout.png width="100" height="100"/></span><br><br></td>
-                                <td class="left_button"><span onclick="via_canvas_toggle()"><img src=statics/image/draw.png width="100" height="100"/></span><br><br></td>
+                                <td class="left_button"><span onclick="via_canvas_toggle('polygon')"><img src=statics/image/draw.png width="100" height="100"/></span><br><br></td>
                             </tr>
                         </table>
+                        <ul class="region_shape">
+                            <li id="region_shape_rect" class="selected" onclick="select_region_shape('rect')" title="Rectangle">
+                                <svg height="32" viewbox="0 0 32 32">
+                                    <use xlink:href="#shape_rectangle"></use>
+                                </svg></li>
+                            <li id="region_shape_circle" onclick="select_region_shape('circle')" title="Circle"><svg height="32"
+                                    viewbox="0 0 32 32">
+                                    <use xlink:href="#shape_circle"></use>
+                                </svg></li>
+                            <li id="region_shape_ellipse" onclick="select_region_shape('ellipse')" title="Ellipse"><svg
+                                    height="32" viewbox="0 0 32 32">
+                                    <use xlink:href="#shape_ellipse"></use>
+                                </svg></li>
+                            <li id="region_shape_polygon" onclick="select_region_shape('polygon')" title="Polygon"><svg
+                                    height="32" viewbox="0 0 32 32">
+                                    <use xlink:href="#shape_polygon"></use>
+                                </svg></li>
+                            <li id="region_shape_point" onclick="select_region_shape('point')" title="Point"><svg height="32"
+                                    viewbox="0 0 32 32">
+                                    <use xlink:href="#shape_point"></use>
+                                </svg></li>
+                            <li id="region_shape_polyline" onclick="select_region_shape('polyline')" title="Polyline"><svg
+                                    height="32" viewbox="0 0 32 32">
+                                    <use xlink:href="#shape_polyline"></use>
+                                </svg></li>
+                            <li id="region_shape_CUBE" onclick="select_region_shape('CUBE')" title="cube"><svg
+                                height="32" viewbox="0 0 32 32">
+                                <use xlink:href="#shape_rectangle"></use>
+                            </svg></li>
+                        </ul>
                     </div>
                     <!--tools end-->
 

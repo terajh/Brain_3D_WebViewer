@@ -4,7 +4,10 @@ var VIA_NAME = 'VGG Image Annotator';
 var VIA_SHORT_NAME = 'VIA';
 var VIA_REGION_SHAPE = {
     RECT: 'rect',
-    CUBE: 'cube'
+    POLYGON: 'polygon',
+    CUBE: 'cube',
+    POINT: 'point',
+    POLYLINE: 'polyline'
 };
 
 var VIA_ATTRIBUTE_TYPE = {
@@ -62,6 +65,26 @@ var VIA_CSV_SEP = ',';
 var VIA_CSV_QUOTE_CHAR = '"';
 var VIA_CSV_KEYVAL_SEP = ':';
 
+// state of the application
+var _via_is_user_drawing_region = false;
+var _via_current_image_loaded = false;
+var _via_is_window_resized = false;
+var _via_is_user_resizing_region = false;
+var _via_is_user_moving_region = false;
+var _via_is_user_drawing_polygon = false;
+var _via_is_region_selected = false;
+var _via_is_all_region_selected = false;
+var _via_is_loaded_img_list_visible = false;
+var _via_is_attributes_panel_visible = false;
+var _via_is_reg_attr_panel_visible = false;
+var _via_is_file_attr_panel_visible = false;
+var _via_is_canvas_zoomed = false;
+var _via_is_loading_current_image = false;
+var _via_is_region_id_visible = true;
+var _via_is_region_boundary_visible = true;
+var _via_is_region_info_visible = false;
+var _via_is_ctrl_pressed = false;
+var _via_is_debug_mode = false;
 
 
 var _via_img_metadata = {};   // data structure to store loaded images metadata

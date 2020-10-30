@@ -111,7 +111,37 @@
     </header>
     <nav>
         <div id="leftsidebar1"></div>
-        <div id="leftsidebar"></div>
+        <div id="leftsidebar">
+            <div class="leftsidebar_accordion_panel show">
+                <ul class="region_shape">
+                    <li id="region_shape_rect" class="selected" onclick="select_region_shape('rect')" title="Rectangle">
+                        <svg height="32" viewbox="0 0 32 32">
+                            <use xlink:href="#shape_rectangle"></use>
+                        </svg></li>
+                    <li id="region_shape_circle" onclick="select_region_shape('circle')" title="Circle"><svg height="32"
+                            viewbox="0 0 32 32">
+                            <use xlink:href="#shape_circle"></use>
+                        </svg></li>
+                    <li id="region_shape_ellipse" onclick="select_region_shape('ellipse')" title="Ellipse"><svg
+                            height="32" viewbox="0 0 32 32">
+                            <use xlink:href="#shape_ellipse"></use>
+                        </svg></li>
+                    <li id="region_shape_polygon" onclick="select_region_shape('polygon')" title="Polygon"><svg
+                            height="32" viewbox="0 0 32 32">
+                            <use xlink:href="#shape_polygon"></use>
+                        </svg></li>
+                    <li id="region_shape_point" onclick="select_region_shape('point')" title="Point"><svg height="32"
+                            viewbox="0 0 32 32">
+                            <use xlink:href="#shape_point"></use>
+                        </svg></li>
+                    <li id="region_shape_polyline" onclick="select_region_shape('polyline')" title="Polyline"><svg
+                            height="32" viewbox="0 0 32 32">
+                            <use xlink:href="#shape_polyline"></use>
+                        </svg></li>
+                </ul>
+            </div>
+
+        </div>
     </nav>
     <section>
         <div id="display_area">
@@ -139,7 +169,7 @@
         <div id="settings_panel" class="display_area_content display_none"></div>
 
         <div id="labelling_sidebar"></div>
-        
+
         <div id="page_start_info" class="display_area_content display_none narrow_page_content"></div>
         <button id="hidden01" style="display:none;" onclick="project_open_parse_json_file({{js_file}})"></button>
 

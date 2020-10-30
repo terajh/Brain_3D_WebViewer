@@ -108,57 +108,57 @@ function _via_init() {
         }, 100);
     }
 
-    
+
 
 }
 
 
 function leftsidebar_accordian_show_project() {
     // Todo PRoject가 보이게 하기
-    document.getElementById("project_panel_title").setAttribute("style","display:inline-block");
-    document.getElementById("hidden02").setAttribute("style","display:none");
-    document.getElementById("project_panel_tools").setAttribute("style","display:none");
-    document.getElementById("project_panel_tools").className="leftsidebar_accordion";
-    document.getElementById("tools_fn_list_panel").className="leftsidebar_accordion_panel";
-    document.getElementById("hidden03").setAttribute("style","display:none");
-    document.getElementById("hidden03").className="leftsidebar_accordion";
-    document.getElementById("hidden04").className="leftsidebar_accordion_panel";
+    document.getElementById("project_panel_title").setAttribute("style", "display:inline-block");
+    document.getElementById("hidden02").setAttribute("style", "display:none");
+    document.getElementById("project_panel_tools").setAttribute("style", "display:none");
+    document.getElementById("project_panel_tools").className = "leftsidebar_accordion";
+    document.getElementById("tools_fn_list_panel").className = "leftsidebar_accordion_panel";
+    document.getElementById("hidden03").setAttribute("style", "display:none");
+    document.getElementById("hidden03").className = "leftsidebar_accordion";
+    document.getElementById("hidden04").className = "leftsidebar_accordion_panel";
 }
 function leftsidebar_accordian_show_tools() {
     // Todo tools가 보이게 하기
-    document.getElementById("project_panel_tools").setAttribute("style","display:inline-block");
-    document.getElementById("project_panel_title").setAttribute("style","display:none");
-    document.getElementById("project_panel_title").className="leftsidebar_accordion";
-    document.getElementById("img_fn_list_panel").className="leftsidebar_accordion_panel";
-    document.getElementById("hidden02").setAttribute("style","display:none");
-    document.getElementById("hidden03").setAttribute("style","display:none");
-    document.getElementById("hidden03").className="leftsidebar_accordion";
-    document.getElementById("hidden04").className="leftsidebar_accordion_panel";
+    document.getElementById("project_panel_tools").setAttribute("style", "display:inline-block");
+    document.getElementById("project_panel_title").setAttribute("style", "display:none");
+    document.getElementById("project_panel_title").className = "leftsidebar_accordion";
+    document.getElementById("img_fn_list_panel").className = "leftsidebar_accordion_panel";
+    document.getElementById("hidden02").setAttribute("style", "display:none");
+    document.getElementById("hidden03").setAttribute("style", "display:none");
+    document.getElementById("hidden03").className = "leftsidebar_accordion";
+    document.getElementById("hidden04").className = "leftsidebar_accordion_panel";
 }
 function leftsidebar_accordian_show_toggle() {
     // Todo toggle이 보이게 하기 
-    document.getElementById("project_panel_title").setAttribute("style","display:none");
-    document.getElementById("project_panel_title").className="leftsidebar_accordion";
-    document.getElementById("img_fn_list_panel").className="leftsidebar_accordion_panel";
-    document.getElementById("project_panel_tools").setAttribute("style","display:none");
-    document.getElementById("project_panel_tools").className="leftsidebar_accordion";
-    document.getElementById("tools_fn_list_panel").className="leftsidebar_accordion_panel";
-    document.getElementById("hidden02").setAttribute("style","display:inline-block");
-    document.getElementById("hidden03").setAttribute("style","display:none");
-    document.getElementById("hidden03").className="leftsidebar_accordion";
-    document.getElementById("hidden04").className="leftsidebar_accordion_panel";
+    document.getElementById("project_panel_title").setAttribute("style", "display:none");
+    document.getElementById("project_panel_title").className = "leftsidebar_accordion";
+    document.getElementById("img_fn_list_panel").className = "leftsidebar_accordion_panel";
+    document.getElementById("project_panel_tools").setAttribute("style", "display:none");
+    document.getElementById("project_panel_tools").className = "leftsidebar_accordion";
+    document.getElementById("tools_fn_list_panel").className = "leftsidebar_accordion_panel";
+    document.getElementById("hidden02").setAttribute("style", "display:inline-block");
+    document.getElementById("hidden03").setAttribute("style", "display:none");
+    document.getElementById("hidden03").className = "leftsidebar_accordion";
+    document.getElementById("hidden04").className = "leftsidebar_accordion_panel";
 
 }
 function leftsidebar_accordian_show_shortcut() {
     // Todo shotcut가 보이게 하기
-    document.getElementById("project_panel_tools").setAttribute("style","display:none");
-    document.getElementById("project_panel_tools").className="leftsidebar_accordion";
-    document.getElementById("tools_fn_list_panel").className="leftsidebar_accordion_panel";
-    document.getElementById("project_panel_title").setAttribute("style","display:none");
-    document.getElementById("project_panel_title").className="leftsidebar_accordion";
-    document.getElementById("img_fn_list_panel").className="leftsidebar_accordion_panel";
-    document.getElementById("hidden02").setAttribute("style","display:none");
-    document.getElementById("hidden03").setAttribute("style","display:inline-block");
+    document.getElementById("project_panel_tools").setAttribute("style", "display:none");
+    document.getElementById("project_panel_tools").className = "leftsidebar_accordion";
+    document.getElementById("tools_fn_list_panel").className = "leftsidebar_accordion_panel";
+    document.getElementById("project_panel_title").setAttribute("style", "display:none");
+    document.getElementById("project_panel_title").className = "leftsidebar_accordion";
+    document.getElementById("img_fn_list_panel").className = "leftsidebar_accordion_panel";
+    document.getElementById("hidden02").setAttribute("style", "display:none");
+    document.getElementById("hidden03").setAttribute("style", "display:inline-block");
 }
 
 
@@ -196,7 +196,7 @@ function _set_attributes() {
     // Region Attribute 추가
 
     // When project_type = 'Brain(cv)'
-    
+
     if (firstTry === 5) {
         $("#user_input_attribute_id").val('type');
         $("#button_add_new_attribute").click();
@@ -359,7 +359,7 @@ function set_display_area_content(content_name) {
         _via_display_area_content_name_prev = _via_display_area_content_name;
         clear_display_area();
         var p = document.getElementById(content_name);
-        if(p) p.classList.remove('display_none');
+        if (p) p.classList.remove('display_none');
         _via_display_area_content_name = content_name;
     }
 }
@@ -1232,6 +1232,17 @@ function _via_load_canvas_regions() {
         _via_canvas_regions.push(region_i);
 
         switch (_via_canvas_regions[i].shape_attributes['name']) {
+            case VIA_REGION_SHAPE.POLYGON:
+                var all_points_x = regions[i].shape_attributes['all_points_x'].slice(0);
+                var all_points_y = regions[i].shape_attributes['all_points_y'].slice(0);
+                for (var j = 0; j < all_points_x.length; ++j) {
+                    all_points_x[j] = Math.round(all_points_x[j] / _via_canvas_scale);
+                    all_points_y[j] = Math.round(all_points_y[j] / _via_canvas_scale);
+                }
+                _via_canvas_regions[i].shape_attributes['all_points_x'] = all_points_x;
+                _via_canvas_regions[i].shape_attributes['all_points_y'] = all_points_y;
+                break;
+
             case VIA_REGION_SHAPE.CUBE:
                 var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
 
@@ -1288,6 +1299,7 @@ function _via_load_canvas_regions() {
 // updates currently selected region shape
 function select_region_shape(sel_shape_name) {
     for (var shape_name in VIA_REGION_SHAPE) {
+        if(shape_name == "CUBE") continue;
         var ui_element = document.getElementById('region_shape_' + VIA_REGION_SHAPE[shape_name]);
         ui_element.classList.remove('selected');
     }
@@ -1302,6 +1314,14 @@ function select_region_shape(sel_shape_name) {
             show_message('Press single click and drag mouse to draw ' +
                 _via_current_shape + ' region');
             break;
+        case VIA_REGION_SHAPE.POLYLINE:
+        case VIA_REGION_SHAPE.POLYGON:
+            _via_is_user_drawing_polygon = false;
+            _via_current_polygon_region_id = -1;
+
+            show_message('[Single Click] to define polygon/polyline vertices, ' +
+                '[Backspace] to delete last vertex, [Enter] to finish, [Esc] to cancel drawing.');
+            break;
 
         default:
             show_message('Unknown shape selected!');
@@ -1312,21 +1332,21 @@ function select_region_shape(sel_shape_name) {
 function set_all_canvas_size(w, h) {
     _via_reg_canvas.height = (h - 20) * (0.7);
     _via_reg_canvas.width = (w * 830 / 1247) * (0.7);
-    $('#region_canvas').css('margin-left',(w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('margin-right',(w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('margin-top',(w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('margin-bottom',(w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-left', (w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-right', (w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-top', (w * 830 / 1247) * (0.15));
+    $('#region_canvas').css('margin-bottom', (w * 830 / 1247) * (0.15));
 
-    _via_reg_canvas2.height = (h - 20)/2 + 8;
+    _via_reg_canvas2.height = (h - 20) / 2 + 8;
     _via_reg_canvas2.width = (w * 417 / 1247) * (0.7);
-    $('#region_canvas2').css('margin-left',(w * 417 / 1247) * (0.15));
-    $('#region_canvas2').css('margin-right',(w * 417 / 1247) * (0.15));
+    $('#region_canvas2').css('margin-left', (w * 417 / 1247) * (0.15));
+    $('#region_canvas2').css('margin-right', (w * 417 / 1247) * (0.15));
 
-    _via_reg_canvas3.height = (h - 20)/2 + 8;
+    _via_reg_canvas3.height = (h - 20) / 2 + 8;
     _via_reg_canvas3.width = (w * 417 / 1247) * (0.7);
-    $('#region_canvas3').css('margin-left',(w * 417 / 1247) * (0.15));
-    $('#region_canvas3').css('margin-right',(w * 417 / 1247) * (0.15));
-    $('#region_canvas3').css('margin-top',8);
+    $('#region_canvas3').css('margin-left', (w * 417 / 1247) * (0.15));
+    $('#region_canvas3').css('margin-right', (w * 417 / 1247) * (0.15));
+    $('#region_canvas3').css('margin-top', 8);
 
 
     image_panel.style.height = h - 20;
@@ -1346,8 +1366,8 @@ function hide_all_canvas() {
 }
 
 function jump_to_image(image_index) {
-    
-    document.getElementById('papayaContainer'+_via_current_file_num).setAttribute('class', 'display_none');
+
+    document.getElementById('papayaContainer' + _via_current_file_num).setAttribute('class', 'display_none');
     _via_display_area.classList.add('display_none');
     _via_global_index = image_index;
     _via_current_file_num = image_index;
@@ -1370,7 +1390,7 @@ function jump_to_image(image_index) {
             }
             break;
     }
-    
+
     _via_display_area.setAttribute('class', '');
     update_labelling_list();
 }
@@ -1443,7 +1463,7 @@ function _via_reg_canvas_mousedown_handler(e) {
     if (e.currentTarget.getAttribute('class').indexOf('serve_canvas') != -1) {
         return;
     }
-    _via_click_x0 = e.offsetX; 
+    _via_click_x0 = e.offsetX;
     _via_click_y0 = e.offsetY;
     _via_region_edge = is_on_region_corner(_via_click_x0, _via_click_y0);
     var region_id = is_inside_region(_via_click_x0, _via_click_y0);
@@ -1499,6 +1519,109 @@ function _via_reg_canvas_mousedown_handler(e) {
     }
 }
 
+function _via_polygon_del_vertex(region_id, vertex_id) {
+    var rs = _via_canvas_regions[region_id].shape_attributes;
+    var npts = rs['all_points_x'].length;
+    var shape = rs['name'];
+    if (shape !== VIA_REGION_SHAPE.POLYGON && shape !== VIA_REGION_SHAPE.POLYLINE) {
+        show_message('Vertices can only be deleted from polygon/polyline.');
+        return false;
+    }
+    if (npts <= 3 && shape === VIA_REGION_SHAPE.POLYGON) {
+        show_message('Failed to delete vertex because a polygon must have at least 3 vertices.');
+        return false;
+    }
+    if (npts <= 2 && shape === VIA_REGION_SHAPE.POLYLINE) {
+        show_message('Failed to delete vertex because a polyline must have at least 2 vertices.');
+        return false;
+    }
+    // delete vertex from canvas
+    _via_canvas_regions[region_id].shape_attributes['all_points_x'].splice(vertex_id, 1);
+    _via_canvas_regions[region_id].shape_attributes['all_points_y'].splice(vertex_id, 1);
+
+    // delete vertex from image metadata
+    _via_img_metadata[_via_image_id].regions[region_id].shape_attributes['all_points_x'].splice(vertex_id, 1);
+    _via_img_metadata[_via_image_id].regions[region_id].shape_attributes['all_points_y'].splice(vertex_id, 1);
+    return true;
+}
+
+function is_on_polygon_vertex(all_points_x, all_points_y, px, py) {
+    var i, n;
+    n = all_points_x.length;
+
+    for (i = 0; i < n; ++i) {
+        if (Math.abs(all_points_x[i] - px) < VIA_POLYGON_VERTEX_MATCH_TOL &&
+            Math.abs(all_points_y[i] - py) < VIA_POLYGON_VERTEX_MATCH_TOL) {
+            return (VIA_POLYGON_RESIZE_VERTEX_OFFSET + i);
+        }
+    }
+    return 0;
+}
+
+function is_on_polygon_edge(all_points_x, all_points_y, px, py) {
+    var i, n, di, d;
+    n = all_points_x.length;
+    d = [];
+    for (i = 0; i < n - 1; ++i) {
+        di = dist_to_line(px, py, all_points_x[i], all_points_y[i], all_points_x[i + 1], all_points_y[i + 1]);
+        d.push(di);
+    }
+    // closing edge
+    di = dist_to_line(px, py, all_points_x[n - 1], all_points_y[n - 1], all_points_x[0], all_points_y[0]);
+    d.push(di);
+
+    var smallest_value = d[0];
+    var smallest_index = 0;
+    n = d.length;
+    for (i = 1; i < n; ++i) {
+        if (d[i] < smallest_value) {
+            smallest_value = d[i];
+            smallest_index = i;
+        }
+    }
+    if (smallest_value < VIA_POLYGON_VERTEX_MATCH_TOL) {
+        return (VIA_POLYGON_RESIZE_VERTEX_OFFSET + smallest_index);
+    } else {
+        return 0;
+    }
+}
+function _via_draw_polygon_region(all_points_x, all_points_y, is_selected, shape) {
+    if (is_selected) {
+        _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
+        _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+        _via_reg_ctx.beginPath();
+        _via_reg_ctx.moveTo(all_points_x[0], all_points_y[0]);
+        for (var i = 1; i < all_points_x.length; ++i) {
+            _via_reg_ctx.lineTo(all_points_x[i], all_points_y[i]);
+        }
+        if (shape === VIA_REGION_SHAPE.POLYGON) {
+            _via_reg_ctx.lineTo(all_points_x[0], all_points_y[0]); // close loop
+        }
+        _via_reg_ctx.stroke();
+
+        _via_reg_ctx.fillStyle = VIA_THEME_SEL_REGION_FILL_COLOR;
+        _via_reg_ctx.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
+        _via_reg_ctx.fill();
+        _via_reg_ctx.globalAlpha = 1.0;
+        for (var i = 0; i < all_points_x.length; ++i) {
+            _via_draw_control_point(all_points_x[i], all_points_y[i]);
+        }
+    } else {
+        // draw a fill line
+        _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
+        _via_reg_ctx.beginPath();
+        _via_reg_ctx.moveTo(all_points_x[0], all_points_y[0]);
+        for (var i = 0; i < all_points_x.length; ++i) {
+            _via_reg_ctx.lineTo(all_points_x[i], all_points_y[i]);
+        }
+        if (shape === VIA_REGION_SHAPE.POLYGON) {
+            _via_reg_ctx.lineTo(all_points_x[0], all_points_y[0]); // close loop
+        }
+        _via_reg_ctx.stroke();
+    }
+}
+
+
 // implements the following functionalities:
 //  - new region drawing (including polygon)
 //  - moving/resizing/select/unselect existing region
@@ -1525,7 +1648,6 @@ function _via_reg_canvas_mouseup_handler(e) {
             // move all selected regions
             _via_move_selected_regions(move_x, move_y);
         } else {
-
             var nested_region_id = is_inside_region(_via_click_x0, _via_click_y0, true);
             if (nested_region_id >= 0 &&
                 nested_region_id !== _via_user_sel_region_id) {
@@ -1544,7 +1666,22 @@ function _via_reg_canvas_mouseup_handler(e) {
                 // indicates that the user intends to draw a nested region
                 toggle_all_regions_selection(false);
                 _via_is_region_selected = false;
+                switch (_via_current_shape) {
+                    case VIA_REGION_SHAPE.POLYLINE: // handled by case for POLYGON
+                    case VIA_REGION_SHAPE.POLYGON:
+                        // user has clicked on the first point in a new polygon
+                        // see also event 'mouseup' for _via_is_user_drawing_polygon=true
+                        _via_is_user_drawing_polygon = true;
 
+                        var canvas_polygon_region = new file_region();
+                        canvas_polygon_region.shape_attributes['name'] = _via_current_shape;
+                        canvas_polygon_region.shape_attributes['all_points_x'] = [Math.round(_via_click_x0)];
+                        canvas_polygon_region.shape_attributes['all_points_y'] = [Math.round(_via_click_y0)];
+                        var new_length = _via_canvas_regions.push(canvas_polygon_region);
+                        _via_current_polygon_region_id = new_length - 1;
+                        break;
+
+                }
                 annotation_editor_update_content();
             }
         }
@@ -1567,6 +1704,52 @@ function _via_reg_canvas_mouseup_handler(e) {
         var canvas_attr = _via_canvas_regions[region_id].shape_attributes;
 
         switch (canvas_attr['name']) {
+            case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+            case VIA_REGION_SHAPE.POLYGON:
+                var moved_vertex_id = _via_region_edge[1] - VIA_POLYGON_RESIZE_VERTEX_OFFSET;
+
+                if (e.ctrlKey) {
+                    // if on vertex, delete it
+                    // if on edge, add a new vertex
+                    var r = _via_canvas_regions[_via_user_sel_region_id].shape_attributes;
+                    var shape = r.name;
+                    var is_on_vertex = is_on_polygon_vertex(r['all_points_x'], r['all_points_y'], _via_current_x, _via_current_y);
+
+                    if (is_on_vertex === _via_region_edge[1]) {
+                        // click on vertex, hence delete vertex
+                        if (_via_polygon_del_vertex(region_id, moved_vertex_id)) {
+                            show_message('Deleted vertex ' + moved_vertex_id + ' from region');
+                        }
+                    } else {
+                        var is_on_edge = is_on_polygon_edge(r['all_points_x'], r['all_points_y'], _via_current_x, _via_current_y);
+                        if (is_on_edge === _via_region_edge[1]) {
+                            // click on edge, hence add new vertex
+                            var vertex_index = is_on_edge - VIA_POLYGON_RESIZE_VERTEX_OFFSET;
+                            var canvas_x0 = Math.round(_via_click_x1);
+                            var canvas_y0 = Math.round(_via_click_y1);
+                            var img_x0 = Math.round(canvas_x0 * _via_canvas_scale);
+                            var img_y0 = Math.round(canvas_y0 * _via_canvas_scale);
+                            canvas_x0 = Math.round(img_x0 / _via_canvas_scale);
+                            canvas_y0 = Math.round(img_y0 / _via_canvas_scale);
+
+                            _via_canvas_regions[region_id].shape_attributes['all_points_x'].splice(vertex_index + 1, 0, canvas_x0);
+                            _via_canvas_regions[region_id].shape_attributes['all_points_y'].splice(vertex_index + 1, 0, canvas_y0);
+                            _via_img_metadata[_via_image_id].regions[region_id].shape_attributes['all_points_x'].splice(vertex_index + 1, 0, img_x0);
+                            _via_img_metadata[_via_image_id].regions[region_id].shape_attributes['all_points_y'].splice(vertex_index + 1, 0, img_y0);
+
+                            show_message('Added 1 new vertex to ' + shape + ' region');
+                        }
+                    }
+                } else {
+                    // update coordinate of vertex
+                    var imx = Math.round(_via_current_x * _via_canvas_scale);
+                    var imy = Math.round(_via_current_y * _via_canvas_scale);
+                    image_attr['all_points_x'][moved_vertex_id] = imx;
+                    image_attr['all_points_y'][moved_vertex_id] = imy;
+                    canvas_attr['all_points_x'][moved_vertex_id] = Math.round(imx / _via_canvas_scale);
+                    canvas_attr['all_points_y'][moved_vertex_id] = Math.round(imy / _via_canvas_scale);
+                }
+                break;
             case VIA_REGION_SHAPE.CUBE:
                 var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
                 var d;
@@ -1676,35 +1859,66 @@ function _via_reg_canvas_mouseup_handler(e) {
         // if user is already drawing polygon, then each click adds a new point
 
         var region_id = is_inside_region(_via_click_x0, _via_click_y0);
-        if (region_id >= 0) {
-            // first click selects region
-            _via_user_sel_region_id = region_id;
-            _via_is_region_selected = true;
-            _via_is_user_moving_region = false;
-            _via_is_user_drawing_region = false;
-
-            // de-select all other regions if the user has not pressed Shift
-            if (!e.shiftKey) {
-                annotation_editor_clear_row_highlight();
-                toggle_all_regions_selection(false);
+        if (_via_is_user_drawing_polygon) {
+            var canvas_x0 = Math.round(_via_click_x1);
+            var canvas_y0 = Math.round(_via_click_y1);
+            var n = _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_x'].length;
+            var last_x0 = _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_x'][n - 1];
+            var last_y0 = _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_y'][n - 1];
+            // discard if the click was on the last vertex
+            if (canvas_x0 !== last_x0 || canvas_y0 !== last_y0) {
+                // user clicked on a new polygon point
+                _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_x'].push(canvas_x0);
+                _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_y'].push(canvas_y0);
             }
-            set_region_select_state(region_id, true);
-
-            // show annotation editor only when a single region is selected
-            if (!e.shiftKey) {
-                annotation_editor_show();
-            } else {
-                annotation_editor_hide();
-            }
-
-            show_message('Region selected. If you intended to draw a region, click again inside the selected region to start drawing a region.')
         } else {
-            if (_via_is_user_drawing_region) {
-                // clear all region selection
+            if (region_id >= 0) {
+                // first click selects region
+                _via_user_sel_region_id = region_id;
+                _via_is_region_selected = true;
+                _via_is_user_moving_region = false;
                 _via_is_user_drawing_region = false;
-                _via_is_region_selected = false;
-                toggle_all_regions_selection(false);
-                annotation_editor_hide();
+
+                // de-select all other regions if the user has not pressed Shift
+                if (!e.shiftKey) {
+                    annotation_editor_clear_row_highlight();
+                    toggle_all_regions_selection(false);
+                }
+                set_region_select_state(region_id, true);
+
+                // show annotation editor only when a single region is selected
+                if (!e.shiftKey) {
+                    annotation_editor_show();
+                } else {
+                    annotation_editor_hide();
+                }
+
+                show_message('Region selected. If you intended to draw a region, click again inside the selected region to start drawing a region.')
+            } else {
+                if (_via_is_user_drawing_region) {
+                    // clear all region selection
+                    _via_is_user_drawing_region = false;
+                    _via_is_region_selected = false;
+                    toggle_all_regions_selection(false);
+                    annotation_editor_hide();
+                } else {
+                    switch (_via_current_shape) {
+                        case VIA_REGION_SHAPE.POLYLINE: // handled by case for POLYGON
+                        case VIA_REGION_SHAPE.POLYGON:
+                            // user has clicked on the first point in a new polygon
+                            // see also event 'mouseup' for _via_is_user_moving_region=true
+                            _via_is_user_drawing_polygon = true;
+
+                            var canvas_polygon_region = new file_region();
+                            canvas_polygon_region.shape_attributes['name'] = _via_current_shape;
+                            canvas_polygon_region.shape_attributes['all_points_x'] = [Math.round(_via_click_x0)];
+                            canvas_polygon_region.shape_attributes['all_points_y'] = [Math.round(_via_click_y0)];
+
+                            var new_length = _via_canvas_regions.push(canvas_polygon_region);
+                            _via_current_polygon_region_id = new_length - 1;
+                            break;
+                    }
+                }
             }
         }
         update_labelling_list();
@@ -1747,19 +1961,19 @@ function _via_reg_canvas_mouseup_handler(e) {
                     }
 
                     if (_via_click_y0 < _via_click_y1) {
-                        if (case_slice === 'z'){
+                        if (case_slice === 'z') {
                             region_y0 = _via_click_y0;
                             region_y1 = _via_click_y1;
-                        }else{
+                        } else {
                             region_y0 = _via_click_y0;
                             region_y1 = _via_click_y1;
                         }
-                        
+
                     } else {
-                        if (case_slice === 'z'){
+                        if (case_slice === 'z') {
                             region_y0 = _via_click_y1;
                             region_y1 = _via_click_y0;
-                        }else{
+                        } else {
                             region_y0 = _via_click_y1;
                             region_y1 = _via_click_y0;
                         }
@@ -1775,7 +1989,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                         var default_depth = 20;
                         if (slice === 'x') {
                             original_img_region.shape_attributes['name'] = 'cube';
-                            original_img_region.shape_attributes['x'] = Math.round(current_viewer.currentCoord.x - (default_depth/2));
+                            original_img_region.shape_attributes['x'] = Math.round(current_viewer.currentCoord.x - (default_depth / 2));
                             original_img_region.shape_attributes['y'] = x;
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
@@ -1787,7 +2001,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
-                            canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x - (default_depth/2))) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['x'] = Math.round((Number(current_viewer.currentCoord.x - (default_depth / 2))) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
@@ -1798,27 +2012,27 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-                            if(_via_zoom_degree != 1){ // when zoom in
+                            if (_via_zoom_degree != 1) { // when zoom in
                                 original_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 original_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 original_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
                                 original_img_region.shape_attributes['dx'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dx']);
                                 original_img_region.shape_attributes['dy'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dy']);
                                 original_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dz']);
-                                
+
 
                                 canvas_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 canvas_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 canvas_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
                                 canvas_img_region.shape_attributes['dx'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dx']);
                                 canvas_img_region.shape_attributes['dy'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dy']);
-                                canvas_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dz']);  
-                            }    
+                                canvas_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dz']);
+                            }
                         }
                         else if (slice === 'y') {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
-                            original_img_region.shape_attributes['y'] = Math.round(Number(current_viewer.currentCoord.y - (default_depth/2)));
+                            original_img_region.shape_attributes['y'] = Math.round(Number(current_viewer.currentCoord.y - (default_depth / 2)));
                             original_img_region.shape_attributes['z'] = y;
                             original_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
                             original_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
@@ -1830,7 +2044,7 @@ function _via_reg_canvas_mouseup_handler(e) {
 
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - (default_depth/2)) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['y'] = Math.round((current_viewer.currentCoord.y - (default_depth / 2)) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['z'] = Math.round(y / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
                             canvas_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
@@ -1840,14 +2054,14 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dz'] = Math.round(height / _via_canvas_scale);
                             canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-                            if(_via_zoom_degree != 1){
+                            if (_via_zoom_degree != 1) {
                                 original_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 original_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 original_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
                                 original_img_region.shape_attributes['dx'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dx']);
                                 original_img_region.shape_attributes['dy'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dy']);
                                 original_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dz']);
-                                
+
                                 canvas_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 canvas_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 canvas_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
@@ -1860,7 +2074,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             original_img_region.shape_attributes['name'] = 'cube';
                             original_img_region.shape_attributes['x'] = x;
                             original_img_region.shape_attributes['y'] = y;
-                            original_img_region.shape_attributes['z'] = Math.round(current_viewer.currentCoord.z - (default_depth/2));
+                            original_img_region.shape_attributes['z'] = Math.round(current_viewer.currentCoord.z - (default_depth / 2));
                             original_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
                             original_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
                             original_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
@@ -1873,7 +2087,7 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['name'] = 'cube';
                             canvas_img_region.shape_attributes['x'] = Math.round(x / _via_canvas_scale);
                             canvas_img_region.shape_attributes['y'] = Math.round(y / _via_canvas_scale);
-                            canvas_img_region.shape_attributes['z'] = Math.round((current_viewer.currentCoord.z - (default_depth/2)) / _via_canvas_scale);
+                            canvas_img_region.shape_attributes['z'] = Math.round((current_viewer.currentCoord.z - (default_depth / 2)) / _via_canvas_scale);
                             canvas_img_region.shape_attributes['cx'] = Math.round(current_viewer.currentCoord.x);
                             canvas_img_region.shape_attributes['cy'] = Math.round(current_viewer.currentCoord.y);
                             canvas_img_region.shape_attributes['cz'] = Math.round(current_viewer.currentCoord.z);
@@ -1882,14 +2096,14 @@ function _via_reg_canvas_mouseup_handler(e) {
                             canvas_img_region.shape_attributes['dz'] = Math.round(default_depth / _via_canvas_scale);
                             canvas_img_region.shape_attributes['degree'] = _via_zoom_degree;
 
-                            if(_via_zoom_degree != 1){
+                            if (_via_zoom_degree != 1) {
                                 original_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 original_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 original_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
                                 original_img_region.shape_attributes['dx'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dx']);
                                 original_img_region.shape_attributes['dy'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dy']);
                                 original_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * original_img_region.shape_attributes['dz']);
-                                
+
                                 canvas_img_region.shape_attributes['x'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['x'] - (_via_zoom_degree - 1) * _via_Loc.x);
                                 canvas_img_region.shape_attributes['y'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['y'] - (_via_zoom_degree - 1) * _via_Loc.y);
                                 canvas_img_region.shape_attributes['z'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['z'] - (_via_zoom_degree - 1) * _via_Loc.z);
@@ -1897,10 +2111,15 @@ function _via_reg_canvas_mouseup_handler(e) {
                                 canvas_img_region.shape_attributes['dy'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dy']);
                                 canvas_img_region.shape_attributes['dz'] = Math.round(_via_zoom_degree * canvas_img_region.shape_attributes['dz']);
                             }
-                        }                    
+                        }
                         new_region_added = true;
                         break;
+
                     }
+                case VIA_REGION_SHAPE.POLYLINE: // handled by case VIA_REGION_SHAPE.POLYGON
+                case VIA_REGION_SHAPE.POLYGON:
+                    // handled by _via_is_user_drawing_polygon
+                    break;
             } // end of switch
 
             if (new_region_added) {
@@ -2114,6 +2333,11 @@ function _via_reg_canvas_mousemove_handler(e) {
                         _via_reg_canvas.style.cursor = "ew-resize";
                         break;
                 }
+                if (_via_region_edge[1] >= VIA_POLYGON_RESIZE_VERTEX_OFFSET) {
+                    // indicates mouse over polygon vertex
+                    _via_reg_canvas.style.cursor = "crosshair";
+                    show_message('To move vertex, simply drag the vertex. To add vertex, press [Ctrl] key and click on the edge. To delete vertex, press [Ctrl] key and click on vertex.');
+                }
             } else {
                 var yes = is_inside_this_region(_via_current_x,
                     _via_current_y,
@@ -2148,6 +2372,11 @@ function _via_reg_canvas_mousemove_handler(e) {
         _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
 
         switch (_via_current_shape) {
+            case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+            case VIA_REGION_SHAPE.POLYGON:
+                // this is handled by the if ( _via_is_user_drawing_polygon ) { ... }
+                // see below
+                break;
             case VIA_REGION_SHAPE.CUBE:
             case VIA_REGION_SHAPE.RECT:
                 if (_via_click_x0 < _via_current_x) {
@@ -2260,6 +2489,23 @@ function _via_reg_canvas_mousemove_handler(e) {
                     rf.innerHTML += ',' + ' W:' + w + ',' + ' H:' + h;
                 }
                 break;
+            case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+            case VIA_REGION_SHAPE.POLYGON:
+                var moved_all_points_x = attr['all_points_x'].slice(0);
+                var moved_all_points_y = attr['all_points_y'].slice(0);
+                var moved_vertex_id = _via_region_edge[1] - VIA_POLYGON_RESIZE_VERTEX_OFFSET;
+
+                moved_all_points_x[moved_vertex_id] = _via_current_x;
+                moved_all_points_y[moved_vertex_id] = _via_current_y;
+
+                _via_draw_polygon_region(moved_all_points_x,
+                    moved_all_points_y,
+                    true,
+                    attr['name']);
+                if (rf != null && _via_is_region_info_visible) {
+                    rf.innerHTML += ',' + ' Vertices:' + attr['all_points_x'].length;
+                }
+                break;
         }
         _via_reg_canvas.focus();
     }
@@ -2327,16 +2573,48 @@ function _via_reg_canvas_mousemove_handler(e) {
                     rf.innerHTML += ',' + ' W:' + attr['width'] + ',' + ' H:' + attr['height'];
                 }
                 break;
+            case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+            case VIA_REGION_SHAPE.POLYGON:
+                var moved_all_points_x = attr['all_points_x'].slice(0);
+                var moved_all_points_y = attr['all_points_y'].slice(0);
+                for (var i = 0; i < moved_all_points_x.length; ++i) {
+                    moved_all_points_x[i] += move_x;
+                    moved_all_points_y[i] += move_y;
+                }
+                _via_draw_polygon_region(moved_all_points_x,
+                    moved_all_points_y,
+                    true,
+                    attr['name']);
+                if (rf != null && _via_is_region_info_visible) {
+                    rf.innerHTML += ',' + ' Vertices:' + attr['all_points_x'].length;
+                }
+                break;
         }
         _via_reg_canvas.focus();
         annotation_editor_hide(); // moving
         return;
     }
-    if (!_via_is_user_drawing_region && !_via_is_user_resizing_region){
+    if (!_via_is_user_drawing_region && !_via_is_user_resizing_region) {
         _via_redraw_reg_canvas();
     }
     // _via_redraw_reg_canvas();
+    if (_via_is_user_drawing_polygon) {
+        _via_redraw_reg_canvas();
+        var attr = _via_canvas_regions[_via_current_polygon_region_id].shape_attributes;
+        var all_points_x = attr['all_points_x'];
+        var all_points_y = attr['all_points_y'];
+        var npts = all_points_x.length;
 
+        if (npts > 0) {
+            var line_x = [all_points_x.slice(npts - 1), _via_current_x];
+            var line_y = [all_points_y.slice(npts - 1), _via_current_y];
+            _via_draw_polygon_region(line_x, line_y, false, attr['name']);
+        }
+
+        if (rf != null && _via_is_region_info_visible) {
+            rf.innerHTML += ',' + ' Vertices:' + npts;
+        }
+    }
 }
 
 function _via_move_selected_regions(move_x, move_y) {
@@ -2361,6 +2639,13 @@ function _via_validate_move_region(x, y, canvas_attr) {
             // right and bottom boundary check
             if ((y + canvas_attr['height']) > _via_current_image_height ||
                 (x + canvas_attr['width']) > _via_current_image_width) {
+                show_message('Region moved beyond image boundary. Resetting.');
+                return false;
+            }
+        case VIA_REGION_SHAPE.POLYLINE:
+        case VIA_REGION_SHAPE.POLYGON:
+            if (x < 0 || y < 0 ||
+                x > _via_current_image_width || y > _via_current_image_height) {
                 show_message('Region moved beyond image boundary. Resetting.');
                 return false;
             }
@@ -2431,6 +2716,37 @@ function _via_move_region(region_id, move_x, move_y) {
             canvas_attr['x'] = Math.round(image_attr['x'] / _via_canvas_scale);
             canvas_attr['y'] = Math.round(image_attr['y'] / _via_canvas_scale);
             break;
+        case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+        case VIA_REGION_SHAPE.POLYGON:
+            var img_px = image_attr['all_points_x'];
+            var img_py = image_attr['all_points_y'];
+            var canvas_px = canvas_attr['all_points_x'];
+            var canvas_py = canvas_attr['all_points_y'];
+            // clone for reverting if valiation fails
+            var img_px_old = Object.assign({}, img_px);
+            var img_py_old = Object.assign({}, img_py);
+
+            // validate move
+            for (var i = 0; i < img_px.length; ++i) {
+                var pxnew = img_px[i] + Math.round(move_x * _via_canvas_scale);
+                var pynew = img_py[i] + Math.round(move_y * _via_canvas_scale);
+                if (!_via_validate_move_region(pxnew, pynew, image_attr)) {
+                    img_px = img_px_old;
+                    img_py = img_py_old;
+                    break;
+                }
+            }
+            // move points
+            for (var i = 0; i < img_px.length; ++i) {
+                img_px[i] = img_px[i] + Math.round(move_x * _via_canvas_scale);
+                img_py[i] = img_py[i] + Math.round(move_y * _via_canvas_scale);
+            }
+
+            for (var i = 0; i < canvas_px.length; ++i) {
+                canvas_px[i] = Math.round(img_px[i] / _via_canvas_scale);
+                canvas_py[i] = Math.round(img_py[i] / _via_canvas_scale);
+            }
+            break;
     }
 }
 
@@ -2478,7 +2794,7 @@ function draw_all_regions() {
 
         // region stroke style may depend on attribute value
         _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
-        if (aid !== '__via_default_region_color__') {
+        if (!_via_is_user_drawing_polygon && aid !== '__via_default_region_color__') {
             avalue = _via_img_metadata[_via_image_id].regions[i].region_attributes[aid];
             if (_via_canvas_regions_group_color.hasOwnProperty(avalue)) {
                 _via_reg_ctx.strokeStyle = _via_canvas_regions_group_color[avalue];
@@ -2487,13 +2803,13 @@ function draw_all_regions() {
 
         switch (attr['name']) {
             case VIA_REGION_SHAPE.RECT:
-                if(_via_zoom_degree != 1){
+                if (_via_zoom_degree != 1) {
                     _via_draw_rect_region(attr['x'],
                         attr['y'],
                         attr['width'],
                         attr['height'],
                         is_selected);
-                }else{
+                } else {
                     _via_draw_rect_region(attr['x'],
                         attr['y'],
                         attr['width'],
@@ -2513,7 +2829,14 @@ function draw_all_regions() {
                     attr['cz'],
                     attr['degree'],
                     is_selected);
-                
+
+                break;
+            case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+            case VIA_REGION_SHAPE.POLYGON:
+                _via_draw_polygon_region(attr['all_points_x'],
+                    attr['all_points_y'],
+                    is_selected,
+                    attr['name']);
                 break;
         }
     }
@@ -2542,9 +2865,9 @@ function _via_draw_control_spoint(cx, cy) {
 
 function _via_draw_control_spoint_sub(cx, cy, n) {
     var _via_sub_ctxt;
-    if(n === 2){
+    if (n === 2) {
         _via_sub_ctxt = _via_reg_canvas2.getContext('2d');
-    }else{
+    } else {
         _via_sub_ctxt = _via_reg_canvas3.getContext('2d');
     }
     _via_sub_ctxt.beginPath();
@@ -2579,7 +2902,7 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
         _via_draw_control_point(x + w / 2, y + h);
         _via_draw_control_point(x, y + h / 2);
         _via_draw_control_point(x + w, y + h / 2);
-    } 
+    }
     else {
         // draw a fill line
         _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2606,45 +2929,45 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
     }
 }
 
-async function _via_toggle_labelling_view(){
+async function _via_toggle_labelling_view() {
     var case_slice = await $('#papayaContainer' + _via_current_file_num).attr('slice');
-    if (_via_zoom_degree === 1){   
-        if (case_slice === 'x'){
+    if (_via_zoom_degree === 1) {
+        if (case_slice === 'x') {
             var temp_margin = Number(await $('#region_canvas2').css('margin-top').split('p')[0]);
-            await $('#region_canvas2').css('margin-top',0);
-            await $('#region_canvas2').css('margin-bottom',0);
-            await $('#region_canvas2').css('height',Number((_via_reg_canvas2.height * 10) / 7));
+            await $('#region_canvas2').css('margin-top', 0);
+            await $('#region_canvas2').css('margin-bottom', 0);
+            await $('#region_canvas2').css('height', Number((_via_reg_canvas2.height * 10) / 7));
             await $('#region_canvas2').attr('height', Number($('#region_canvas2').css('height').split('p')[0]));
-    
+
             await $('#region_canvas3').css('margin-top', Number(temp_margin));
             await $('#region_canvas3').css('margin-bottom', Number(temp_margin));
-            await $('#region_canvas3').attr('height',Number($('#region_canvas3').css('height').split('p')[0]) * (0.7));
-            await $('#region_canvas3').css('height',Number(_via_reg_canvas3.height));
+            await $('#region_canvas3').attr('height', Number($('#region_canvas3').css('height').split('p')[0]) * (0.7));
+            await $('#region_canvas3').css('height', Number(_via_reg_canvas3.height));
         }
 
-        else if (case_slice === 'y'){
+        else if (case_slice === 'y') {
             var temp_margin = Number(await $('#region_canvas').css('margin-top').split('p')[0]);
-            await $('#region_canvas').css('margin-top',0);
-            await $('#region_canvas').css('margin-bottom',0);
-            await $('#region_canvas').css('height',Number((_via_reg_canvas.height * 10) / 7));
-            await $('#region_canvas').attr('height',Number($('#region_canvas').css('height').split('p')[0]));
+            await $('#region_canvas').css('margin-top', 0);
+            await $('#region_canvas').css('margin-bottom', 0);
+            await $('#region_canvas').css('height', Number((_via_reg_canvas.height * 10) / 7));
+            await $('#region_canvas').attr('height', Number($('#region_canvas').css('height').split('p')[0]));
 
-            await $('#region_canvas2').css('margin-top',temp_margin * 417 / 830);
-            await $('#region_canvas2').css('margin-bottom',temp_margin * 417 / 830);
-            await $('#region_canvas2').attr('height', Math.round(Number(await $('#region_canvas2').attr('height'))*(0.7)));
+            await $('#region_canvas2').css('margin-top', temp_margin * 417 / 830);
+            await $('#region_canvas2').css('margin-bottom', temp_margin * 417 / 830);
+            await $('#region_canvas2').attr('height', Math.round(Number(await $('#region_canvas2').attr('height')) * (0.7)));
             await $('#region_canvas2').css('height', Number(_via_reg_canvas2.height));
         }
 
-        else if (case_slice === 'z'){
+        else if (case_slice === 'z') {
             var temp_margin = Number(await $('#region_canvas3').css('margin-top').split('p')[0]);
-            await $('#region_canvas3').css('margin-top',0);
-            await $('#region_canvas3').css('margin-bottom',0);
-            await $('#region_canvas3').css('height',Number((_via_reg_canvas3.height * 10) / 7));
-            await $('#region_canvas3').attr('height',Number($('#region_canvas3').css('height').split('p')[0]));
+            await $('#region_canvas3').css('margin-top', 0);
+            await $('#region_canvas3').css('margin-bottom', 0);
+            await $('#region_canvas3').css('height', Number((_via_reg_canvas3.height * 10) / 7));
+            await $('#region_canvas3').attr('height', Number($('#region_canvas3').css('height').split('p')[0]));
 
-            await $('#region_canvas').css('margin-top',Number(temp_margin * 830 / 417));
-            await $('#region_canvas').css('margin-bottom',Number(temp_margin * 830 / 417));
-            await $('#region_canvas').attr('height',Number($('#region_canvas').css('height').split('p')[0] * (0.7)));
+            await $('#region_canvas').css('margin-top', Number(temp_margin * 830 / 417));
+            await $('#region_canvas').css('margin-bottom', Number(temp_margin * 830 / 417));
+            await $('#region_canvas').attr('height', Number($('#region_canvas').css('height').split('p')[0] * (0.7)));
             await $('#region_canvas').css('height', Number(_via_reg_canvas.height));
         }
         _via_redraw_reg_canvas();
@@ -2661,36 +2984,36 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
 
-    var ratio = (417/830);
-    var t_ratio = (291/581);
+    var ratio = (417 / 830);
+    var t_ratio = (291 / 581);
     var height_ratio = $('#region_canvas').attr('height') / (592);
     _via_screen_ratio = (_via_reg_canvas.width + _via_reg_canvas2.width) / 1247;
 
     if (is_selected) {
         if (case_slice === 'x') {
-            if (_via_zoom_degree != degree){
-                if ( _via_zoom_degree > degree){
-                    console.log(x/height_ratio,y/height_ratio,z/height_ratio,_via_Loc);
-                    x =  (_via_zoom_degree * x / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.x);
+            if (_via_zoom_degree != degree) {
+                if (_via_zoom_degree > degree) {
+                    console.log(x / height_ratio, y / height_ratio, z / height_ratio, _via_Loc);
+                    x = (_via_zoom_degree * x / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.x);
                     x /= degree;
-                    y =  (_via_zoom_degree * y / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.y);
+                    y = (_via_zoom_degree * y / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.y);
                     y /= degree;
-                    z =  (_via_zoom_degree * z / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.z);
+                    z = (_via_zoom_degree * z / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.z);
                     z /= degree;
                     dx *= _via_zoom_degree;
                     dy *= _via_zoom_degree;
                     dz *= _via_zoom_degree;
-                }else{
+                } else {
                     x = ((degree * x / height_ratio) - (_via_zoom_degree * _via_Loc.x)) / (degree - _via_zoom_degree);
                     y = ((degree * y / height_ratio) - (_via_zoom_degree * _via_Loc.y)) / (degree - _via_zoom_degree);
                     z = ((degree * z / height_ratio) - (_via_zoom_degree * _via_Loc.z)) / (degree - _via_zoom_degree);
                 }
             }
-            var x_ratio = (284/810);
+            var x_ratio = (284 / 810);
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
-            
+
             _via_draw_rect(y, z, dy, dz);
- 
+
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_reg_ctx.stroke();
@@ -2700,7 +3023,7 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx.fill();
 
             _via_reg_ctx.globalAlpha = 1.0;
- 
+
             _via_draw_control_point(y, z);
             _via_draw_control_point(y + dy, z + dz);
             _via_draw_control_point(y, z + dz);
@@ -2709,9 +3032,9 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_control_point(y + dy / 2, z + dz);
             _via_draw_control_point(y, z + dz / 2);
             _via_draw_control_point(y + dy, z + dz / 2);
-            var temp = Number(await $('#region_canvas2').attr('width'))/506;
+            var temp = Number(await $('#region_canvas2').attr('width')) / 506;
 
-            _via_draw_rect_sub((x)*temp, z*ratio, dx*ratio, dz*ratio, 2); // y
+            _via_draw_rect_sub((x) * temp, z * ratio, dx * ratio, dz * ratio, 2); // y
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2722,16 +3045,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x)*temp, z*ratio, 2);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub((x)*temp, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio, z*ratio, 2);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio / 2, z*ratio, 2);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio / 2, z*ratio + dz*ratio, 2);
-            _via_draw_control_spoint_sub((x)*temp, z*ratio + dz*ratio / 2, 2);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio, z*ratio + dz*ratio / 2, 2);
+            _via_draw_control_spoint_sub((x) * temp, z * ratio, 2);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio + dz * ratio, 2);
+            _via_draw_control_spoint_sub((x) * temp, z * ratio + dz * ratio, 2);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio, 2);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, z * ratio, 2);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, z * ratio + dz * ratio, 2);
+            _via_draw_control_spoint_sub((x) * temp, z * ratio + dz * ratio / 2, 2);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio + dz * ratio / 2, 2);
 
-            _via_draw_rect_sub((x)*temp, (y)*ratio, dx*ratio, dy*ratio, 3); // z
+            _via_draw_rect_sub((x) * temp, (y) * ratio, dx * ratio, dy * ratio, 3); // z
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2741,18 +3064,18 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.globalAlpha = VIA_THEME_SEL_REGION_OPACITY;
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
-            
-            _via_draw_control_spoint_sub((x)*temp, (y)*ratio, 3);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio, (y)*ratio + dy*ratio, 3);
-            _via_draw_control_spoint_sub((x)*temp, (y)*ratio + dy*ratio, 3);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio, (y)*ratio, 3);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio / 2, (y)*ratio, 3);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio / 2, (y)*ratio + dy*ratio, 3);
-            _via_draw_control_spoint_sub((x)*temp, (y)*ratio + dy*ratio / 2, 3);
-            _via_draw_control_spoint_sub((x)*temp + dx*ratio, (y)*ratio + dy*ratio / 2, 3);
+
+            _via_draw_control_spoint_sub((x) * temp, (y) * ratio, 3);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio + dy * ratio, 3);
+            _via_draw_control_spoint_sub((x) * temp, (y) * ratio + dy * ratio, 3);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio, 3);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, (y) * ratio, 3);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, (y) * ratio + dy * ratio, 3);
+            _via_draw_control_spoint_sub((x) * temp, (y) * ratio + dy * ratio / 2, 3);
+            _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio + dy * ratio / 2, 3);
         }
         else if (case_slice === 'y') {
-            
+
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
 
             _via_draw_rect(x, z, dx, dz);
@@ -2775,8 +3098,8 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_control_point(x, z + dz / 2);
             _via_draw_control_point(x + dx, z + dz / 2);
 
-            var temp = Number(await $('#region_canvas2').attr('height'))/506;
-            _via_draw_rect_sub((x)*ratio, (y)*temp, dx*ratio, dy*ratio, 2); // z
+            var temp = Number(await $('#region_canvas2').attr('height')) / 506;
+            _via_draw_rect_sub((x) * ratio, (y) * temp, dx * ratio, dy * ratio, 2); // z
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2787,16 +3110,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x)*ratio, y*temp, 2);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, y*temp + dy*ratio, 2);
-            _via_draw_control_spoint_sub((x)*ratio, y*temp + dy*ratio, 2);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, y*temp, 2);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, y*temp, 2);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, y*temp + dy*ratio, 2);
-            _via_draw_control_spoint_sub((x)*ratio, y*temp + dy*ratio / 2, 2);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, y*temp + dy*ratio / 2, 2);
+            _via_draw_control_spoint_sub((x) * ratio, y * temp, 2);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp + dy * ratio, 2);
+            _via_draw_control_spoint_sub((x) * ratio, y * temp + dy * ratio, 2);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp, 2);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, y * temp, 2);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, y * temp + dy * ratio, 2);
+            _via_draw_control_spoint_sub((x) * ratio, y * temp + dy * ratio / 2, 2);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp + dy * ratio / 2, 2);
 
-            _via_draw_rect_sub((y)*temp, z*ratio, dy*ratio, dz*ratio, 3); // x
+            _via_draw_rect_sub((y) * temp, z * ratio, dy * ratio, dz * ratio, 3); // x
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2807,18 +3130,18 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((y)*temp, z*ratio, 3);
-            _via_draw_control_spoint_sub((y)*temp + dy*ratio, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub((y)*temp, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub((y)*temp + dy*ratio, z*ratio, 3);
-            _via_draw_control_spoint_sub((y)*temp + dy*ratio / 2, z*ratio, 3);
-            _via_draw_control_spoint_sub((y)*temp + dy*ratio / 2, z*ratio + dz*ratio, 3);
-            _via_draw_control_spoint_sub((y)*temp, z*ratio + dz*ratio / 2, 3);
-            _via_draw_control_spoint_sub((y)*temp + dy*ratio, z*ratio + dz*ratio / 2, 3);
+            _via_draw_control_spoint_sub((y) * temp, z * ratio, 3);
+            _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio + dz * ratio, 3);
+            _via_draw_control_spoint_sub((y) * temp, z * ratio + dz * ratio, 3);
+            _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio, 3);
+            _via_draw_control_spoint_sub((y) * temp + dy * ratio / 2, z * ratio, 3);
+            _via_draw_control_spoint_sub((y) * temp + dy * ratio / 2, z * ratio + dz * ratio, 3);
+            _via_draw_control_spoint_sub((y) * temp, z * ratio + dz * ratio / 2, 3);
+            _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio + dz * ratio / 2, 3);
         }
         else if (case_slice === 'z') {
-            
-            var height_ratio = (398.5/567);
+
+            var height_ratio = (398.5 / 567);
 
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
             _via_draw_rect(x, y, dx, dy);
@@ -2841,7 +3164,7 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_control_point(x, y + dy / 2);
             _via_draw_control_point(x + dx, y + dy / 2);
 
-            _via_draw_rect_sub((y)*ratio, z*height_ratio, dy*ratio, dz*height_ratio, 2); // x
+            _via_draw_rect_sub((y) * ratio, z * height_ratio, dy * ratio, dz * height_ratio, 2); // x
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2852,16 +3175,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((y)*ratio, z*height_ratio, 2);
-            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*height_ratio + dz*height_ratio, 2);
-            _via_draw_control_spoint_sub((y)*ratio, z*height_ratio + dz*height_ratio, 2);
-            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*height_ratio, 2);
-            _via_draw_control_spoint_sub((y)*ratio + dy*ratio / 2, z*height_ratio, 2);
-            _via_draw_control_spoint_sub((y)*ratio + dy*ratio / 2, z*height_ratio + dz*height_ratio, 2);
-            _via_draw_control_spoint_sub((y)*ratio, z*height_ratio + dz*height_ratio / 2, 2);
-            _via_draw_control_spoint_sub((y)*ratio + dy*ratio, z*height_ratio + dz*height_ratio / 2, 2);
+            _via_draw_control_spoint_sub((y) * ratio, z * height_ratio, 2);
+            _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio + dz * height_ratio, 2);
+            _via_draw_control_spoint_sub((y) * ratio, z * height_ratio + dz * height_ratio, 2);
+            _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio, 2);
+            _via_draw_control_spoint_sub((y) * ratio + dy * ratio / 2, z * height_ratio, 2);
+            _via_draw_control_spoint_sub((y) * ratio + dy * ratio / 2, z * height_ratio + dz * height_ratio, 2);
+            _via_draw_control_spoint_sub((y) * ratio, z * height_ratio + dz * height_ratio / 2, 2);
+            _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio + dz * height_ratio / 2, 2);
 
-            _via_draw_rect_sub((x)*ratio, z*height_ratio, dx*ratio, dz*height_ratio, 3); // y
+            _via_draw_rect_sub((x) * ratio, z * height_ratio, dx * ratio, dz * height_ratio, 3); // y
 
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -2873,14 +3196,14 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x)*ratio, z*height_ratio, 3);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*height_ratio + dz*height_ratio, 3);
-            _via_draw_control_spoint_sub((x)*ratio, z*height_ratio + dz*height_ratio, 3);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*height_ratio, 3);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, z*height_ratio, 3);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio / 2, z*height_ratio + dz*height_ratio, 3);
-            _via_draw_control_spoint_sub((x)*ratio, z*height_ratio + dz*height_ratio / 2, 3);
-            _via_draw_control_spoint_sub((x)*ratio + dx*ratio, z*height_ratio + dz*height_ratio / 2, 3);
+            _via_draw_control_spoint_sub((x) * ratio, z * height_ratio, 3);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio + dz * height_ratio, 3);
+            _via_draw_control_spoint_sub((x) * ratio, z * height_ratio + dz * height_ratio, 3);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio, 3);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, z * height_ratio, 3);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, z * height_ratio + dz * height_ratio, 3);
+            _via_draw_control_spoint_sub((x) * ratio, z * height_ratio + dz * height_ratio / 2, 3);
+            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio + dz * height_ratio / 2, 3);
         }
     } else {
         if (case_slice === 'x') {
@@ -2893,17 +3216,17 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
+            _via_draw_rect_sub((x) * ratio, z * ratio, dx * ratio, dz * ratio, 2); // y
             _via_reg_ctx2.stroke();
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 3); // z
+            _via_draw_rect_sub((x) * ratio, (y) * ratio, dx * ratio, dy * ratio, 3); // z
             _via_reg_ctx3.stroke();
 
         }
         else if (case_slice === 'y') {
-            var temp = Number(await $('#region_canvas2').attr('height'))/512;
+            var temp = Number(await $('#region_canvas2').attr('height')) / 512;
 
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
 
@@ -2914,16 +3237,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x)*ratio, (y)*temp, dx*ratio, dy*ratio, 2); // z
+            _via_draw_rect_sub((x) * ratio, (y) * temp, dx * ratio, dy * ratio, 2); // z
             _via_reg_ctx2.stroke();
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((y)*temp, z*ratio, dy*ratio, dz*ratio, 3); // x
+            _via_draw_rect_sub((y) * temp, z * ratio, dy * ratio, dz * ratio, 3); // x
             _via_reg_ctx3.stroke();
         }
         else if (case_slice === 'z') {
-            var height_ratio = (398.5/567);
+            var height_ratio = (398.5 / 567);
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
 
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
@@ -2933,12 +3256,12 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((y)*ratio, z*height_ratio, dy*ratio, dz*height_ratio, 2); // x
+            _via_draw_rect_sub((y) * ratio, z * height_ratio, dy * ratio, dz * height_ratio, 2); // x
             _via_reg_ctx2.stroke();
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x)*ratio, z*height_ratio, dx*ratio, dz*height_ratio, 3); // y
+            _via_draw_rect_sub((x) * ratio, z * height_ratio, dx * ratio, dz * height_ratio, 3); // y
             _via_reg_ctx3.stroke();
         }
     }
@@ -2958,9 +3281,9 @@ function _via_draw_rect(x, y, w, h) {
 
 function _via_draw_rect_sub(x, y, w, h, n) {
     var _via_reg_ctx;
-    if (n === 2){
+    if (n === 2) {
         _via_reg_ctx = _via_reg_canvas2.getContext('2d');
-    }else{
+    } else {
         _via_reg_ctx = _via_reg_canvas3.getContext('2d');
     }
     _via_reg_ctx.beginPath();
@@ -3047,10 +3370,16 @@ function draw_all_region_id() {
         } else {
             bgnd_rect_width = strw + char_width;
         }
+        if (canvas_reg.shape_attributes['name'] === VIA_REGION_SHAPE.POLYGON ||
+            canvas_reg.shape_attributes['name'] === VIA_REGION_SHAPE.POLYLINE) {
+            // put label near the first vertex
+            x = canvas_reg.shape_attributes['all_points_x'][0];
+            y = canvas_reg.shape_attributes['all_points_y'][0];
+        } else {
+            // center the label
+            x = x - (bgnd_rect_width / 2 - w / 2);
+        }
 
-        // center the label
-        x = x - (bgnd_rect_width / 2 - w / 2);
-        
         // ensure that the text is within the image boundaries
         if (y < char_height) {
             y = char_height;
@@ -3079,6 +3408,34 @@ function get_region_bounding_box(region) {
     var bbox = new Array(4);
 
     switch (d['name']) {
+        case 'polygon':
+            var all_points_x = d['all_points_x'];
+            var all_points_y = d['all_points_y'];
+
+            var minx = Number.MAX_SAFE_INTEGER;
+            var miny = Number.MAX_SAFE_INTEGER;
+            var maxx = 0;
+            var maxy = 0;
+            for (var i = 0; i < all_points_x.length; ++i) {
+                if (all_points_x[i] < minx) {
+                    minx = all_points_x[i];
+                }
+                if (all_points_x[i] > maxx) {
+                    maxx = all_points_x[i];
+                }
+                if (all_points_y[i] < miny) {
+                    miny = all_points_y[i];
+                }
+                if (all_points_y[i] > maxy) {
+                    maxy = all_points_y[i];
+                }
+            }
+            bbox[0] = minx;
+            bbox[1] = miny;
+            bbox[2] = maxx;
+            bbox[3] = maxy;
+            break;
+
         case 'cube':
             bbox = new Array(6);
             bbox[0] = d['x'];
@@ -3129,11 +3486,66 @@ function is_inside_region(px, py, descending_order) {
     }
     return -1;
 }
+function is_inside_polygon(all_points_x, all_points_y, px, py) {
+    if (all_points_x.length === 0 || all_points_y.length === 0) {
+        return 0;
+    }
+
+    var wn = 0;    // the  winding number counter
+    var n = all_points_x.length;
+    var i;
+    // loop through all edges of the polygon
+    for (i = 0; i < n - 1; ++i) {   // edge from V[i] to  V[i+1]
+        var is_left_value = is_left(all_points_x[i], all_points_y[i],
+            all_points_x[i + 1], all_points_y[i + 1],
+            px, py);
+
+        if (all_points_y[i] <= py) {
+            if (all_points_y[i + 1] > py && is_left_value > 0) {
+                ++wn;
+            }
+        }
+        else {
+            if (all_points_y[i + 1] <= py && is_left_value < 0) {
+                --wn;
+            }
+        }
+    }
+
+    // also take into account the loop closing edge that connects last point with first point
+    var is_left_value = is_left(all_points_x[n - 1], all_points_y[n - 1],
+        all_points_x[0], all_points_y[0],
+        px, py);
+
+    if (all_points_y[n - 1] <= py) {
+        if (all_points_y[0] > py && is_left_value > 0) {
+            ++wn;
+        }
+    }
+    else {
+        if (all_points_y[0] <= py && is_left_value < 0) {
+            --wn;
+        }
+    }
+
+    if (wn === 0) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
 
 function is_inside_this_region(px, py, region_id) {
     var attr = _via_canvas_regions[region_id].shape_attributes;
     var result = false;
     switch (attr['name']) {
+        case VIA_REGION_SHAPE.POLYLINE: // handled by POLYGON
+        case VIA_REGION_SHAPE.POLYGON:
+            result = is_inside_polygon(attr['all_points_x'],
+                attr['all_points_y'],
+                px, py);
+            break;
         case VIA_REGION_SHAPE.CUBE:
             var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
 
@@ -3229,6 +3641,17 @@ function is_on_region_corner(px, py) {
                     attr['height'],
                     px, py);
                 break;
+            case VIA_REGION_SHAPE.POLYLINE: // handled by polygon
+            case VIA_REGION_SHAPE.POLYGON:
+                result = is_on_polygon_vertex(attr['all_points_x'],
+                    attr['all_points_y'],
+                    px, py);
+                if (result === 0) {
+                    result = is_on_polygon_edge(attr['all_points_x'],
+                        attr['all_points_y'],
+                        px, py);
+                }
+                break;
         }
 
         if (result > 0) {
@@ -3296,7 +3719,7 @@ function is_point_inside_bounding_box(x, y, x1, y1, x2, y2) {
     if (x1 < x2) {
         rect.x1 = x1;
         rect.x2 = x2;
-    } 
+    }
     else {
         rect.x1 = x2;
         rect.x2 = x1;
@@ -3305,7 +3728,7 @@ function is_point_inside_bounding_box(x, y, x1, y1, x2, y2) {
     if (y1 < y2) {
         rect.y1 = y1;
         rect.y2 = y2;
-    } 
+    }
     else {
         rect.y1 = y2;
         rect.y2 = y1;
@@ -3313,7 +3736,7 @@ function is_point_inside_bounding_box(x, y, x1, y1, x2, y2) {
 
     if (x >= rect.x1 && x <= rect.x2 && y >= rect.y1 && y <= rect.y2) {
         return true;
-    } 
+    }
     else {
         return false;
     }
@@ -3474,7 +3897,7 @@ function _via_handle_global_keydown_event(e) {
             zoom_in();
             return;
         }
-        if (e.key === "t" || e.key === "T"){
+        if (e.key === "t" || e.key === "T") {
             via_canvas_toggle();
             return;
         }
@@ -3492,16 +3915,16 @@ function _via_handle_global_keydown_event(e) {
             return;
         }
 
-        if (e.key === "r" || e.key === "R"){
-            new Promise((res,rej)=>{
+        if (e.key === "r" || e.key === "R") {
+            new Promise((res, rej) => {
                 papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
                 _via_toggle_labelling_view();
                 res();
             })
-            
+
         }
 
-        if (e.key === "g" || e.key === "G"){
+        if (e.key === "g" || e.key === "G") {
             var current_container = papaya.Container.getObject(_via_current_file_num);
             var current_viewer = current_container.viewer;
             if (current_viewer.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
@@ -3512,7 +3935,7 @@ function _via_handle_global_keydown_event(e) {
                 current_viewer.incrementSagittal(true);
             }
         }
-        if (e.key === "f" || e.key === "F"){
+        if (e.key === "f" || e.key === "F") {
             var current_container = papaya.Container.getObject(_via_current_file_num);
             var current_viewer = current_container.viewer;
             if (current_viewer.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
@@ -3594,7 +4017,10 @@ function _via_handle_global_keydown_event(e) {
             _via_user_sel_region_id = -1;
             toggle_all_regions_selection(false);
         }
-
+        if (_via_is_user_drawing_polygon) {
+            _via_is_user_drawing_polygon = false;
+            _via_canvas_regions.splice(_via_current_polygon_region_id, 1);
+        }
         if (_via_is_user_drawing_region) {
             _via_is_user_drawing_region = false;
         }
@@ -3641,14 +4067,102 @@ function _via_reg_canvas_keyup_handler(e) {
     }
 
 }
+function _via_polyshape_finish_drawing() {
+    if (_via_is_user_drawing_polygon) {
+        // double click is used to indicate completion of
+        // polygon or polyline drawing action
+        var new_region_id = _via_current_polygon_region_id;
+        var new_region_shape = _via_current_shape;
 
+        var npts = _via_canvas_regions[new_region_id].shape_attributes['all_points_x'].length;
+        if (npts <= 2 && new_region_shape === VIA_REGION_SHAPE.POLYGON) {
+            show_message('For a polygon, you must define at least 3 points. ' +
+                'Press [Esc] to cancel drawing operation.!');
+            return;
+        }
+        if (npts <= 1 && new_region_shape === VIA_REGION_SHAPE.POLYLINE) {
+            show_message('A polyline must have at least 2 points. ' +
+                'Press [Esc] to cancel drawing operation.!');
+            return;
+        }
+
+        var img_id = _via_image_id;
+        _via_current_polygon_region_id = -1;
+        _via_is_user_drawing_polygon = false;
+        _via_is_user_drawing_region = false;
+
+        _via_img_metadata[img_id].regions[new_region_id] = {}; // create placeholder
+        _via_polyshape_add_new_polyshape(img_id, new_region_shape, new_region_id);
+        select_only_region(new_region_id); // select new region
+        set_region_annotations_to_default_value(new_region_id);
+        annotation_editor_add_row(new_region_id);
+        annotation_editor_scroll_to_row(new_region_id);
+
+        _via_redraw_reg_canvas();
+        _via_reg_canvas.focus();
+    }
+    return;
+}
+function _via_polyshape_delete_last_vertex() {
+    if (_via_is_user_drawing_polygon) {
+        var npts = _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_x'].length;
+        if (npts > 0) {
+            _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_x'].splice(npts - 1, 1);
+            _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_y'].splice(npts - 1, 1);
+
+            _via_redraw_reg_canvas();
+            _via_reg_canvas.focus();
+        }
+    }
+}
+function _via_polyshape_add_new_polyshape(img_id, region_shape, region_id) {
+    // add all polygon points stored in _via_canvas_regions[]
+    var all_points_x = _via_canvas_regions[region_id].shape_attributes['all_points_x'].slice(0);
+    var all_points_y = _via_canvas_regions[region_id].shape_attributes['all_points_y'].slice(0);
+
+    var canvas_all_points_x = [];
+    var canvas_all_points_y = [];
+    var n = all_points_x.length;
+    var i;
+    for (i = 0; i < n; ++i) {
+        all_points_x[i] = Math.round(all_points_x[i] * _via_canvas_scale);
+        all_points_y[i] = Math.round(all_points_y[i] * _via_canvas_scale);
+
+        canvas_all_points_x[i] = Math.round(all_points_x[i] / _via_canvas_scale);
+        canvas_all_points_y[i] = Math.round(all_points_y[i] / _via_canvas_scale);
+    }
+
+    var polygon_region = new file_region();
+    polygon_region.shape_attributes['name'] = region_shape;
+    polygon_region.shape_attributes['all_points_x'] = all_points_x;
+    polygon_region.shape_attributes['all_points_y'] = all_points_y;
+    _via_img_metadata[img_id].regions[region_id] = polygon_region;
+
+    // update canvas
+    if (img_id === _via_image_id) {
+        _via_canvas_regions[region_id].shape_attributes['name'] = region_shape;
+        _via_canvas_regions[region_id].shape_attributes['all_points_x'] = canvas_all_points_x;
+        _via_canvas_regions[region_id].shape_attributes['all_points_y'] = canvas_all_points_y;
+    }
+}
 function _via_reg_canvas_keydown_handler(e) {
     if (e.ctrlKey) {
         _via_is_ctrl_pressed = true;
     }
 
     if (_via_current_image_loaded) {
-
+        if (e.key === 'Enter') {
+            if (_via_current_shape === VIA_REGION_SHAPE.POLYLINE ||
+                _via_current_shape === VIA_REGION_SHAPE.POLYGON) {
+                _via_polyshape_finish_drawing();
+            }
+        }
+        if (e.key === 'Backspace') {
+            if (_via_current_shape === VIA_REGION_SHAPE.POLYLINE ||
+                _via_current_shape === VIA_REGION_SHAPE.POLYGON) {
+                _via_polyshape_delete_last_vertex();
+            }
+        }
         if (e.key === 'a' || e.key === 'A') {
             sel_all_regions();
             e.preventDefault();
@@ -4199,7 +4713,7 @@ function set_zoom(zoom_level_index) {
 
     // var temp_height = $('#papayaContainer' + _via_current_file_num).css('height');
     // var temp_width = 
-    
+
 
 
     _via_load_canvas_regions(); // image to canvas space transform
@@ -4588,13 +5102,13 @@ function labelling_list_ith_entry_html(i) {
     var attr = _via_canvas_regions[i].shape_attributes;
 
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
-    if (case_slice === 'x'){
+    if (case_slice === 'x') {
         var posName = "( " + attr['cx'] + ", " + attr['cy'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
         posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
-    }else if (case_slice === 'y'){
+    } else if (case_slice === 'y') {
         var posName = "( " + attr['cx'] + ", " + attr['cy'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
         posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
-    }else if (case_slice === 'z'){
+    } else if (case_slice === 'z') {
         var posName = "( " + attr['cx'] + ", " + attr['cy'] + ", " + attr['cz'] + " ) dx : " + attr['dx'];
         posName += ', dy : ' + attr['dy'] + ', dz : ' + attr['dz'];
     }
@@ -4613,7 +5127,7 @@ function jump_to_label(i) {
     current_viewer.currentCoord.z = attr['cz'];
     current_viewer.drawViewer(true);
     _via_redraw_reg_canvas();
-    
+
 }
 
 function is_region_annotation_missing(img_id) {
@@ -5762,7 +6276,7 @@ function annotation_editor_show() {
     // create new container of annotation editor
     var ae = document.createElement('div');
     ae.setAttribute('id', 'annotation_editor');
-    
+
 
     if (_via_annotation_editor_mode === VIA_ANNOTATION_EDITOR_MODE.SINGLE_REGION) {
         if (_via_settings.ui.image.on_image_annotation_editor_placement === VIA_ANNOTATION_EDITOR_PLACEMENT.DISABLE) {
@@ -5841,7 +6355,7 @@ function annotation_editor_get_placement(region_id) {
     var r = _via_canvas_regions[region_id]['shape_attributes'];
     var shape = r['name'];
     var margins = $('#region_canvas').css('margin-left');
-    
+
     switch (shape) {
         case 'rect':
             html_position.top = r['y'] + r['height'];
@@ -5861,6 +6375,15 @@ function annotation_editor_get_placement(region_id) {
                 html_position.top = r['y'] + r['dy'] + Number(margins.split('p')[0]);
                 html_position.left = r['x'] + r['dx'] + Number(margins.split('p')[0]);
             }
+        case 'polygon':
+        case 'polyline':
+            var most_left =
+                Object.keys(r['all_points_x']).reduce(function (a, b) {
+                    return r['all_points_x'][a] > r['all_points_x'][b] ? a : b
+                });
+            html_position.top = Math.max(r['all_points_y'][most_left]);
+            html_position.left = Math.max(r['all_points_x'][most_left]);
+            break;
     }
     html_position.top = html_position.top + _via_img_panel.offsetTop + VIA_REGION_EDGE_TOL + 'px';
     html_position.left = html_position.left + _via_img_panel.offsetLeft + VIA_REGION_EDGE_TOL + 'px';
@@ -6868,12 +7391,12 @@ function project_save_confirmed(input) {
 }
 function loadFile(filePath, callbackFunc) {
     $.ajaxSetup({
-        dataType:'blob',
-        async:false
+        dataType: 'blob',
+        async: false
     });
     console.log('ajax');
 
-    $.get(filePath, function(data){
+    $.get(filePath, function (data) {
         callbackFunc(data);
     });
     $.ajax({
@@ -6938,44 +7461,44 @@ function project_open_parse_json_file(project_file_data) {
         if (_via_img_count > 0) {
             console.log(_via_image_filename_list[0]);
             if (_via_image_filename_list[0].indexOf("gz") != -1) {
-                for(var i = 0 ; i < _via_img_count ;i++){
+                for (var i = 0; i < _via_img_count; i++) {
                     $.ajax({
                         type: 'GET',
-                        url: 'get_image_data?file_names='+_via_image_filename_list[i]+"&projec_names="+_via_settings['project'].name,
-                        success: function (result) {                            
+                        url: 'get_image_data?file_names=' + _via_image_filename_list[i] + "&projec_names=" + _via_settings['project'].name,
+                        success: function (result) {
                             // var blob = new Blob([result],{type:'text/plain'});
-                            console.log(_via_image_filename_list[0],typeof(_via_image_filename_list[0]));
-                            var file = new File([result],_via_image_filename_list[0],{
+                            console.log(_via_image_filename_list[0], typeof (_via_image_filename_list[0]));
+                            var file = new File([result], _via_image_filename_list[0], {
                                 lastModified: new Date(0)
                             });
                             filelist.push(file);
-                            
-                            new Promise((res,rej)=>{
+
+                            new Promise((res, rej) => {
                                 $('#File').click();
                                 res();
                             })
-                            .then(()=>{
-                                if (_via_current_file_num != 0){
-                                    var eraseView = $('#CloseAllImages0').eq(0);
-                                    eraseView.click();
-                                }
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num === 0){
-                                    document.getElementById('papayaContainer'+_via_global_index).setAttribute('class','display_none');
-                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.file = file;
-                                    filechoosers.trigger('change', filelist);
-                                }
-                                else $('#File').click();
-                            })
-                            .then(()=>{
-                                if (_via_current_file_num != 0){
-                                    var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                                    filechoosers.file = file;
-                                    filechoosers.trigger('change', filelist);
-                                }
-                            });
+                                .then(() => {
+                                    if (_via_current_file_num != 0) {
+                                        var eraseView = $('#CloseAllImages0').eq(0);
+                                        eraseView.click();
+                                    }
+                                })
+                                .then(() => {
+                                    if (_via_current_file_num === 0) {
+                                        document.getElementById('papayaContainer' + _via_global_index).setAttribute('class', 'display_none');
+                                        var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                                        filechoosers.file = file;
+                                        filechoosers.trigger('change', filelist);
+                                    }
+                                    else $('#File').click();
+                                })
+                                .then(() => {
+                                    if (_via_current_file_num != 0) {
+                                        var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                                        filechoosers.file = file;
+                                        filechoosers.trigger('change', filelist);
+                                    }
+                                });
                         },
                         error: function (result) {
                             alert('Fail to Save');
@@ -7068,73 +7591,73 @@ function project_file_remove_confirmed(input) {
     if (img_index === _via_img_count) {
         if (_via_img_count === 0) {
             _via_current_image_loaded = false;
-            new Promise((res,rej)=>{
+            new Promise((res, rej) => {
                 $('#File').click();
                 res();
             })
-            .then(()=>{
-                var eraseView = $('#CloseAllImages0').eq(0);
-                eraseView.click();
-            })
+                .then(() => {
+                    var eraseView = $('#CloseAllImages0').eq(0);
+                    eraseView.click();
+                })
             show_home_panel();
         } else {
-            new Promise((res,rej)=>{
-                $('#File'+_via_current_file_num).trigger('click');
+            new Promise((res, rej) => {
+                $('#File' + _via_current_file_num).trigger('click');
                 res();
             })
-            .then(()=>{
-                var eraseView = $('#CloseAllImages'+_via_current_file_num).eq(0);
+                .then(() => {
+                    var eraseView = $('#CloseAllImages' + _via_current_file_num).eq(0);
+                    eraseView.trigger('click');
+
+                    _via_current_file_num = img_index - 1;
+                    _via_max_file_num = _via_max_file_num - 1;
+                    jump_to_image(_via_max_file_num);
+                    _via_reload_img_fn_list_table = true;
+                    update_img_fn_list();
+                    show_message('Removed file [' + input.filename.value + '] from project');
+                    user_input_default_cancel_handler();
+
+                    if (img_index < _via_current_file_num) {
+                        $('#papayaContainer' + img_index).attr('id', 'temp');
+                        $('#papayaContainer' + _via_current_file_num).attr('id', 'papayaContainer' + img_index);
+                        $('#temp').attr('id', 'papayaContainer' + _via_current_file_num);
+                    }
+                    jump_to_image(img_index); // jump to max index file
+                    update_labelling_list();
+                    $('#bim' + _via_current_file_num).trigger('click');
+                });
+        }
+    } else {
+        new Promise((res, rej) => {
+            if (_via_current_file_num == 0) {
+                $('#File').trigger('click');
+            }
+            else $('#File' + _via_current_file_num).trigger('click');
+            res();
+        })
+            .then(() => {
+                var eraseView = $('#CloseAllImages' + _via_current_file_num).eq(0);
                 eraseView.trigger('click');
-                
-                _via_current_file_num = img_index - 1;
+
                 _via_max_file_num = _via_max_file_num - 1;
-                jump_to_image(_via_max_file_num);
+                if (img_index === 0) {
+                    _via_current_file_num = _via_max_file_num;
+                }
+                else _via_current_file_num = img_index - 1;
+
                 _via_reload_img_fn_list_table = true;
                 update_img_fn_list();
                 show_message('Removed file [' + input.filename.value + '] from project');
                 user_input_default_cancel_handler();
-
-                if(img_index < _via_current_file_num){
-                    $('#papayaContainer'+img_index).attr('id','temp');
-                    $('#papayaContainer'+_via_current_file_num).attr('id','papayaContainer'+img_index);
-                    $('#temp').attr('id','papayaContainer'+_via_current_file_num);
+                if (img_index < _via_current_file_num) {
+                    $('#papayaContainer' + img_index).attr('id', 'temp');
+                    $('#papayaContainer' + _via_current_file_num).attr('id', 'papayaContainer' + img_index);
+                    $('#temp').attr('id', 'papayaContainer' + _via_current_file_num);
                 }
                 jump_to_image(img_index); // jump to max index file
                 update_labelling_list();
-                $('#bim'+_via_current_file_num).trigger('click');
+                $('#bim' + _via_current_file_num).trigger('click');
             });
-        }
-    } else {
-        new Promise((res,rej)=>{
-            if (_via_current_file_num == 0){
-                $('#File').trigger('click');
-            }
-            else $('#File'+_via_current_file_num).trigger('click');
-            res();
-        })
-        .then(()=>{
-            var eraseView = $('#CloseAllImages'+_via_current_file_num).eq(0);
-            eraseView.trigger('click');
-            
-            _via_max_file_num = _via_max_file_num - 1;
-            if(img_index === 0){
-                _via_current_file_num = _via_max_file_num;
-            }
-            else _via_current_file_num = img_index - 1;
-
-            _via_reload_img_fn_list_table = true;
-            update_img_fn_list();
-            show_message('Removed file [' + input.filename.value + '] from project');
-            user_input_default_cancel_handler();
-            if(img_index < _via_current_file_num){
-                $('#papayaContainer'+img_index).attr('id','temp');
-                $('#papayaContainer'+_via_current_file_num).attr('id','papayaContainer'+img_index);
-                $('#temp').attr('id','papayaContainer'+_via_current_file_num);
-            }
-            jump_to_image(img_index); // jump to max index file
-            update_labelling_list();
-            $('#bim'+_via_current_file_num).trigger('click');
-        });
     }
 }
 
@@ -7191,16 +7714,16 @@ function project_add_new_file(filename, size, file_id) {
 
 async function project_file_add_local(event) {
     //
-    if(_via_current_file_num != -1) {
-        document.getElementById('papayaContainer'+_via_current_file_num).classList.add('display_none');
-        document.getElementById('bim'+_via_current_file_num).classList.add('display_none');
-        document.getElementById('papayaContainer'+(_via_max_file_num)).classList.remove('display_none');
+    if (_via_current_file_num != -1) {
+        document.getElementById('papayaContainer' + _via_current_file_num).classList.add('display_none');
+        document.getElementById('bim' + _via_current_file_num).classList.add('display_none');
+        document.getElementById('papayaContainer' + (_via_max_file_num)).classList.remove('display_none');
     }
-    
+
 
     var user_selected_images = event.target.files;
     var original_image_count = _via_img_count;
-    
+
     var pattern_eng = /[a-zA-Z]/;
     var new_img_index_list = [];
     var discarded_file_count = 0;
@@ -7259,72 +7782,72 @@ async function project_file_add_local(event) {
                 }
                 new_img_index_list.push(_via_image_id_list.indexOf(img_id));
 
-                if (_via_current_temp_num === -1){
+                if (_via_current_temp_num === -1) {
                     _via_current_temp_num = _via_current_file_num + 1;
 
-                    await new Promise((res,rej)=>{
+                    await new Promise((res, rej) => {
                         $('#File').click();
                         res();
                     })
-                    .then(()=>{
-                        var eraseView = $('#CloseAllImages0').eq(0);
-                        eraseView.click();
-                    })
-                    .then(()=>{
-                        $('#File').click();
-                    })
-                    .then(()=>{
-                        var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-                        filechoosers.trigger('change',[event.target.files]);
-                    })
-                    .then(()=>{
-                        // $('.papaya-toolbar').removeAttribute('class','display_none');
-                        $('.papaya-toolbar').prependTo($('#img_size'));
-                        $('.papaya-toolbar').attr('style','');
+                        .then(() => {
+                            var eraseView = $('#CloseAllImages0').eq(0);
+                            eraseView.click();
+                        })
+                        .then(() => {
+                            $('#File').click();
+                        })
+                        .then(() => {
+                            var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                            filechoosers.trigger('change', [event.target.files]);
+                        })
+                        .then(() => {
+                            // $('.papaya-toolbar').removeAttribute('class','display_none');
+                            $('.papaya-toolbar').prependTo($('#img_size'));
+                            $('.papaya-toolbar').attr('style', '');
 
-                    })
+                        })
                 }
-                else if (_via_current_temp_num === 0){
+                else if (_via_current_temp_num === 0) {
                     _via_current_temp_num = _via_current_file_num + 1;
                     var filechoosers;
-                    await new Promise((res,rej)=>{
+                    await new Promise((res, rej) => {
                         $('#File').click();
                         res();
                     })
-                    .then(()=>{
-                        filechoosers = $('#fileChooserAdd_Image'+_via_current_temp_num).eq(0);
-                        $('#papayaContainer'+_via_current_temp_num).attr('class','display_none');
-                        // res();
-                    })
-                    .then(()=>{
-                        filechoosers.trigger('change',[event.target.files]);
-                        // res();
-                    })
-                    .then(()=>{
-                        $('.papaya-toolbar').prependTo($('#img_size'));
-                        $('.papaya-toolbar').attr('style','');
-                    })
+                        .then(() => {
+                            filechoosers = $('#fileChooserAdd_Image' + _via_current_temp_num).eq(0);
+                            $('#papayaContainer' + _via_current_temp_num).attr('class', 'display_none');
+                            // res();
+                        })
+                        .then(() => {
+                            filechoosers.trigger('change', [event.target.files]);
+                            // res();
+                        })
+                        .then(() => {
+                            $('.papaya-toolbar').prependTo($('#img_size'));
+                            $('.papaya-toolbar').attr('style', '');
+                        })
                 }
                 else {
                     _via_current_temp_num = _via_current_file_num + 1;
                     var filechoosers;
-                    await new Promise((res,rej)=>{
-                        $('#File'+_via_current_temp_num).click();
+                    await new Promise((res, rej) => {
+                        $('#File' + _via_current_temp_num).click();
                         res();
                     })
-                    .then(()=>{
-                        $('#papayaContainer'+_via_current_temp_num).attr('class','display_none');
-                        filechoosers = $('#fileChooserAdd_Image'+_via_current_temp_num).eq(0);
-                        // res();
-                    })
-                    .then(()=>{
-                        filechoosers.trigger('change', [event.target.files[_via_current_temp_num]]);
-                        // res();
-                    })
-                    .then(()=>{
-                        $('.papaya-toolbar').prependTo($('#img_size'));
-                        $('.papaya-toolbar').attr('style','');
-                    })
+                        .then(() => {
+                            $('#papayaContainer' + _via_current_temp_num).attr('class', 'display_none');
+                            filechoosers = $('#fileChooserAdd_Image' + _via_current_temp_num).eq(0);
+                            // res();
+                        })
+                        .then(() => {
+                            filechoosers.trigger('change', [event.target.files[_via_current_temp_num]]);
+                            // res();
+                        })
+                        .then(() => {
+                            $('.papaya-toolbar').prependTo($('#img_size'));
+                            $('.papaya-toolbar').attr('style', '');
+                        })
                 }
             }
             else {
@@ -7339,7 +7862,7 @@ async function project_file_add_local(event) {
             _via_wrong_img_list.push(user_selected_images[i].name);
         }
     }
-    
+
     if (filetype != 'image') {
         var status_msg = 'Loading ' + new_img_index_list.length + ' NIFTI images.';
         if (discarded_file_count) {
@@ -7367,45 +7890,45 @@ async function project_file_add_local(event) {
     invisible_submit.click();
 }
 
-function display_block_sizing (wid, hei) {
+function display_block_sizing(wid, hei) {
     // console.log(height, width);
-    $('#display_area').css('width',wid+8);
-    $('#display_area').css('height',hei);
+    $('#display_area').css('width', wid + 8);
+    $('#display_area').css('height', hei);
 }
-async function promise_file(cid){
-    new Promise((res,rej)=>{
-        if(cid <= 0){
+async function promise_file(cid) {
+    new Promise((res, rej) => {
+        if (cid <= 0) {
             $('#File').click();
-        }else{
-            $('#File'+cid).click();
+        } else {
+            $('#File' + cid).click();
         }
         res();
     })
-    .then(()=>{
-        if (cid === -1){
-            var eraseView = $('#CloseAllImages0').eq(0);
-            eraseView.click();
-        }
-    })
-    .then(()=>{
-        if (cid >= 0){
-            document.getElementById('papayaContainer'+cid).setAttribute('class','display_none');
-            var filechoosers = $('#fileChooserAdd_Image'+cid).eq(0);
-            filechoosers.trigger('change',[event.target.files]);
-        }
-        else c
-    })
-    .then(()=>{
-        if (cid === -1){
-            var filechoosers = $('#fileChooserAdd_Image0').eq(0);
-            filechoosers.trigger('change',[event.target.files]);
-        }else{
-            var filechoosers = $('#fileChooserAdd_Image'+cid).eq(0);
-            filechoosers.trigger('change', [event.target.files[cid]]);
-        }
-        return;
-    });
-    
+        .then(() => {
+            if (cid === -1) {
+                var eraseView = $('#CloseAllImages0').eq(0);
+                eraseView.click();
+            }
+        })
+        .then(() => {
+            if (cid >= 0) {
+                document.getElementById('papayaContainer' + cid).setAttribute('class', 'display_none');
+                var filechoosers = $('#fileChooserAdd_Image' + cid).eq(0);
+                filechoosers.trigger('change', [event.target.files]);
+            }
+            else c
+        })
+        .then(() => {
+            if (cid === -1) {
+                var filechoosers = $('#fileChooserAdd_Image0').eq(0);
+                filechoosers.trigger('change', [event.target.files]);
+            } else {
+                var filechoosers = $('#fileChooserAdd_Image' + cid).eq(0);
+                filechoosers.trigger('change', [event.target.files[cid]]);
+            }
+            return;
+        });
+
 }
 function get_current_index() {
     return _via_image_id_list.indexOf(_via_image_id);
@@ -7976,6 +8499,15 @@ function image_grid_show_region_shape(img_index, img_param) {
                     }
                     else if (slice === 'z') {
                         dimg = [r['x'], r['y'], r['x'] + r['dx'], r['y'] + r['dy']];
+                    }
+                    break;
+                case VIA_REGION_SHAPE.POLYLINE: // handled by POLYGON
+                case VIA_REGION_SHAPE.POLYGON:
+                    var j;
+                    dimg = [];
+                    for (j = 0; j < r['all_points_x'].length; ++j) {
+                        dimg.push(r['all_points_x'][j]);
+                        dimg.push(r['all_points_y'][j]);
                     }
                     break;
             }
@@ -8759,13 +9291,34 @@ function _via_region(shape, id, data_img_space, view_scale_factor, view_offset_x
         case "cube":
             _via_region_rect.call(this);
             this.svg_attributes = ['x', 'y', 'z', 'dx', 'dy', 'dz'];
+        case "polygon":
+            _via_region_polygon.call(this);
+            this.svg_attributes = ['points'];
+            break;
 
     }
 
     this.initialize();
 }
-
-
+function _via_region_polygon() {
+    this.is_inside = _via_region_polygon.prototype.is_inside;
+    this.is_on_edge = _via_region_polygon.prototype.is_on_edge;
+    this.move = _via_region_polygon.prototype.move;
+    this.resize = _via_region_polygon.prototype.resize;
+    this.initialize = _via_region_polygon.prototype.initialize;
+    this.dist_to_nearest_edge = _via_region_polygon.prototype.dist_to_nearest_edge;
+}
+_via_region_polygon.prototype.initialize = function () {
+    var n = this.dview.length;
+    var points = new Array(n / 2);
+    var points_index = 0;
+    for (var i = 0; i < n; i += 2) {
+        points[points_index] = (this.dview[i] + ' ' + this.dview[i + 1]);
+        points_index++;
+    }
+    this.points = points.join(',');
+    this.recompute_svg = true;
+}
 _via_region.prototype.prepare_svg_element = function () {
     var _VIA_SVG_NS = "http://www.w3.org/2000/svg";
     this.svg_element = document.createElementNS(_VIA_SVG_NS, this.shape);
@@ -8937,7 +9490,7 @@ function _via_show_img_from_buffer(img_index) {
         _via_buffer_hide_current_image();
         //
         var cimg_html_id = _via_img_buffer_get_html_id(img_index);
-        _via_current_image = document.getElementById("papayaViewer"+img_index);
+        _via_current_image = document.getElementById("papayaViewer" + img_index);
         if (!_via_current_image) {
             // the said image is not present in buffer, which could be because
             // the image got removed from the buffer
@@ -8963,6 +9516,7 @@ function _via_show_img_from_buffer(img_index) {
         _via_is_window_resized = false;
         _via_is_user_resizing_region = false;
         _via_is_user_moving_region = false;
+        _via_is_user_drawing_polygon = false;
         _via_is_region_selected = false;
         _via_user_sel_region_id = -1;
 
@@ -9022,12 +9576,34 @@ function _via_show_img_from_buffer(img_index) {
         ok_callback(img_index);
     });
 }
-
-function via_canvas_toggle() {
+function polygon_to_bbox(pts) {
+    var xmin = +Infinity;
+    var xmax = -Infinity;
+    var ymin = +Infinity;
+    var ymax = -Infinity;
+    for (var i = 0; i < pts.length; i = i + 2) {
+        if (pts[i] > xmax) {
+            xmax = pts[i];
+        }
+        if (pts[i] < xmin) {
+            xmin = pts[i];
+        }
+        if (pts[i + 1] > ymax) {
+            ymax = pts[i + 1];
+        }
+        if (pts[i + 1] < ymin) {
+            ymin = pts[i + 1];
+        }
+    }
+    return [xmin, ymin, xmax - xfmin, ymax - ymin];
+}
+function via_canvas_toggle(shape) {
     var display_class_list = document.getElementById('display_area').className;
     if (display_class_list.indexOf('display_none') != -1) document.getElementById('display_area').classList.remove('display_none');
     else document.getElementById('display_area').classList.add('display_none');
+    select_region_shape(shape);
 }
+
 function via_drawing_canvas_toggle() {
     var display_class_list = document.getElementById('drawing_area').className;
     if (display_class_list.indexOf('display_none') != -1) document.getElementById('drawing_area').classList.remove('display_none');
@@ -9069,7 +9645,7 @@ function _via_img_buffer_add_image(img_index) {
                 bimg.setAttribute('id', _via_img_buffer_get_html_id(img_index));
                 bimg.classList.add('display_none');
                 bimg.setAttribute('alt', 'Image loaded from base64 data of a local file selected by user.');
-                _via_img_panel.insertBefore(bimg,_via_reg_canvas);
+                _via_img_panel.insertBefore(bimg, _via_reg_canvas);
             }
 
             bimg.addEventListener('error', function () {
@@ -9258,7 +9834,7 @@ function _via_buffer_remove(buffer_index) {
         _via_buffer_img_index_list.splice(buffer_index, 1);
         _via_buffer_img_shown_timestamp.splice(buffer_index, 1);
         if (bimg.tagName === "CANVAS") {
-            $('#CloseAllImages'+buffer_index).eq(0).click();
+            $('#CloseAllImages' + buffer_index).eq(0).click();
             _via_img_panel.removeChild(bimg);
         } else {
             _via_img_panel.removeChild(bimg);
@@ -9272,7 +9848,7 @@ function _via_buffer_remove_index(remove_index) {
     var i, n;
     n = _via_buffer_img_index_list.length / 2;
     // _via_buffer_img_index_list -> bim, papayacontainer counts
-    while(true){
+    while (true) {
         var idx = _via_buffer_img_index_list.indexOf(remove_index);
         if (idx > -1) _via_buffer_img_index_list.splice(idx, 1);
         else break;
@@ -9289,12 +9865,12 @@ function _via_buffer_remove_all() {
     var i, n;
     n = _via_buffer_img_index_list.length;
     // _via_buffer_img_index_list -> bim, papayacontainer counts
-    
-    for(i=0 ; i<=n ; i++){
+
+    for (i = 0; i <= n; i++) {
         var img_index = _via_buffer_img_index_list[i];
         var bimg_html_id = _via_img_buffer_get_html_id(img_index);
         var bimg = document.getElementById(bimg_html_id);
-        if (bimg){
+        if (bimg) {
             _via_img_panel.removeChild(bimg);
         }
     }
@@ -9803,7 +10379,7 @@ if (!_via_is_debug_mode) {
         return 'Did you save your data?';
     };
 }
- 
+
 //
 // keep a record of image statistics (e.g. width, height, ...)
 //
@@ -9877,7 +10453,7 @@ function img_stat_get(img_index) {
 function fixfloat(x) {
     return parseFloat(x.toFixed(VIA_FLOAT_PRECISION));
 }
- 
+
 function shape_attribute_fixfloat(sa) {
     for (var attr in sa) {
         switch (attr) {
