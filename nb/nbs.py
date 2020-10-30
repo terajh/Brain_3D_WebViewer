@@ -35,7 +35,7 @@ class NDArrayEncoder(json.JSONEncoder):
 
 mysql = MySQL()
 
-app = Flask(__name__, static_url_path="/statics", static_folder="statics")
+app = Flask(__name__, static_url_path="../statics", static_folder="statics")
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'

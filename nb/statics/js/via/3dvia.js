@@ -354,7 +354,6 @@ function show_image_grid_view() {
 // -------------------- Open local files
 function sel_local_images() {
     // source: https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
-    
     if (invisible_file_input) {
         invisible_file_input.value = null;
         invisible_file_input.setAttribute('multiple', 'multiple')
@@ -2544,7 +2543,8 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
         _via_draw_control_point(x + w / 2, y + h);
         _via_draw_control_point(x, y + h / 2);
         _via_draw_control_point(x + w, y + h / 2);
-    } else {
+    } 
+    else {
         // draw a fill line
         _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
         _via_draw_rect(x, y, w, h);
@@ -2611,6 +2611,7 @@ async function _via_toggle_labelling_view(){
             await $('#region_canvas').attr('height',Number($('#region_canvas').css('height').split('p')[0] * (0.7)));
             await $('#region_canvas').css('height', Number(_via_reg_canvas.height));
         }
+        _via_redraw_reg_canvas();
     }
 }
 
@@ -2692,7 +2693,7 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_control_spoint_sub((x)*temp, z*ratio + dz*ratio / 2, 2);
             _via_draw_control_spoint_sub((x)*temp + dx*ratio, z*ratio + dz*ratio / 2, 2);
 
-            _via_draw_rect_sub((x)*temp,(y)*ratio, dx*ratio, dy*ratio, 3); // z
+            _via_draw_rect_sub((x)*temp, (y)*ratio, dx*ratio, dy*ratio, 3); // z
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -2852,20 +2853,12 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_rect(y, z, dy, dz);
             _via_reg_ctx.stroke();
 
-<<<<<<< HEAD
-            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
-=======
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, z*ratio, dx*ratio, dz*ratio, 2); // y
             _via_reg_ctx2.stroke();
 
-<<<<<<< HEAD
-            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
-=======
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, (y)*ratio, dx*ratio, dy*ratio, 3); // z
             _via_reg_ctx3.stroke();
@@ -2881,20 +2874,12 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_rect(x, z, dx, dz);
             _via_reg_ctx.stroke();
 
-<<<<<<< HEAD
-            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
-=======
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, (y)*temp, dx*ratio, dy*ratio, 2); // z
             _via_reg_ctx2.stroke();
 
-<<<<<<< HEAD
-            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
-=======
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((y)*temp, z*ratio, dy*ratio, dz*ratio, 3); // x
             _via_reg_ctx3.stroke();
@@ -2908,20 +2893,12 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
-<<<<<<< HEAD
-            _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
-=======
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((y)*ratio, z*height_ratio, dy*ratio, dz*height_ratio, 2); // x
             _via_reg_ctx2.stroke();
 
-<<<<<<< HEAD
-            _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
-=======
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect_sub((x)*ratio, z*height_ratio, dx*ratio, dz*height_ratio, 3); // y
             _via_reg_ctx3.stroke();
@@ -3478,20 +3455,12 @@ function _via_handle_global_keydown_event(e) {
         }
 
         if (e.key === "r" || e.key === "R"){
-<<<<<<< HEAD
-            papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
-            _via_toggle_labelling_view();
-            _via_redraw_reg_canvas();
-=======
             new Promise((res,rej)=>{
                 papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
                 _via_toggle_labelling_view();
                 res();
             })
-            .then(()=>{
-                _via_redraw_reg_canvas();                
-            });
->>>>>>> 0bf2504bcd9560389af46786f176de0bc8ebd02c
+            
         }
 
         if (e.key === "g" || e.key === "G"){

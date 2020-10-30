@@ -21,6 +21,7 @@ papaya.ui.MenuItemSlider = papaya.ui.MenuItemSlider || function (viewer, label, 
     this.label = label;
     this.index = modifier;
     this.modifier = "";
+    
     if (!papaya.utilities.StringUtils.isStringBlank(modifier)) {
         this.modifier = "-" + modifier;
     }
