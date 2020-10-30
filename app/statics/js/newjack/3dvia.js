@@ -107,9 +107,12 @@ function _via_init() {
             await _via_load_submodules();
         }, 100);
     }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> bddaf613cf884df3f526864455f14797aa294d5a
 }
 
 
@@ -161,15 +164,6 @@ function leftsidebar_accordian_show_shortcut() {
     document.getElementById("hidden03").setAttribute("style", "display:inline-block");
 }
 
-
-
-
-
-
-
-
-
-
 function uploadImg() {
     var form = $('#img_form')[0];
     var formData = new FormData(form);
@@ -186,7 +180,6 @@ function uploadImg() {
     });
 }
 
-// 2019su // Region attributes, File Annotation 수정
 function _set_attributes() {
     ////
     //Attribute 추가

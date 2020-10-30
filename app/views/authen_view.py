@@ -97,9 +97,25 @@ def signUp():
             if _name and _email and _password:
                 _hashed_password = flask_bcrypt.generate_password_hash(_password).decode('utf-8')
                 chkMem = db.executeAll("SELECT name FROM member WHERE email = '" + str(_email) + "';")
+                print('##',len(chkMem))
                 if len(chkMem) == 0:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
+                    db.commit()
+=======
                     data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
                     # db.commit()
+>>>>>>> 0b65a5870c86800880eb09a90bf36c00ba90184c
+=======
+                    data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
+                    # db.commit()
+>>>>>>> 0b65a5870c86800880eb09a90bf36c00ba90184c
+=======
+                    data = db.executeAll("INSERT INTO member(name, email, password, authorize, joinDate) VALUES('"+_name+"', '"+_email+"', '"+_hashed_password+"', '"+_authorize+"', '"+_nowDatetime+"');")
+                    # db.commit()
+>>>>>>> 0b65a5870c86800880eb09a90bf36c00ba90184c
                     content = "New applyer name: " + _name + " and email: " + _email
                     # mail_apache(1, content, "nanjun1@naver.com")
                 return render_template('response.html', result='Success to join, please wait to receive authorision email')
