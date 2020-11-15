@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="../../statics/css/utilities/unsupported.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/viewer/viewer.css" />
 
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/statics/js/newjack/3dconstants.js"></script>
     <script>
         var firstTry = "{{first}}";
@@ -35,7 +36,7 @@
     <script type="text/javascript" src="../../statics/lib/bowser.js"></script>
     <script type="text/javascript" src="../../statics/lib/daikon.js"></script>
     <script type="text/javascript" src="../../statics/lib/nifti-reader.js"></script>
-    <script type="text/javascript" src="../../statics/lib/jquery.js"></script>
+    <!-- <script type="text/javascript" src="../../statics/lib/jquery.js"></script> -->
     <script type="text/javascript" src="../../statics/lib/numerics.js"></script>
     <script type="text/javascript" src="../../statics/lib/pako-inflate.js"></script>
     <script type="text/javascript" src="../../statics/lib/gl-matrix.js"></script>
@@ -114,34 +115,6 @@
     <nav>
         <div id="leftsidebar1"></div>
         <div id="leftsidebar">
-            <div class="leftsidebar_accordion_panel show">
-                <ul class="region_shape">
-                    <li id="region_shape_rect" class="selected" onclick="select_region_shape('rect')" title="Rectangle">
-                        <svg height="32" viewbox="0 0 32 32">
-                            <use xlink:href="#shape_rectangle"></use>
-                        </svg></li>
-                    <li id="region_shape_circle" onclick="select_region_shape('circle')" title="Circle"><svg height="32"
-                            viewbox="0 0 32 32">
-                            <use xlink:href="#shape_circle"></use>
-                        </svg></li>
-                    <li id="region_shape_ellipse" onclick="select_region_shape('ellipse')" title="Ellipse"><svg
-                            height="32" viewbox="0 0 32 32">
-                            <use xlink:href="#shape_ellipse"></use>
-                        </svg></li>
-                    <li id="region_shape_polygon" onclick="select_region_shape('polygon')" title="Polygon"><svg
-                            height="32" viewbox="0 0 32 32">
-                            <use xlink:href="#shape_polygon"></use>
-                        </svg></li>
-                    <li id="region_shape_point" onclick="select_region_shape('point')" title="Point"><svg height="32"
-                            viewbox="0 0 32 32">
-                            <use xlink:href="#shape_point"></use>
-                        </svg></li>
-                    <li id="region_shape_polyline" onclick="select_region_shape('polyline')" title="Polyline"><svg
-                            height="32" viewbox="0 0 32 32">
-                            <use xlink:href="#shape_polyline"></use>
-                        </svg></li>
-                </ul>
-            </div>
 
         </div>
     </nav>
@@ -183,6 +156,7 @@
             <input id="y_position" class="positions" type="hidden">
             <input id="z_position" class="positions" type="hidden">
         </div>
+        
     </details>
 
 
@@ -218,7 +192,6 @@
         var startX = 0,
             startY = 0; // 드래깅동안, 처음 마우스가 눌러진 좌표
         var drawing = false;
-
     </script>
 </body>
 

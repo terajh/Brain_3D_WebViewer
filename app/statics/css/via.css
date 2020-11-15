@@ -10,25 +10,34 @@ body {
 }
 header {
   width:100%;
-  height:9%;
+  height:65px;
 }
 nav {
-  width: 20%;
-  height:91%;
+  width: 250px;
+  height:93%;
 }
 section {
   width : 59.5%;
-  height: 91%;
+  height: 93%;
+  border: 1px solid red;
   /* margin-right:5px; */
 }
 aside {
-  width:19.6%;
-  height:90%;
-  border:1px solid blue;
+  width:27.2%;
+  height:93%;
+  border:1px solid red;
   background-color: #000000;
 }
 nav, section, aside {
   float : left;
+}
+
+div.papaya-viewer>canvas {
+  border-bottom: 1px solid red;
+}
+
+div.papaya-display>canvas {
+  border-bottom: 1px solid red;
 }
 
 * {
@@ -49,6 +58,8 @@ input[type="text"] {
   border: 1px solid #cccccc;
   margin: 0.6rem 0;
   padding: 0.2rem 0.4rem;
+  background-color: darkgrey;
+  border-radius: 3px;
 }
 
 a {
@@ -118,10 +129,10 @@ textarea {
 
 #leftsidebar1 {
   height: 100%;
-  width: 25%;
+  width: 100%;
   float:left;
-  background-color: #4d5775;
-  padding-top: 20px;
+  background-color: #27272b;
+  /* padding-top: 20px; */
 }
 
 #leftsidebar {
@@ -333,6 +344,9 @@ button.leftsidebar_accordion.active:after {
   font-size: small;
   border-right: 2px solid #f2f2f2;
   border-bottom: 2px solid #f2f2f2;
+  background-color: #323237;
+  border-bottom-width: 0px;
+  border-right-width: 0px;
 }
 
 .leftsidebar_accordion_panel.show {
@@ -703,6 +717,7 @@ button.leftsidebar_accordion.active:after {
 #project_info_panel {
   display: table;
   border-collapse: collapse;
+  color:white;
   font-size: 0.8rem;
 }
 
@@ -722,6 +737,8 @@ button.leftsidebar_accordion.active:after {
   border-bottom: 1px solid #cccccc;
   margin: 0;
   width: 100%;
+  background-color: darkgrey;
+  border-radius: 3px;
 }
 
 #project_info_panel .col input:focus {
@@ -877,7 +894,7 @@ ul.region_shape .selected {
 #img_fn_list {
   /* display: none; */
   font-size: small;
-  overflow: scroll;
+  /* overflow: scroll;  */
   min-height: 10rem;
 }
 
@@ -1082,25 +1099,19 @@ ul.region_shape .selected {
   background-color: #1e2333;
 }
 
-.leftsidebar_accordion_panel {
-  background-color: #fafafa;
-  border-bottom-width: 0px;
-  border-right-width: 0px;
-}
 
 button.leftsidebar_accordion {
-  background-color: #909bba;
+  background-color: #383842;
   color: #ffffff;
 }
 
 #project_panel_title {
-  background-color: #909bba;
+  background-color: #383842;
   color: #ffffff;
 }
 
 .top_header {
-  /* height: 70px; */
-  background-color: #4d5775;
+  background-color: #27272b;
   color: #ffffff;
   padding-top: 5px;
   padding-left: 15px;
@@ -1111,7 +1122,7 @@ button.leftsidebar_accordion {
   float: left;
   font-family: AppleGothic;
   font-size: 30px;
-  font-weight: normal;
+  font-weight: 800;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -1139,6 +1150,12 @@ button.leftsidebar_accordion {
   text-decoration: none;
 }
 
+.menubar span svg{
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
 button.text_button01 {
   font-size: large;
   background-color: #909bba;
@@ -1175,7 +1192,8 @@ button.text_button01:focus {
 }
 
 .top_header_button_panel {
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+
   padding-right: 10px;
   padding-left: 10px;
   font-size: 18px;
@@ -1204,7 +1222,7 @@ button.text_button01:focus {
 }
 
 #tools_fn_list_panel {
-  background: #353d58;
+
 }
 
 .border_remove img {

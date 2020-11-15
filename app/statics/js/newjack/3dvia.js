@@ -1286,7 +1286,7 @@ function _via_load_canvas_regions() {
 // updates currently selected region shape
 function select_region_shape(sel_shape_name) {
     for (var shape_name in VIA_REGION_SHAPE) {
-        if (shape_name == "CUBE") continue;
+        if (shape_name != "CUBE" || shape_name != "polygon" ) continue;
         var ui_element = document.getElementById('region_shape_' + VIA_REGION_SHAPE[shape_name]);
         ui_element.classList.remove('selected');
     }
@@ -4134,6 +4134,9 @@ function _via_window_keydown_handler(e) {
         // process the keyboard event
         _via_handle_global_keydown_event(e);
     }
+}
+function toggle_show_label_list(){
+    $('#label_shape_list').toggleClass('display_none');
 }
 
 // global keys are active irrespective of element focus

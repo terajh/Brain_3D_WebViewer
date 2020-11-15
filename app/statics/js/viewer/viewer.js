@@ -23,7 +23,6 @@ papaya.viewer.Viewer = papaya.viewer.Viewer || function (container, width, heigh
     this.canvas.style.padding = 0;
     
     this.canvas.style.margin = 0;
-    this.canvas.style.border = "1px solid red";
     this.atlas = null;
     this.initialized = false;
     this.pageLoaded = false;

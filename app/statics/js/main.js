@@ -553,8 +553,53 @@ papaya.Container.buildPanel = function () {
 papaya.Container.buildHeader = function () {
     var headers = $('#ui_top_panel');
     this.headerHtml = `<div class="top_header row" id="ui_top_panel">
-                            <a href="/" class="logo" style="width:20%;" style="justify-content: flex-start;">CRESCOM</a>
-                            <div class="float-right row top_header_button_panel" id="img_size" style="width:80%;">
+                            <a href="/" class="logo" style="width:8%; color: gold; justify-content: flex-start;">CRESCOM</a>
+                            <div class="float-right row top_header_button_panel" id="img_size" style="width:93%;">
+                                <div class="menubar" id="tools_fn_list_panel">
+                                    <span style="cursor:pointer" onclick="sel_local_images()" title="Add new file from local disk">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+                                            <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z"/>
+                                            <path fill-rule="evenodd" d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+                                        </svg>
+                                    </span>
+                                    <span style="cursor:pointer" onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-minus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+                                            <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z"/>
+                                            <path fill-rule="evenodd" d="M5.5 9a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                        </svg>
+                                    </span>
+                                    <span onclick="project_save_with_confirm()" title="save project" style="cursor:pointer">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-upload" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                            <path fill-rule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                        </svg>
+                                    </span>
+                                    <span style="cursor:pointer" onclick="toggle_show_label_list()">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div id="papayaToolbar0" class="papaya-toolbar" style="padding-left: 0px; padding-bottom: 3px;">
+                                    <span id="View" class="papaya-menu-unselectable papaya-menu-icon" style="float:right">
+                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/view.png">
+                                    </span>
+                                    <span id="Settings" class="papaya-menu-unselectable papaya-menu-icon " style="float:right">
+                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/settings.png">
+                                    </span>
+                                    <span id="Help" class="papaya-menu-unselectable papaya-menu-icon " style="float:right">
+                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/draw.png">
+                                    </span>
+                                    <div class="papaya-menu-unselectable papaya-menu-titlebar papaya-titlebar" style="z-index:-1;position:absolute;top:0px;width:165px;text-align:center;color:rgb(255, 255, 255)">TITLE</div>
+                                    <span id="SPACE" class="papaya-menu-unselectable papaya-menu-icon " style="float:right">
+                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="data:image/gif;base64,R0lGODlhFAAUAPcAMf//////GP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////2f/ZNbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1qWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpVpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACoALAAAAAAUABQAAAipAFUIHEiwoMB/A1coXLiwisOHVf4hVLFCosWLGC9SzMgR48Z/VEJSUVjFj0mTESdWBCmS5EmU/6oIXCly5IqSLx/OlFjT5Us/DneybIkzp8yPDElChCjwj8Q/UKOqmkqVatOnUaGqmsaVq1UVTv+lGjv2z9SuXlVdFUs2ldmtaKeubev2bFy1YCXSfYt2mty8/6CS5XtXRcasVRMftJj1beK/hicanKwiIAA7">
+                                    </span>
+                                    <span id="ImageButton00" class="papaya-menu-unselectable papaya-menu-icon papaya-menu-button" style="float:right">
+                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/color.png">
+                                    </span>
+                                </div>
                                 <div class="top_header_button button" title="Logout" onClick="location.href='/authen/logout'"><img src=statics/image/power.png /></div>
                             </div>
                         </div>`;
@@ -658,18 +703,12 @@ papaya.Container.buildAnnotation = function () {
 }
 papaya.Container.buildLeftsidebar = function () {
     var leftsidebar1 = $('#leftsidebar1');
-    var leftsideHtml1 = null;
+    // var leftsideHtml1 = null;
 
 
-    leftsideHtml1 = `<button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_project()" id="leftsidebar1_accordian_project1"><img src=statics/image/project.png /></button>
-                    <button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_tools()" ><i>tools</i></button>
-                    <button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_toggle()" ><img src=statics/image/toggle.png /></button>
-                    <button class="leftsidebar1_button" onclick="leftsidebar_accordian_show_shortcut()"><i class="fas fa-search" ></i></button>
-                    `;
-    leftsidebar1.append(leftsideHtml1);
 
 
-    var leftsidebar = $('#leftsidebar');
+    // var leftsidebar = $('#leftsidebar');
     var leftsideHtml = null;
     leftsideHtml = `
                     <button class="leftsidebar_accordion active" id="project_panel_title">Project</button>
@@ -723,56 +762,10 @@ papaya.Container.buildLeftsidebar = function () {
 
                     <!-- tools-->
                     <button class="leftsidebar_accordion"  id="project_panel_tools">Tools</button>
-                    <div class="leftsidebar_accordion_panel" id="tools_fn_list_panel">
-                        <table class="border_remove">
-                            <tr>
-                                <br>
-                                <td class="left_button"><span onclick="sel_local_images()" title="Add new file from local disk"><img src=statics/image/addfiles.png width="100" height="100"/></span></td>
-                                <td class="left_button"><span onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project"><img src=statics/image/remove.png width="100" height="100"/></span></td>
-                            </tr>
-                            <tr>
-                                <td class="left_button"><span onclick="project_save_with_confirm()" title="save project"><img src=statics/image/save.png width="100" height="100"/></span></td>
-                                <td class="left_button"><span onclick="zoom_in()"><img src=statics/image/zoomin.png width="100" height="100"/></span></td>
-                            </tr>
-                            <tr>
-                                <td class="left_button"><span onclick="zoom_out()"><img src=statics/image/zoomout.png width="100" height="100"/></span><br><br></td>
-                                <td class="left_button"><span onclick="via_canvas_toggle('polygon')"><img src=statics/image/draw.png width="100" height="100"/></span><br><br></td>
-                            </tr>
-                        </table>
-                        <ul class="region_shape">
-                            <li id="region_shape_rect" class="selected" onclick="select_region_shape('rect')" title="Rectangle">
-                                <svg height="32" viewbox="0 0 32 32">
-                                    <use xlink:href="#shape_rectangle"></use>
-                                </svg></li>
-                            <li id="region_shape_circle" onclick="select_region_shape('circle')" title="Circle"><svg height="32"
-                                    viewbox="0 0 32 32">
-                                    <use xlink:href="#shape_circle"></use>
-                                </svg></li>
-                            <li id="region_shape_ellipse" onclick="select_region_shape('ellipse')" title="Ellipse"><svg
-                                    height="32" viewbox="0 0 32 32">
-                                    <use xlink:href="#shape_ellipse"></use>
-                                </svg></li>
-                            <li id="region_shape_polygon" onclick="select_region_shape('polygon')" title="Polygon"><svg
-                                    height="32" viewbox="0 0 32 32">
-                                    <use xlink:href="#shape_polygon"></use>
-                                </svg></li>
-                            <li id="region_shape_point" onclick="select_region_shape('point')" title="Point"><svg height="32"
-                                    viewbox="0 0 32 32">
-                                    <use xlink:href="#shape_point"></use>
-                                </svg></li>
-                            <li id="region_shape_polyline" onclick="select_region_shape('polyline')" title="Polyline"><svg
-                                    height="32" viewbox="0 0 32 32">
-                                    <use xlink:href="#shape_polyline"></use>
-                                </svg></li>
-                            <li id="region_shape_CUBE" onclick="select_region_shape('CUBE')" title="cube"><svg
-                                height="32" viewbox="0 0 32 32">
-                                <use xlink:href="#shape_rectangle"></use>
-                            </svg></li>
-                        </ul>
-                    </div>
+                    
                     <!--tools end-->
 
-                    <button id="hidden02" class="text_button01" style="display:none" onclick="annotation_editor_toggle_all_regions_editor()">Toggle Annotation Editor</button>
+                    <button id="hidden02" class="leftsidebar_accordion" style="display:none" onclick="annotation_editor_toggle_all_regions_editor()">Toggle Annotation Editor</button>
                     <button id="hidden03" class="leftsidebar_accordion" style="display:none">Keyboard Shortcuts</button>
                     <div id="hidden04" class="leftsidebar_accordion_panel">
                         <div style="display:block; text-align:center; padding:1rem;">Available only on image focus</div>
@@ -866,7 +859,8 @@ papaya.Container.buildLeftsidebar = function () {
                         </table>
                     </div> 
                     `;
-    leftsidebar.append(leftsideHtml);
+    // leftsidebar.append(leftsideHtml);
+    leftsidebar1.append(leftsideHtml);
 }
 papaya.Container.build404 = function () {
     var page404 = $('#page_404');
@@ -1321,8 +1315,8 @@ papaya.Container.prototype.resizeViewerComponents = function (resize) {
 
     // this.toolbarHtml.css({width: dims[0] + "px"});
     // this.toolbarHtml.css({height: "0px"});
-    this.toolbarHtml.css({paddingLeft: "0px"});
-    this.toolbarHtml.css({paddingBottom: PAPAYA_SPACING + "px"});
+    this.toolbarHtml.css({ paddingLeft: "0px" });
+    this.toolbarHtml.css({ paddingBottom: PAPAYA_SPACING + "px" });
 
     this.viewerHtml.css({ width: dims[0] + "px" });
     this.viewerHtml.css({ height: dims[1] + "px" });
