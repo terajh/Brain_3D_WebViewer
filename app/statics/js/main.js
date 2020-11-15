@@ -554,8 +554,8 @@ papaya.Container.buildHeader = function () {
     var headers = $('#ui_top_panel');
     this.headerHtml = `<div class="top_header row" id="ui_top_panel">
                             <a href="/" class="logo" style="width:8%; color: gold; justify-content: flex-start;">CRESCOM</a>
-                            <div class="float-right row top_header_button_panel" id="img_size" style="width:93%;">
-                                <div class="menubar" id="tools_fn_list_panel">
+                            <div class="float-right row top_header_button_panel" id="img_size" style="width:89%;">
+                                <div id="menubar" class="menubar" id="tools_fn_list_panel">
                                     <span style="cursor:pointer" onclick="sel_local_images()" title="Add new file from local disk">
                                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
@@ -581,26 +581,22 @@ papaya.Container.buildHeader = function () {
                                             <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                                         </svg>
                                     </span>
+                                    <ul id="select_shape" class="region_shape display_none">
+                                        <li id="region_shape_polygon" onclick="via_canvas_toggle('polygon')" title="Polygon">
+                                            <svg height="32" viewbox="0 0 32 32">
+                                                <use xlink:href="#shape_polygon"></use>
+                                            </svg>
+                                        </li>                                        
+                                        <li id="region_shape_CUBE" onclick="via_canvas_toggle('CUBE')" title="cube">
+                                            <svg height="32" viewbox="0 0 32 32">
+                                                <use xlink:href="#shape_rectangle"></use>
+                                            </svg>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div id="papayaToolbar0" class="papaya-toolbar" style="padding-left: 0px; padding-bottom: 3px;">
-                                    <span id="View" class="papaya-menu-unselectable papaya-menu-icon" style="float:right">
-                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/view.png">
-                                    </span>
-                                    <span id="Settings" class="papaya-menu-unselectable papaya-menu-icon " style="float:right">
-                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/settings.png">
-                                    </span>
-                                    <span id="Help" class="papaya-menu-unselectable papaya-menu-icon " style="float:right">
-                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/draw.png">
-                                    </span>
-                                    <div class="papaya-menu-unselectable papaya-menu-titlebar papaya-titlebar" style="z-index:-1;position:absolute;top:0px;width:165px;text-align:center;color:rgb(255, 255, 255)">TITLE</div>
-                                    <span id="SPACE" class="papaya-menu-unselectable papaya-menu-icon " style="float:right">
-                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="data:image/gif;base64,R0lGODlhFAAUAPcAMf//////GP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////2f/ZNbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1qWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpVpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACoALAAAAAAUABQAAAipAFUIHEiwoMB/A1coXLiwisOHVf4hVLFCosWLGC9SzMgR48Z/VEJSUVjFj0mTESdWBCmS5EmU/6oIXCly5IqSLx/OlFjT5Us/DneybIkzp8yPDElChCjwj8Q/UKOqmkqVatOnUaGqmsaVq1UVTv+lGjv2z9SuXlVdFUs2ldmtaKeubev2bFy1YCXSfYt2mty8/6CS5XtXRcasVRMftJj1beK/hicanKwiIAA7">
-                                    </span>
-                                    <span id="ImageButton00" class="papaya-menu-unselectable papaya-menu-icon papaya-menu-button" style="float:right">
-                                        <img class="papaya-menu-unselectable" style="width:30px; height:30px; vertical-align:bottom; " src="statics/image/color.png">
-                                    </span>
-                                </div>
-                                <div class="top_header_button button" title="Logout" onClick="location.href='/authen/logout'"><img src=statics/image/power.png /></div>
+                            </div>
+                            <div id="logout_button" class="top_header_button button" title="Logout" onClick="location.href='/authen/logout'">
+                                <img src=statics/image/power.png />
                             </div>
                         </div>`;
     headers.append(this.headerHtml);
@@ -716,8 +712,7 @@ papaya.Container.buildLeftsidebar = function () {
                         <div id="project_info_panel">
                             <div class="row">
                                 <span class="col"><label for="project_name">Name: </label></span>
-                                <span class="col"><input type="text" value="" onchange="project_on_name_update(this)" id="project_name" title="VIA project name"></span>
-                                
+                                <span class="col"><input type="text" value="" onchange="project_on_name_update(this)" id="project_name" title="VIA project name"></span>    
                             </div>
                         </div>
                         <div id="project_tools_panel">
@@ -989,7 +984,7 @@ papaya.Container.startPapaya = function () {
 
     _via_init();
     (function () {
-        $('.papaya-toolbar').attr('class', 'display_none');
+        $('#papayaToolbar0').attr('class', 'display_none');
     }());
 };
 

@@ -4136,7 +4136,8 @@ function _via_window_keydown_handler(e) {
     }
 }
 function toggle_show_label_list(){
-    $('#label_shape_list').toggleClass('display_none');
+    $('#select_shape').toggleClass('display_none');
+
 }
 
 // global keys are active irrespective of element focus
@@ -5298,8 +5299,10 @@ function img_loading_spinbar(image_index, show) {
     var panel = document.getElementById('project_panel_title');
     if (show) {
         panel.innerHTML = 'Project <span style="margin-left:1rem;" class="loading_spinbox"></span>';
+        $('.modal').modal('show');
     } else {
         panel.innerHTML = 'Project';
+        $('.modal').modal('hide');
     }
 }
 
@@ -8127,7 +8130,8 @@ async function project_file_add_local(event) {
                         })
                         .then(() => {
                             // $('.papaya-toolbar').removeAttribute('class','display_none');
-                            $('.papaya-toolbar').prependTo($('#img_size'));
+                            $('.papaya-toolbar').insertAfter('#menubar');
+
                             $('.papaya-toolbar').attr('style', '');
 
                         })
@@ -8149,7 +8153,7 @@ async function project_file_add_local(event) {
                             // res();
                         })
                         .then(() => {
-                            $('.papaya-toolbar').prependTo($('#img_size'));
+                            $('.papaya-toolbar').insertAfter('#menubar');
                             $('.papaya-toolbar').attr('style', '');
                         })
                 }
@@ -8170,7 +8174,8 @@ async function project_file_add_local(event) {
                             // res();
                         })
                         .then(() => {
-                            $('.papaya-toolbar').prependTo($('#img_size'));
+                            $('.papaya-toolbar').insertAfter('#menubar');
+
                             $('.papaya-toolbar').attr('style', '');
                         })
                 }
@@ -9927,6 +9932,7 @@ function via_canvas_toggle(shape) {
     if (display_class_list.indexOf('display_none') != -1) document.getElementById('display_area').classList.remove('display_none');
     else document.getElementById('display_area').classList.add('display_none');
     select_region_shape(shape);
+    $('#select_shape').toggleClass('display_none');
 }
 
 function via_drawing_canvas_toggle() {

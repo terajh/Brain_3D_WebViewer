@@ -3005,8 +3005,6 @@ papaya.viewer.Viewer.prototype.incrementCoronal = function (increment, degree) {
     this.gotoCoordinate(this.currentCoord);
 };
 
-
-
 papaya.viewer.Viewer.prototype.incrementSagittal = function (increment, degree) {
     var max = this.volume.header.imageDimensions.xDim;
 
@@ -3030,8 +3028,6 @@ papaya.viewer.Viewer.prototype.incrementSagittal = function (increment, degree) 
 
     this.gotoCoordinate(this.currentCoord);
 };
-
-
 
 papaya.viewer.Viewer.prototype.setZoomFactor = function (val) {
     if (val > papaya.viewer.Viewer.ZOOM_FACTOR_MAX) {
@@ -3057,19 +3053,13 @@ papaya.viewer.Viewer.prototype.setZoomFactor = function (val) {
     this.updateWindowTitle();
 };
 
-
-
 papaya.viewer.Viewer.prototype.getZoomString = function () {
     return (parseInt(this.zoomFactor * 100, 10) + "%");
 };
 
-
-
 papaya.viewer.Viewer.prototype.isZooming = function () {
     return (this.zoomFactor > 1);
 };
-
-
 
 papaya.viewer.Viewer.prototype.setZoomLocation = function () {
     if (this.zoomFactor === 1) {
@@ -3086,8 +3076,6 @@ papaya.viewer.Viewer.prototype.setZoomLocation = function () {
         this.drawViewer(false, true);
     }
 };
-
-
 
 papaya.viewer.Viewer.prototype.setStartPanLocation = function (xLoc, yLoc, sliceDirection) {
     var temp;
@@ -3109,8 +3097,6 @@ papaya.viewer.Viewer.prototype.setStartPanLocation = function (xLoc, yLoc, slice
         }
     }
 };
-
-
 
 papaya.viewer.Viewer.prototype.setCurrentPanLocation = function (xLoc, yLoc, sliceDirection) {
     if (this.zoomFactor > 1) {
@@ -3138,25 +3124,17 @@ papaya.viewer.Viewer.prototype.setCurrentPanLocation = function (xLoc, yLoc, sli
     }
 };
 
-
-
 papaya.viewer.Viewer.prototype.isWorldMode = function () {
     return this.worldSpace;
 };
-
-
 
 papaya.viewer.Viewer.prototype.isRadiologicalMode = function () {
     return (this.container.preferences.radiological === "Yes");
 };
 
-
-
 papaya.viewer.Viewer.prototype.isCollapsable = function () {
     return this.container.collapsable;
 };
-
-
 
 papaya.viewer.Viewer.prototype.mainSliderControlChanged = function () {
     if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {

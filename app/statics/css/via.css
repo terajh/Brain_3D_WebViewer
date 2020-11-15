@@ -20,6 +20,7 @@ section {
   width : 59.5%;
   height: 93%;
   border: 1px solid red;
+  background-color: black;
   /* margin-right:5px; */
 }
 aside {
@@ -861,7 +862,12 @@ ul.region_shape {
   list-style-type: none;
   overflow: hidden;
   padding: 0.4em 0;
-  margin: 0;
+  width: 100px;
+  margin-left: 117px;
+  margin-top: 6px;
+  z-index: 100;
+  position:relative;
+  background-color: #222;
 }
 
 ul.region_shape li {
@@ -896,6 +902,7 @@ ul.region_shape .selected {
   font-size: small;
   /* overflow: scroll;  */
   min-height: 10rem;
+  color:white;
 }
 
 #img_fn_list ul {
@@ -1149,7 +1156,10 @@ button.leftsidebar_accordion {
   margin-left: 0px;
   text-decoration: none;
 }
-
+.menubar {
+  padding-left: 74px;
+  padding-top: 6px;
+}
 .menubar span svg{
   width: 30px;
   height: 30px;
@@ -1190,7 +1200,12 @@ button.text_button01:focus {
   margin-right: 10px;
   cursor: pointer;
 }
-
+#logout_button img{
+  width:30px;
+  height:30px;
+  margin-left:10px;
+  margin-right:10px;
+}
 .top_header_button_panel {
   /* justify-content: flex-end; */
 
@@ -1222,7 +1237,8 @@ button.text_button01:focus {
 }
 
 #tools_fn_list_panel {
-
+  padding-top: 7px;
+  padding-left: 77px;
 }
 
 .border_remove img {
