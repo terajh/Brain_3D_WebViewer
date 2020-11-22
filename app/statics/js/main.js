@@ -553,8 +553,8 @@ papaya.Container.buildPanel = function () {
 papaya.Container.buildHeader = function () {
     var headers = $('#ui_top_panel');
     this.headerHtml = `<div class="top_header row" id="ui_top_panel">
-                            <a href="/" class="logo" style="width:8%; color: gold; justify-content: flex-start;">CRESCOM</a>
-                            <div class="float-right row top_header_button_panel" id="img_size" style="width:89%;">
+                            <a href="/" class="logo" style="width:14%; color: gold; justify-content: flex-start;">CRESCOM</a>
+                            <div class="float-right row top_header_button_panel" id="img_size" style="width:83%;">
                                 <div id="menubar" class="menubar" id="tools_fn_list_panel">
                                     <span style="cursor:pointer" onclick="sel_local_images()" title="Add new file from local disk">
                                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -587,7 +587,7 @@ papaya.Container.buildHeader = function () {
                                                 <use xlink:href="#shape_polygon"></use>
                                             </svg>
                                         </li>                                        
-                                        <li id="region_shape_CUBE" onclick="via_canvas_toggle('CUBE')" title="cube">
+                                        <li id="region_shape_cube" onclick="via_canvas_toggle('cube')" title="cube">
                                             <svg height="32" viewbox="0 0 32 32">
                                                 <use xlink:href="#shape_rectangle"></use>
                                             </svg>

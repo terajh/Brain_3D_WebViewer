@@ -302,8 +302,6 @@ def record():
         userId = session['user']
         _userId = userId.split("@")[0]
         NumArticle = 10
-
-        
         search = False
 
         page = request.args.get(get_page_parameter(), type=int, default=1)

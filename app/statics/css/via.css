@@ -10,11 +10,12 @@ body {
 }
 header {
   width:100%;
-  height:65px;
+  height: 7%;
 }
 nav {
-  width: 250px;
-  height:93%;
+  min-width: 250px;
+  height: 93%;
+  width: 14%;
 }
 section {
   width : 59.5%;
@@ -24,7 +25,7 @@ section {
   /* margin-right:5px; */
 }
 aside {
-  width:27.2%;
+  width:26.5%;
   height:93%;
   border:1px solid red;
   background-color: #000000;
@@ -737,7 +738,6 @@ button.leftsidebar_accordion.active:after {
   border: none;
   border-bottom: 1px solid #cccccc;
   margin: 0;
-  width: 100%;
   background-color: darkgrey;
   border-radius: 3px;
 }
@@ -1157,7 +1157,6 @@ button.leftsidebar_accordion {
   text-decoration: none;
 }
 .menubar {
-  padding-left: 74px;
   padding-top: 6px;
 }
 .menubar span svg{
