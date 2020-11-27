@@ -102,6 +102,7 @@ papaya.volume.ImageData.prototype.readFileData = function (header, buffer, onRea
 
 
 papaya.volume.ImageData.prototype.padIsometric = function (header, data) {
+    console.log('padisomatic', header);
     var id = header.imageDimensions,
         vd = header.voxelDimensions,
         numBytes = header.imageType.numBytes,
@@ -130,6 +131,7 @@ papaya.volume.ImageData.prototype.padIsometric = function (header, data) {
     var dataPadded = new Uint8Array(dataPaddedBuffer, 0, dataPaddedBuffer.byteLength);
 
     indexPadded += sliceDiffBytes;
+
     for (var ctrS = 0; ctrS < slices; ctrS += 1) {
         indexPadded += rowDiffBytes;
 
@@ -145,6 +147,7 @@ papaya.volume.ImageData.prototype.padIsometric = function (header, data) {
 
         indexPadded += rowDiffBytes;
     }
+
 
     return dataPaddedBuffer;
 };

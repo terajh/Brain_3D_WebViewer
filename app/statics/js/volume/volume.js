@@ -70,7 +70,6 @@ papaya.volume.Volume.prototype.fileIsCompressed = function (filename, data) {
 
 papaya.volume.Volume.prototype.readFiles = function (files, callback) {
     this.files = files;
-    console.log(typeof(files),files);
     if(files[0] === undefined){
         this.fileName = files.name;
         this.onFinishedRead = callback;
@@ -99,7 +98,6 @@ papaya.volume.Volume.prototype.readNextFile = function (vol, index) {
             var reader = new FileReader();
             reader.onloadend = papaya.utilities.ObjectUtils.bind(vol, function (evt) {
                 if (evt.target.readyState === FileReader.DONE) {
-                    console.log('wow',typeof(evt.target.result));
                     vol.rawData[index] = evt.target.result;
                     setTimeout(function () {vol.readNextFile(vol, index + 1); }, 0);
                 }
@@ -434,7 +432,8 @@ papaya.volume.Volume.prototype.finishedReadHeaderData = function () {
 
 
 
-papaya.volume.Volume.prototype.finishedReadImageData = function (imageData) {
+papaya.volume.Volume.prototype.finishedReadImageData = function (imageData) {    
+    console.log('finished read data');
     this.imageData.readFileData(this.header, imageData, papaya.utilities.ObjectUtils.bind(this, this.finishedLoad));
 };
 

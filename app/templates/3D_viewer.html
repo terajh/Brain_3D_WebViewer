@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous' />
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous' />
     <link rel="stylesheet" type="text/css" href="../../statics/css/base.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/via.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/ui/toolbar.css" />
@@ -20,13 +21,20 @@
     <link rel="stylesheet" type="text/css" href="../../statics/css/utilities/nojs.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/utilities/unsupported.css" />
     <link rel="stylesheet" type="text/css" href="../../statics/css/viewer/viewer.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+        integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="/statics/js/newjack/3dconstants.js"></script>
     <script>
@@ -186,8 +194,17 @@
     </div>
 
 
-    <script>
+    <script type="module">
         "use strict";
+        import { OrbitControls } from "../statics/three/examples/jsm/controls/OrbitControls.js";
+        import * as gui from "../statics/dat.gui/build/dat.gui.module.js";
+        import * as THREE from "../statics/three/build/three.module.js";
+
+
+
+
+
+
         // image canvas
         // var _via_display_area = document.getElementById('display_area');
         var _via_img_panel = document.getElementById('image_panel');
@@ -218,6 +235,779 @@
         var startX = 0,
             startY = 0; // 드래깅동안, 처음 마우스가 눌러진 좌표
         var drawing = false;
+
+
+        const x_width = 30;
+        const y_width = 30;
+        const z_width = 30;
+
+        var scene = new THREE.Scene();
+        var aside = document.getElementsByTagName('aside')[0];
+        scene.background = new THREE.Color(0x000000);
+        var camera = new THREE.PerspectiveCamera(75, aside.offsetWidth / aside.offsetHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer({ alpha: true });
+        // renderer.setClearColorHex(0xEEEEEE);
+        renderer.setSize(aside.offsetWidth, aside.offsetHeight);
+        aside.appendChild(renderer.domElement);
+
+        var light = new THREE.AmbientLight(0x000000, 0.5);
+        scene.add(light);
+
+        var scans = new THREE.Object3D();
+        scene.add(scans);
+
+        // 축 도입 (axe 객체 추가)
+        // var axes = new THREE.AxisHelper(40);
+        // scene.add(axes);
+
+        papaya.viewer.ScreenSlice.prototype.create3D = function (a, force) {
+            /*jslint bitwise: true */
+            var origin, voxelDims, ctr, ctrY, ctrX, value, thresholdAlpha, index, layerAlpha, timepoint, rgb, dti, valueA,
+                dtiLines, dtiX1, dtiY1, dtiX2, dtiY2, dtiX1T, dtiY1T, dtiX2T, dtiY2T, dtiXC, dtiYC, valueR, valueG, valueB,
+                angle, s, c, dtiColors, dtiLocX, dtiLocY, dtiLocZ, dtiRGB, angle2, dtiAlphaFactor, readFirstRaster = false,
+                radioFactor, dtiColorIndex = 0, interpolation, usedRaster = false, worldSpace = this.manager.isWorldMode(),
+                originalVal;
+
+            var slice = 1
+
+            if ((this.manager.isRadiologicalMode() && this.isRadiologicalSensitive())) {
+                radioFactor = -1;
+            } else {
+                radioFactor = 1;
+            }
+
+            if (force || (this.currentSlice !== slice)) {
+                this.currentSlice = slice;
+                origin = this.screenVolumes[0].volume.header.origin;  // base image origin
+                voxelDims = this.screenVolumes[0].volume.header.voxelDimensions;
+
+                this.contextMain.clearRect(0, 0, this.canvasMain.width, this.canvasMain.height);
+
+                if (this.contextDTILines) {
+                    this.contextDTILines.clearRect(0, 0, this.screenDim, this.screenDim);
+                }
+
+                if (this.imageData.length < this.screenVolumes.length) {
+                    this.imageData = papaya.utilities.ArrayUtils.createArray(this.screenVolumes.length, this.xDim * this.yDim);
+                    this.imageData2 = papaya.utilities.ArrayUtils.createArray(this.screenVolumes.length, 1);
+                }
+
+                for (ctr = 0; ctr < this.screenVolumes.length; ctr += 1) {
+                    if (this.screenVolumes[ctr].hidden) {
+                        continue;
+                    }
+
+                    timepoint = this.screenVolumes[ctr].currentTimepoint;
+                    rgb = this.screenVolumes[ctr].rgb;
+                    dti = this.screenVolumes[ctr].dti;
+                    dtiLines = this.screenVolumes[ctr].dtiLines;
+                    usedRaster |= !dtiLines;
+                    dtiColors = this.screenVolumes[ctr].dtiColors;
+                    dtiAlphaFactor = this.screenVolumes[ctr].dtiAlphaFactor;
+                    interpolation = ((ctr === 0) || this.screenVolumes[ctr].interpolation);
+                    interpolation &= (this.manager.container.preferences.smoothDisplay === "Yes");
+
+                    // if (dtiLines) {
+                    //     this.updateDTILinesImage();
+                    //     this.contextDTILines.lineWidth = 1;
+
+                    //     if (!dtiColors) {
+                    //         this.contextDTILines.strokeStyle = papaya.viewer.ScreenSlice.DTI_COLORS[dtiColorIndex];
+                    //         dtiColorIndex += 1;
+                    //         dtiColorIndex = dtiColorIndex % 3;
+                    //         this.contextDTILines.beginPath();
+                    //     }
+                    // }
+                    if (a === 1) { // 1.axial
+                        for (let s = 0; s < 590; s++) {
+                            for (ctrY = 0; ctrY < this.yDim; ctrY += 1) {
+                                for (ctrX = 0; ctrX < this.xDim; ctrX += 1) {
+                                    value = 0;
+                                    thresholdAlpha = 255;
+                                    layerAlpha = this.screenVolumes[ctr].alpha;
+
+                                    if (rgb) {
+                                        value = this.screenVolumes[ctr].volume.getVoxelAtIndex(ctrX, ctrY, s, timepoint, true);
+
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+                                        this.imageData[ctr][index] = value;
+
+                                        this.imageDataDraw.data[index] = (value >> 16) & 0xff;
+                                        this.imageDataDraw.data[index + 1] = (value >> 8) & 0xff;
+                                        this.imageDataDraw.data[index + 2] = (value) & 0xff;
+                                        this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                    } else if (dti) {
+                                        if (worldSpace) {
+                                            dtiLocX = (ctrX - origin.x) * voxelDims.xSize;
+                                            dtiLocY = (origin.y - ctrY) * voxelDims.ySize;
+                                            dtiLocZ = (origin.z - s) * voxelDims.zSize;
+
+                                            valueR = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation);
+                                            valueG = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 1, !interpolation);
+                                            valueB = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 2, !interpolation);
+
+                                            if (this.screenVolumes[ctr].dtiVolumeMod) {
+                                                layerAlpha = Math.min(1.0, this.screenVolumes[ctr].dtiVolumeMod.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation));
+                                            }
+                                        } else {
+                                            dtiLocX = ctrX * voxelDims.xSize;
+                                            dtiLocY = ctrY * voxelDims.ySize;
+                                            dtiLocZ = s * voxelDims.zSize;
+
+                                            valueR = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation);
+                                            valueG = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 1, !interpolation);
+                                            valueB = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 2, !interpolation);
+
+                                            if (this.screenVolumes[ctr].dtiVolumeMod) {
+                                                layerAlpha = Math.min(1.0, this.screenVolumes[ctr].dtiVolumeMod.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation));
+                                            }
+                                        }
+
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+
+                                        if (dtiLines) {
+                                            if ((valueR !== 0) || (valueG !== 0) || (valueB !== 0)) {
+                                                angle = Math.atan2(radioFactor * valueG, valueR);
+                                                angle2 = Math.acos(Math.abs(valueB) / Math.sqrt(valueR * valueR + valueG * valueG + valueB * valueB));
+                                                angle2 = 1.0 - (angle2 / 1.5708);
+
+                                                valueR = papayaRoundFast(Math.abs((255 * valueR)));
+                                                valueG = papayaRoundFast(Math.abs((255 * valueG)));
+                                                valueB = papayaRoundFast(Math.abs((255 * valueB)));
+                                                valueA = papayaRoundFast(255 * layerAlpha);
+
+                                                value = (((valueA & 0xFF) << 24) | ((valueR & 0xFF) << 16) | ((valueG & 0xFF) << 8) | (valueB & 0xFF));
+
+                                                if (dtiColors) {
+                                                    this.contextDTILines.beginPath();
+                                                    dtiRGB = (value & 0x00FFFFFF);
+                                                    this.contextDTILines.strokeStyle = '#' + papaya.utilities.StringUtils.pad(dtiRGB.toString(16), 6);
+                                                }
+
+                                                this.imageData[ctr][index] = angle;
+                                                this.imageData2[ctr][index] = value;
+
+                                                s = Math.sin(angle);
+                                                c = Math.cos(angle);
+
+                                                dtiXC = (this.finalTransform2[0][2] + (ctrX + 0.5) * this.finalTransform2[0][0]);
+                                                dtiYC = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+
+                                                dtiX1 = (this.finalTransform2[0][2] + (ctrX + (0.5 * angle2)) * this.finalTransform2[0][0]);
+                                                dtiY1 = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+                                                dtiX1T = c * (dtiX1 - dtiXC) - s * (dtiY1 - dtiYC) + dtiXC;
+                                                dtiY1T = s * (dtiX1 - dtiXC) + c * (dtiY1 - dtiYC) + dtiYC;
+                                                this.contextDTILines.moveTo(dtiX1T, dtiY1T);
+
+                                                dtiX2 = (this.finalTransform2[0][2] + (ctrX + 1 - (0.5 * angle2)) * this.finalTransform2[0][0]);
+                                                dtiY2 = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+                                                dtiX2T = c * (dtiX2 - dtiXC) - s * (dtiY2 - dtiYC) + dtiXC;
+                                                dtiY2T = s * (dtiX2 - dtiXC) + c * (dtiY2 - dtiYC) + dtiYC;
+                                                this.contextDTILines.lineTo(dtiX2T, dtiY2T);
+
+                                                if (dtiColors) {
+                                                    this.contextDTILines.stroke();
+                                                }
+                                            } else {
+                                                this.imageData[ctr][index] = Number.NaN;
+                                            }
+                                        } else {
+                                            if ((valueR !== 0) || (valueG !== 0) || (valueB !== 0)) {
+                                                layerAlpha = (1 - (((1 - layerAlpha) * dtiAlphaFactor)));
+                                            } else {
+                                                layerAlpha = 0;
+                                            }
+
+                                            valueR = papayaRoundFast(Math.abs((255 * valueR)));
+                                            valueG = papayaRoundFast(Math.abs((255 * valueG)));
+                                            valueB = papayaRoundFast(Math.abs((255 * valueB)));
+                                            valueA = papayaRoundFast(255 * layerAlpha);
+
+                                            this.imageData[ctr][index] = (((valueA & 0xFF) << 24) | ((valueR & 0xFF) << 16) | ((valueG & 0xFF) << 8) | (valueB & 0xFF));
+
+                                            if (!readFirstRaster) {
+                                                this.imageDataDraw.data[index] = valueR & 0xff;
+                                                this.imageDataDraw.data[index + 1] = valueG & 0xff;
+                                                this.imageDataDraw.data[index + 2] = valueB & 0xff;
+                                                this.imageDataDraw.data[index + 3] = valueA & 0xff;
+                                            } else {
+                                                this.imageDataDraw.data[index] = (this.imageDataDraw.data[index] * (1 - layerAlpha) +
+                                                    (valueR & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 1] = (this.imageDataDraw.data[index + 1] * (1 - layerAlpha) +
+                                                    (valueG & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 2] = (this.imageDataDraw.data[index + 2] * (1 - layerAlpha) +
+                                                    (valueB & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                            }
+                                        }
+                                    } else {
+                                        if (worldSpace) {
+                                            value = this.screenVolumes[ctr].volume.getVoxelAtCoordinate((ctrX - origin.x) *
+                                                voxelDims.xSize, (origin.y - ctrY) * voxelDims.ySize, (origin.z - s) *
+                                            voxelDims.zSize, timepoint, !interpolation);
+                                        } else {
+                                            value = this.screenVolumes[ctr].volume.getVoxelAtMM(ctrX * voxelDims.xSize, ctrY *
+                                                voxelDims.ySize, s * voxelDims.zSize, timepoint, !interpolation);
+                                        }
+
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+                                        originalVal = value;
+                                        this.imageData[ctr][index] = value;
+
+                                        if ((!this.screenVolumes[ctr].negative && (value <= this.screenVolumes[ctr].screenMin)) ||
+                                            (this.screenVolumes[ctr].negative && (value >= this.screenVolumes[ctr].screenMin)) ||
+                                            isNaN(value)) {
+                                            value = papaya.viewer.ScreenSlice.SCREEN_PIXEL_MIN;  // screen value
+                                            thresholdAlpha = this.screenVolumes[ctr].isOverlay() ? 0 : 255;
+                                        } else if ((!this.screenVolumes[ctr].negative && (value >= this.screenVolumes[ctr].screenMax)) ||
+                                            (this.screenVolumes[ctr].negative && (value <= this.screenVolumes[ctr].screenMax))) {
+                                            value = papaya.viewer.ScreenSlice.SCREEN_PIXEL_MAX;  // screen value
+                                        } else {
+                                            value = papayaRoundFast(((value - this.screenVolumes[ctr].screenMin) *
+                                                this.screenVolumes[ctr].screenRatio));  // screen value
+                                        }
+
+                                        if (!readFirstRaster) {
+                                            this.imageDataDraw.data[index] = this.screenVolumes[ctr].colorTable.lookupRed(value, originalVal) * layerAlpha;
+                                            this.imageDataDraw.data[index + 1] = this.screenVolumes[ctr].colorTable.lookupGreen(value, originalVal) * layerAlpha;
+                                            this.imageDataDraw.data[index + 2] = this.screenVolumes[ctr].colorTable.lookupBlue(value, originalVal) * layerAlpha;
+                                            this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                        } else if (thresholdAlpha > 0) {
+                                            this.imageDataDraw.data[index] = (this.imageDataDraw.data[index] * (1 - layerAlpha) +
+                                                this.screenVolumes[ctr].colorTable.lookupRed(value, originalVal) * layerAlpha);
+                                            this.imageDataDraw.data[index + 1] = (this.imageDataDraw.data[index + 1] * (1 - layerAlpha) +
+                                                this.screenVolumes[ctr].colorTable.lookupGreen(value, originalVal) * layerAlpha);
+                                            this.imageDataDraw.data[index + 2] = (this.imageDataDraw.data[index + 2] * (1 - layerAlpha) +
+                                                this.screenVolumes[ctr].colorTable.lookupBlue(value, originalVal) * layerAlpha);
+                                            this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                        }
+                                    }
+                                }
+                            }
+                            var texture = new THREE.DataTexture(this.imageDataDraw, this.xDim, this.yDim, THREE.RGBAFormat);
+                            texture.type = THREE.UnsignedByteType;
+                            texture.needsUpdate = true; // required
+
+                            var geometry = new THREE.PlaneGeometry(this.xDim * 0.1, this.yDim * 0.1);
+
+                            var material = new THREE.MeshBasicMaterial({
+                                map: texture,
+                                side: THREE.DoubleSide,
+                                transparent: false,
+                                opacity: 0.5,
+                                blending: THREE.NormalBlending,
+                                aoMapIntensity: 0,
+                                // alphatest: 0.2,
+                                color: 0xDDDDDD,
+                                clippingPlanes: clippings
+                            });
+                            material.alphaTest = 0.5;
+                            var scan = new THREE.Mesh(geometry, material);
+                            if (a === 1) { // axial
+                                scan.rotateX(-1 * Math.PI / 2);
+                                scan.position.y = - 30.0015 + 0.1017 * s;
+                                scans.add(scan);
+                            }
+                            else if (a === 2) {
+                                scan.rotateX(-1 * Math.PI);
+                                scan.position.z = -30 + 0.117 * s;
+                                scans.add(scan);
+                            }
+                            else if (a === 3) {
+                                scan.rotateZ(Math.PI);
+                                scan.rotateY(Math.PI / 2);
+                                // scan.position.z = 0;
+                                scan.position.x = -30 + 0.117 * s;
+                                scans.add(scan);
+                            }
+                        }
+                    }
+                    else if (a == 2) {
+                        for (let s = 0; s < 512; s++) {
+                            for (ctrY = 0; ctrY < this.yDim; ctrY += 1) {
+                                for (ctrX = 0; ctrX < this.xDim; ctrX += 1) {
+                                    value = 0;
+                                    thresholdAlpha = 255;
+                                    layerAlpha = this.screenVolumes[ctr].alpha;
+
+                                    if (rgb) {
+                                        value = this.screenVolumes[ctr].volume.getVoxelAtIndex(ctrX, s, ctrY, timepoint, true);
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+                                        this.imageData[ctr][index] = value;
+
+                                        this.imageDataDraw.data[index] = (value >> 16) & 0xff;
+                                        this.imageDataDraw.data[index + 1] = (value >> 8) & 0xff;
+                                        this.imageDataDraw.data[index + 2] = (value) & 0xff;
+                                        this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                    } else if (dti) {
+                                        if (worldSpace) {
+                                            dtiLocX = (ctrX - origin.x) * voxelDims.xSize;
+                                            dtiLocY = (origin.y - s) * voxelDims.ySize;
+                                            dtiLocZ = (origin.z - ctrY) * voxelDims.zSize;
+
+                                            valueR = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation);
+                                            valueG = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 1, !interpolation);
+                                            valueB = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 2, !interpolation);
+
+                                            if (this.screenVolumes[ctr].dtiVolumeMod) {
+                                                layerAlpha = Math.min(1.0, this.screenVolumes[ctr].dtiVolumeMod.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation));
+                                            }
+                                        } else {
+                                            dtiLocX = ctrX * voxelDims.xSize;
+                                            dtiLocY = s * voxelDims.ySize;
+                                            dtiLocZ = ctrY * voxelDims.zSize;
+
+                                            valueR = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation);
+                                            valueG = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 1, !interpolation);
+                                            valueB = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 2, !interpolation);
+
+                                            if (this.screenVolumes[ctr].dtiVolumeMod) {
+                                                layerAlpha = Math.min(1.0, this.screenVolumes[ctr].dtiVolumeMod.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation));
+                                            }
+                                        }
+
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+
+                                        if (dtiLines) {
+                                            if ((valueR !== 0) || (valueG !== 0) || (valueB !== 0)) {
+                                                angle = Math.atan2(radioFactor * valueB, valueR);
+                                                angle2 = Math.acos(Math.abs(valueG) / Math.sqrt(valueR * valueR + valueG * valueG + valueB * valueB));
+                                                angle2 = 1.0 - (angle2 / 1.5708);
+
+                                                valueR = papayaRoundFast(Math.abs((255 * valueR)));
+                                                valueG = papayaRoundFast(Math.abs((255 * valueG)));
+                                                valueB = papayaRoundFast(Math.abs((255 * valueB)));
+                                                valueA = papayaRoundFast(255 * layerAlpha);
+
+                                                value = (((valueA & 0xFF) << 24) | ((valueR & 0xFF) << 16) | ((valueG & 0xFF) << 8) | (valueB & 0xFF));
+
+                                                if (dtiColors) {
+                                                    this.contextDTILines.beginPath();
+                                                    dtiRGB = (value & 0x00FFFFFF);
+                                                    this.contextDTILines.strokeStyle = '#' + papaya.utilities.StringUtils.pad(dtiRGB.toString(16), 6);
+                                                }
+
+                                                this.imageData[ctr][index] = angle;
+                                                this.imageData2[ctr][index] = value;
+
+                                                s = Math.sin(angle);
+                                                c = Math.cos(angle);
+
+                                                dtiXC = (this.finalTransform2[0][2] + (ctrX + 0.5) * this.finalTransform2[0][0]);
+                                                dtiYC = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+
+                                                dtiX1 = (this.finalTransform2[0][2] + (ctrX + (0.5 * angle2)) * this.finalTransform2[0][0]);
+                                                dtiY1 = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+                                                dtiX1T = c * (dtiX1 - dtiXC) - s * (dtiY1 - dtiYC) + dtiXC;
+                                                dtiY1T = s * (dtiX1 - dtiXC) + c * (dtiY1 - dtiYC) + dtiYC;
+                                                this.contextDTILines.moveTo(dtiX1T, dtiY1T);
+
+                                                dtiX2 = (this.finalTransform2[0][2] + (ctrX + 1 - (0.5 * angle2)) * this.finalTransform2[0][0]);
+                                                dtiY2 = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+                                                dtiX2T = c * (dtiX2 - dtiXC) - s * (dtiY2 - dtiYC) + dtiXC;
+                                                dtiY2T = s * (dtiX2 - dtiXC) + c * (dtiY2 - dtiYC) + dtiYC;
+                                                this.contextDTILines.lineTo(dtiX2T, dtiY2T);
+
+                                                if (dtiColors) {
+                                                    this.contextDTILines.stroke();
+                                                }
+                                            } else {
+                                                this.imageData[ctr][index] = Number.NaN;
+                                            }
+                                        } else {
+                                            if ((valueR !== 0) || (valueG !== 0) || (valueB !== 0)) {
+                                                layerAlpha = (1 - (((1 - layerAlpha) * dtiAlphaFactor)));
+                                            } else {
+                                                layerAlpha = 0;
+                                            }
+
+                                            valueR = papayaRoundFast(Math.abs((255 * valueR)));
+                                            valueG = papayaRoundFast(Math.abs((255 * valueG)));
+                                            valueB = papayaRoundFast(Math.abs((255 * valueB)));
+                                            valueA = papayaRoundFast(255 * layerAlpha);
+
+                                            this.imageData[ctr][index] = (((valueA & 0xFF) << 24) | ((valueR & 0xFF) << 16) | ((valueG & 0xFF) << 8) | (valueB & 0xFF));
+
+                                            if (!readFirstRaster) {
+                                                this.imageDataDraw.data[index] = valueR & 0xff;
+                                                this.imageDataDraw.data[index + 1] = valueG & 0xff;
+                                                this.imageDataDraw.data[index + 2] = valueB & 0xff;
+                                                this.imageDataDraw.data[index + 3] = valueA & 0xff;
+                                            } else {
+                                                this.imageDataDraw.data[index] = (this.imageDataDraw.data[index] * (1 - layerAlpha) +
+                                                    (valueR & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 1] = (this.imageDataDraw.data[index + 1] * (1 - layerAlpha) +
+                                                    (valueG & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 2] = (this.imageDataDraw.data[index + 2] * (1 - layerAlpha) +
+                                                    (valueB & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                            }
+                                        }
+                                        console.log('image data ', this.imageDataDraw.data);
+                                    } else {
+                                        if (worldSpace) {
+                                            value = this.screenVolumes[ctr].volume.getVoxelAtCoordinate((ctrX - origin.x) *
+                                                voxelDims.xSize, (origin.y - s) * voxelDims.ySize, (origin.z - ctrY) *
+                                            voxelDims.zSize, timepoint, !interpolation);
+                                        } else {
+                                            value = this.screenVolumes[ctr].volume.getVoxelAtMM(ctrX * voxelDims.xSize, s *
+                                                voxelDims.ySize, ctrY * voxelDims.zSize, timepoint, !interpolation);
+
+                                            index = ((ctrY * this.xDim) + ctrX) * 4;
+                                            originalVal = value;
+                                            this.imageData[ctr][index] = value;
+
+                                            if ((!this.screenVolumes[ctr].negative && (value <= this.screenVolumes[ctr].screenMin)) ||
+                                                (this.screenVolumes[ctr].negative && (value >= this.screenVolumes[ctr].screenMin)) ||
+                                                isNaN(value)) {
+                                                value = papaya.viewer.ScreenSlice.SCREEN_PIXEL_MIN;  // screen value
+                                                thresholdAlpha = this.screenVolumes[ctr].isOverlay() ? 0 : 255;
+                                            } else if ((!this.screenVolumes[ctr].negative && (value >= this.screenVolumes[ctr].screenMax)) ||
+                                                (this.screenVolumes[ctr].negative && (value <= this.screenVolumes[ctr].screenMax))) {
+                                                value = papaya.viewer.ScreenSlice.SCREEN_PIXEL_MAX;  // screen value
+                                            } else {
+                                                value = papayaRoundFast(((value - this.screenVolumes[ctr].screenMin) *
+                                                    this.screenVolumes[ctr].screenRatio));  // screen value
+                                            }
+
+                                            if (!readFirstRaster) {
+                                                this.imageDataDraw.data[index] = this.screenVolumes[ctr].colorTable.lookupRed(value, originalVal) * layerAlpha;
+                                                this.imageDataDraw.data[index + 1] = this.screenVolumes[ctr].colorTable.lookupGreen(value, originalVal) * layerAlpha;
+                                                this.imageDataDraw.data[index + 2] = this.screenVolumes[ctr].colorTable.lookupBlue(value, originalVal) * layerAlpha;
+                                                this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                            } else if (thresholdAlpha > 0) {
+                                                this.imageDataDraw.data[index] = (this.imageDataDraw.data[index] * (1 - layerAlpha) +
+                                                    this.screenVolumes[ctr].colorTable.lookupRed(value, originalVal) * layerAlpha);
+                                                this.imageDataDraw.data[index + 1] = (this.imageDataDraw.data[index + 1] * (1 - layerAlpha) +
+                                                    this.screenVolumes[ctr].colorTable.lookupGreen(value, originalVal) * layerAlpha);
+                                                this.imageDataDraw.data[index + 2] = (this.imageDataDraw.data[index + 2] * (1 - layerAlpha) +
+                                                    this.screenVolumes[ctr].colorTable.lookupBlue(value, originalVal) * layerAlpha);
+                                                this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                            }
+                                        }
+
+
+
+                                    }
+
+
+                                }
+                                
+                            }
+                            var texture = new THREE.DataTexture(this.imageDataDraw, this.xDim, this.yDim, THREE.RGBAFormat);
+                            texture.type = THREE.UnsignedByteType;
+                            texture.needsUpdate = true; // required
+
+                            var geometry = new THREE.PlaneGeometry(this.xDim * 0.1, this.yDim * 0.1);
+                            var material = new THREE.MeshBasicMaterial({
+                                map: texture,
+                                side: THREE.DoubleSide,
+                                transparent: false,
+                                opacity: 0.5,
+                                blending: THREE.NormalBlending,
+                                aoMapIntensity: 0,
+                                // alphatest: 0.2,
+                                color: 0xDDDDDD,
+                                clippingPlanes: clippings
+                            });
+                            material.alphaTest = 0.5;
+                            var scan = new THREE.Mesh(geometry, material);
+                            if (a === 1) { // axial
+                                scan.position.y = 0.1017 * s;
+                                scan.rotateX(-1 * Math.PI / 2);
+                                scans.add(scan);
+                            }
+                            else if (a === 2) {
+                                scan.rotateX(-1 * Math.PI);
+                                scans.add(scan);
+                            }
+                            else if (a === 3) {
+                                scan.rotateZ(Math.PI);
+                                scan.rotateY(Math.PI / 2);
+                                // scan.position.z = 0;
+                                scans.add(scan);
+                            }
+                        }
+                    }
+                    else if (a == 3) {
+                        for (let s = 0; s < 512; s++) {
+                            for (ctrY = 0; ctrY < this.yDim; ctrY += 1) {
+                                for (ctrX = 0; ctrX < this.xDim; ctrX += 1) {
+                                    value = 0;
+                                    thresholdAlpha = 255;
+                                    layerAlpha = this.screenVolumes[ctr].alpha;
+                                    if (rgb) {
+                                        value = this.screenVolumes[ctr].volume.getVoxelAtIndex(s, ctrX, ctrY, timepoint, true);
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+                                        this.imageData[ctr][index] = value;
+
+                                        this.imageDataDraw.data[index] = (value >> 16) & 0xff;
+                                        this.imageDataDraw.data[index + 1] = (value >> 8) & 0xff;
+                                        this.imageDataDraw.data[index + 2] = (value) & 0xff;
+                                        this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                    } else if (dti) {
+                                        if (worldSpace) {
+                                            dtiLocX = (s - origin.x) * voxelDims.xSize;
+                                            dtiLocY = (origin.y - ctrX) * voxelDims.ySize;
+                                            dtiLocZ = (origin.z - ctrY) * voxelDims.zSize;
+
+
+                                            valueR = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation);
+                                            valueG = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 1, !interpolation);
+                                            valueB = this.screenVolumes[ctr].volume.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 2, !interpolation);
+
+                                            if (this.screenVolumes[ctr].dtiVolumeMod) {
+                                                layerAlpha = Math.min(1.0, this.screenVolumes[ctr].dtiVolumeMod.getVoxelAtCoordinate(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation));
+                                            }
+                                        } else {
+                                            dtiLocX = s * voxelDims.xSize;
+                                            dtiLocY = ctrX * voxelDims.ySize;
+                                            dtiLocZ = ctrY * voxelDims.zSize;
+
+
+                                            valueR = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation);
+                                            valueG = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 1, !interpolation);
+                                            valueB = this.screenVolumes[ctr].volume.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 2, !interpolation);
+
+                                            if (this.screenVolumes[ctr].dtiVolumeMod) {
+                                                layerAlpha = Math.min(1.0, this.screenVolumes[ctr].dtiVolumeMod.getVoxelAtMM(dtiLocX, dtiLocY, dtiLocZ, 0, !interpolation));
+                                            }
+                                        }
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+                                        if (dtiLines) {
+                                            if ((valueR !== 0) || (valueG !== 0) || (valueB !== 0)) {
+                                                angle = Math.atan2(valueB, valueG);
+                                                angle2 = Math.acos(Math.abs(valueR) / Math.sqrt(valueR * valueR + valueG * valueG + valueB * valueB));
+                                                angle2 = 1.0 - (angle2 / 1.5708);
+
+                                                valueR = papayaRoundFast(Math.abs((255 * valueR)));
+                                                valueG = papayaRoundFast(Math.abs((255 * valueG)));
+                                                valueB = papayaRoundFast(Math.abs((255 * valueB)));
+                                                valueA = papayaRoundFast(255 * layerAlpha);
+
+                                                value = (((valueA & 0xFF) << 24) | ((valueR & 0xFF) << 16) | ((valueG & 0xFF) << 8) | (valueB & 0xFF));
+
+                                                if (dtiColors) {
+                                                    this.contextDTILines.beginPath();
+                                                    dtiRGB = (value & 0x00FFFFFF);
+                                                    this.contextDTILines.strokeStyle = '#' + papaya.utilities.StringUtils.pad(dtiRGB.toString(16), 6);
+                                                }
+
+                                                this.imageData[ctr][index] = angle;
+                                                this.imageData2[ctr][index] = value;
+
+                                                s = Math.sin(angle);
+                                                c = Math.cos(angle);
+
+                                                dtiXC = (this.finalTransform2[0][2] + (ctrX + 0.5) * this.finalTransform2[0][0]);
+                                                dtiYC = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+
+                                                dtiX1 = (this.finalTransform2[0][2] + (ctrX + (0.5 * angle2)) * this.finalTransform2[0][0]);
+                                                dtiY1 = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+                                                dtiX1T = c * (dtiX1 - dtiXC) - s * (dtiY1 - dtiYC) + dtiXC;
+                                                dtiY1T = s * (dtiX1 - dtiXC) + c * (dtiY1 - dtiYC) + dtiYC;
+                                                this.contextDTILines.moveTo(dtiX1T, dtiY1T);
+
+                                                dtiX2 = (this.finalTransform2[0][2] + (ctrX + 1 - (0.5 * angle2)) * this.finalTransform2[0][0]);
+                                                dtiY2 = (this.finalTransform2[1][2] + (ctrY + 0.5) * this.finalTransform2[1][1]);
+                                                dtiX2T = c * (dtiX2 - dtiXC) - s * (dtiY2 - dtiYC) + dtiXC;
+                                                dtiY2T = s * (dtiX2 - dtiXC) + c * (dtiY2 - dtiYC) + dtiYC;
+                                                this.contextDTILines.lineTo(dtiX2T, dtiY2T);
+
+                                                if (dtiColors) {
+                                                    this.contextDTILines.stroke();
+                                                }
+                                            } else {
+                                                this.imageData[ctr][index] = Number.NaN;
+                                            }
+                                        } else {
+                                            if ((valueR !== 0) || (valueG !== 0) || (valueB !== 0)) {
+                                                layerAlpha = (1 - (((1 - layerAlpha) * dtiAlphaFactor)));
+                                            } else {
+                                                layerAlpha = 0;
+                                            }
+                                            valueR = papayaRoundFast(Math.abs((255 * valueR)));
+                                            valueG = papayaRoundFast(Math.abs((255 * valueG)));
+                                            valueB = papayaRoundFast(Math.abs((255 * valueB)));
+                                            valueA = papayaRoundFast(255 * layerAlpha);
+
+                                            this.imageData[ctr][index] = (((valueA & 0xFF) << 24) | ((valueR & 0xFF) << 16) | ((valueG & 0xFF) << 8) | (valueB & 0xFF));
+
+                                            if (!readFirstRaster) {
+                                                this.imageDataDraw.data[index] = valueR & 0xff;
+                                                this.imageDataDraw.data[index + 1] = valueG & 0xff;
+                                                this.imageDataDraw.data[index + 2] = valueB & 0xff;
+                                                this.imageDataDraw.data[index + 3] = valueA & 0xff;
+                                            } else {
+                                                this.imageDataDraw.data[index] = (this.imageDataDraw.data[index] * (1 - layerAlpha) +
+                                                    (valueR & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 1] = (this.imageDataDraw.data[index + 1] * (1 - layerAlpha) +
+                                                    (valueG & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 2] = (this.imageDataDraw.data[index + 2] * (1 - layerAlpha) +
+                                                    (valueB & 0xff) * layerAlpha);
+                                                this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                            }
+                                        }
+                                        console.log('image data ', this.imageDataDraw.data);
+                                    } else {
+                                        if (worldSpace) {
+                                            value = this.screenVolumes[ctr].volume.getVoxelAtCoordinate((s - origin.x) *
+                                                voxelDims.xSize, (origin.y - ctrX) * voxelDims.ySize, (origin.z - ctrY) *
+                                            voxelDims.zSize, timepoint, !interpolation);
+
+                                        } else {
+                                            value = this.screenVolumes[ctr].volume.getVoxelAtMM(s * voxelDims.xSize, ctrX *
+                                                voxelDims.ySize, ctrY * voxelDims.zSize, timepoint, !interpolation);
+
+                                        }
+                                        index = ((ctrY * this.xDim) + ctrX) * 4;
+                                        originalVal = value;
+                                        this.imageData[ctr][index] = value;
+
+                                        if ((!this.screenVolumes[ctr].negative && (value <= this.screenVolumes[ctr].screenMin)) ||
+                                            (this.screenVolumes[ctr].negative && (value >= this.screenVolumes[ctr].screenMin)) ||
+                                            isNaN(value)) {
+                                            value = papaya.viewer.ScreenSlice.SCREEN_PIXEL_MIN;  // screen value
+                                            thresholdAlpha = this.screenVolumes[ctr].isOverlay() ? 0 : 255;
+                                        } else if ((!this.screenVolumes[ctr].negative && (value >= this.screenVolumes[ctr].screenMax)) ||
+                                            (this.screenVolumes[ctr].negative && (value <= this.screenVolumes[ctr].screenMax))) {
+                                            value = papaya.viewer.ScreenSlice.SCREEN_PIXEL_MAX;  // screen value
+                                        } else {
+                                            value = papayaRoundFast(((value - this.screenVolumes[ctr].screenMin) *
+                                                this.screenVolumes[ctr].screenRatio));  // screen value
+                                        }
+
+                                        if (!readFirstRaster) {
+                                            this.imageDataDraw.data[index] = this.screenVolumes[ctr].colorTable.lookupRed(value, originalVal) * layerAlpha;
+                                            this.imageDataDraw.data[index + 1] = this.screenVolumes[ctr].colorTable.lookupGreen(value, originalVal) * layerAlpha;
+                                            this.imageDataDraw.data[index + 2] = this.screenVolumes[ctr].colorTable.lookupBlue(value, originalVal) * layerAlpha;
+                                            this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                        } else if (thresholdAlpha > 0) {
+                                            this.imageDataDraw.data[index] = (this.imageDataDraw.data[index] * (1 - layerAlpha) +
+                                                this.screenVolumes[ctr].colorTable.lookupRed(value, originalVal) * layerAlpha);
+                                            this.imageDataDraw.data[index + 1] = (this.imageDataDraw.data[index + 1] * (1 - layerAlpha) +
+                                                this.screenVolumes[ctr].colorTable.lookupGreen(value, originalVal) * layerAlpha);
+                                            this.imageDataDraw.data[index + 2] = (this.imageDataDraw.data[index + 2] * (1 - layerAlpha) +
+                                                this.screenVolumes[ctr].colorTable.lookupBlue(value, originalVal) * layerAlpha);
+                                            this.imageDataDraw.data[index + 3] = thresholdAlpha;
+                                        }
+                                    }
+                                }
+                            }
+                            var texture = new THREE.DataTexture(this.imageDataDraw, this.xDim, this.yDim, THREE.RGBAFormat);
+                            texture.type = THREE.UnsignedByteType;
+                            texture.needsUpdate = true; // required
+
+                            var geometry = new THREE.PlaneGeometry(this.xDim * 0.1, this.yDim * 0.1);
+
+                            var material = new THREE.MeshBasicMaterial({
+                                map: texture,
+                                side: THREE.DoubleSide,
+                                transparent: false,
+                                opacity: 0.5,
+                                blending: THREE.NormalBlending,
+                                aoMapIntensity: 0,
+                                // alphatest: 0.2,
+                                color: 0xDDDDDD,
+                                clippingPlanes: clippings
+                            });
+                            material.alphaTest = 0.5;
+                            var scan = new THREE.Mesh(geometry, material);
+                            if (a === 1) { // axial
+                                scan.position.y = 0.1017 * s;
+                                scan.rotateX(-1 * Math.PI / 2);
+                                scans.add(scan);
+                            }
+                            else if (a === 2) {
+                                scan.rotateX(-1 * Math.PI);
+                                scans.add(scan);
+                            }
+                            else if (a === 3) {
+                                scan.rotateZ(Math.PI);
+                                scan.rotateY(Math.PI / 2);
+                                // scan.position.z = 0;
+                                scans.add(scan);
+                            }
+                        }
+                    }
+                    if (!dtiColors) {
+                        this.contextDTILines.stroke();
+                    }
+
+                    if (!dtiLines) {
+                        readFirstRaster = true;
+                    }
+                }
+
+            }
+        };
+        /*********************************************************************************************************
+         * 
+         * 
+            slicer 객체 추가 코드
+         * 
+         * 
+         * ******************************************************************************************************/
+
+
+        let controls = {
+            x: 0,
+            y: 0,
+            z: 0
+        }
+
+        let ui = new gui.GUI();
+        ui.add(controls, 'x', -30, 30, 0.1171875);
+        ui.add(controls, 'y', -30, 30, 0.1171875);
+        ui.add(controls, 'z', -30, 30, 0.1017);
+
+        let permukaaan = [
+            new THREE.Plane(new THREE.Vector3(1, 0, 0), 2),
+            new THREE.Plane(new THREE.Vector3(0, 1, 0), 2),
+            new THREE.Plane(new THREE.Vector3(0, 0, 1), 2)
+        ];
+
+        let helper = new THREE.PlaneHelper(permukaaan[0], 60, 0xff0000);
+        scene.add(helper);
+        let helper2 = new THREE.PlaneHelper(permukaaan[1], 60, 0x00ff00);
+        scene.add(helper2);
+        let helper3 = new THREE.PlaneHelper(permukaaan[2], 60, 0x0000ff);
+        scene.add(helper3);
+
+
+
+        var clippings = [ // clipping plane 추가 (slicer 의 값)
+            permukaaan[0],
+            permukaaan[1],
+            permukaaan[2]
+        ];
+        renderer.localClippingEnabled = true;
+
+        camera.position.z = 200;
+        var _controls = new OrbitControls(camera, renderer.domElement);
+        _controls.rotateSpeed = 1.0; // 마우스로 카메라를 회전시킬 속도입니다. 기본값(Float)은 1입니다.
+        _controls.zoomSpeed = 1.2; // 마우스 휠로 카메라를 줌 시키는 속도 입니다. 기본값(Float)은 1입니다.
+        _controls.panSpeed = 0.8; // 패닝 속도 입니다. 기본값(Float)은 1입니다.
+        _controls.minDistance = 5; // 마우스 휠로 카메라 거리 조작시 최소 값. 기본값(Float)은 0 입니다.
+        _controls.maxDistance = 100; // 마우스 휠로 카메라 거리 조작시 최대 값. 기본값(Float)은 무제한 입니다.
+
+        _controls.update();
+        function render() {
+
+            permukaaan[0].constant = controls.x;
+            permukaaan[1].constant = controls.y;
+            permukaaan[2].constant = controls.z;
+
+
+            _controls.update();
+
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        }
+        render();
+
+
+
     </script>
 </body>
 

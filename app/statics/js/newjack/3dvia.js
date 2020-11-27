@@ -1963,7 +1963,8 @@ function _via_draw_polygon_region(type, all_points_x, all_points_y, z, dz, is_se
                 _via_reg_ctx.lineTo(parseInt(all_points_x[i]) + parseInt(VIA_THEME_REGION_BOUNDARY_WIDTH / 4),
                     parseInt(all_points_y[i]) - parseInt(VIA_THEME_REGION_BOUNDARY_WIDTH / 4));
                 _via_reg_ctx.stroke();
-            } else {
+            } 
+            else {
                 // draw a boundary line on both sides
                 _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_LINE_COLOR;
                 _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 4;
@@ -5432,7 +5433,7 @@ function is_img_fn_list_visible() {
     return img_fn_list_panel.classList.contains('show');
 }
 
-function img_loading_spinbar(image_index, show) {
+function img_loading_spinbar( show) {
     var panel = document.getElementById('project_panel_title');
     if (show) {
         panel.innerHTML = 'Project <span style="margin-left:1rem;" class="loading_spinbox"></span>';
@@ -8269,9 +8270,7 @@ async function project_file_add_local(event) {
                         .then(() => {
                             // $('.papaya-toolbar').removeAttribute('class','display_none');
                             $('.papaya-toolbar').insertAfter('#menubar');
-
                             $('.papaya-toolbar').attr('style', '');
-
                         })
                 }
                 else if (_via_current_temp_num === 0) {
@@ -9919,15 +9918,14 @@ function _via_show_img(img_index) {
     } else {
         // image not in buffer, so first add this image to buffer
         _via_is_loading_current_image = true;
-        img_loading_spinbar(img_index, true);
+        img_loading_spinbar( true);
         _via_img_buffer_add_image(img_index).then(function (ok_img_index) {
             _via_is_loading_current_image = false;
-            img_loading_spinbar(img_index, false);
             _via_show_img(img_index);
 
         }, function (err_img_index) {
             _via_is_loading_current_image = false;
-            img_loading_spinbar(img_index, false);
+            img_loading_spinbar( false);
             show_page_404(img_index);
             console.log('_via_img_buffer_add_image() failed for file: ' + _via_image_filename_list[err_img_index]);
         });
