@@ -23,7 +23,7 @@ papaya.ui.MenuItemFileChooser = papaya.ui.MenuItemFileChooser || function (viewe
     this.id = this.action.replace(/ /g, "_") + this.viewer.container.containerIndex;
     this.fileChooserId = "fileChooser" + this.label.replace(/ /g, "_").replace(/\./g, "") + this.viewer.container.containerIndex + (folder ? "folder" : "");
     this.callback = callback;
-    this.folder = folder;
+    this.folder = folder; 
 };
 
 

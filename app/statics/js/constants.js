@@ -112,3 +112,5 @@ var _via_current_temp_num = -1;
 var _via_max_file_num = 0;
 
 var papaya_current_container = null;
+
+var _ui;

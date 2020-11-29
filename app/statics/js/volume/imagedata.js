@@ -96,6 +96,8 @@ papaya.volume.ImageData.prototype.readFileData = function (header, buffer, onRea
         }
     }
 
+
+
     onReadFinish();
 };
 

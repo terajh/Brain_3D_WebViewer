@@ -1180,9 +1180,33 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
     this.context.save();
 
     if (skipUpdate) {
+        console.log('create 3d axial');
+
+        for(let s = 0 ; s < 590; s += 1) {
+            this.axialSlice.create3D(s, true);
+        }
+        this.axialSlice.create3D(this.currentCoord.z, true);
+        console.log('create 3d coronal');
+
+        for(let s = 0 ; s < 512; s += 1) {
+            this.coronalSlice.create3D(s, true);
+        }
+        this.coronalSlice.create3D(this.currentCoord.y, true);
+
+        console.log('create 3d coronal');
+        for(let s = 0 ; s < 512; s += 1) {
+            this.coronalSlice.create3D(s, true);
+        }
+        this.coronalSlice.create3D(this.currentCoord.x, true);
+
         this.axialSlice.repaint(this.currentCoord.z, force, this.worldSpace);
         this.coronalSlice.repaint(this.currentCoord.y, force, this.worldSpace);
         this.sagittalSlice.repaint(this.currentCoord.x, force, this.worldSpace);
+
+        this.axialSlice.updateSlice(this.currentCoord.z, force, this.worldSpace);
+        this.coronalSlice.updateSlice(this.currentCoord.y, force, this.worldSpace);
+        this.sagittalSlice.updateSlice(this.currentCoord.x, force, this.worldSpace);
+
     } else {
         if (force || (this.draggingSliceDir !== papaya.viewer.ScreenSlice.DIRECTION_AXIAL)) {
             this.axialSlice.updateSlice(this.currentCoord.z, force, this.worldSpace);
@@ -2140,6 +2164,17 @@ papaya.viewer.Viewer.prototype.mouseMoveEvent = function (me) {
         _via_reg_position.x = x_position.value;
         _via_reg_position.y = y_position.value;
         _via_reg_position.z = z_position.value;
+        for(var i = 0; i< 3 ; i+=1) {
+            if(_ui.__controllers[i].setValue){
+                if(i === 1){
+                    _ui.__controllers[i].setValue(-59 + Math.round(z_position.value)/5);
+                }else if (i === 0) {
+                    _ui.__controllers[i].setValue(-51.2 + Math.round(x_position.value)/5);
+                }else if (i === 2){
+                    _ui.__controllers[i].setValue(-51.2 + Math.round(y_position.value)/5);
+                }
+            }
+        }
         if (this.grabbedHandle) {
             if (this.isInsideMainSlice(currentMouseX, currentMouseY)) {
                 this.grabbedHandle.x = this.convertScreenToImageCoordinateX(currentMouseX - this.canvasRect.left, this.selectedSlice);

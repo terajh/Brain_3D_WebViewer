@@ -64,7 +64,6 @@ papaya.viewer.ScreenSlice.DTI_COLORS = ['#ff0000', '#00ff00', '#0000ff'];
 
 papaya.viewer.ScreenSlice.prototype.updateSlice = function (slice, force) {
     /*jslint bitwise: true */
-    console.log('screenslice > updateSlice', slice, force);
     if(force != false && force != true) img_loading_spinbar( false);
     var origin, voxelDims, ctr, ctrY, ctrX, value, thresholdAlpha, index, layerAlpha, timepoint, rgb, dti, valueA,
         dtiLines, dtiX1, dtiY1, dtiX2, dtiY2, dtiX1T, dtiY1T, dtiX2T, dtiY2T, dtiXC, dtiYC, valueR, valueG, valueB,
@@ -73,7 +72,6 @@ papaya.viewer.ScreenSlice.prototype.updateSlice = function (slice, force) {
         originalVal;
 
     slice = Math.round(slice);
-
     if ((this.manager.isRadiologicalMode() && this.isRadiologicalSensitive())) {
         radioFactor = -1;
     } else {
@@ -110,7 +108,6 @@ papaya.viewer.ScreenSlice.prototype.updateSlice = function (slice, force) {
             dtiAlphaFactor = this.screenVolumes[ctr].dtiAlphaFactor;
             interpolation = ((ctr === 0) || this.screenVolumes[ctr].interpolation);
             interpolation &= (this.manager.container.preferences.smoothDisplay === "Yes");
-
             if (dtiLines) {
                 this.updateDTILinesImage();
                 this.contextDTILines.lineWidth = 1;
@@ -278,7 +275,6 @@ papaya.viewer.ScreenSlice.prototype.updateSlice = function (slice, force) {
                                 this.imageDataDraw.data[index + 3] = thresholdAlpha;
                             }
                         }
-                        console.log('image data ', this.imageDataDraw.data);
                     } else {
                         if (worldSpace) {
                             if (this.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
@@ -362,7 +358,6 @@ papaya.viewer.ScreenSlice.prototype.updateSlice = function (slice, force) {
 
 papaya.viewer.ScreenSlice.prototype.repaint = function (slice, force, worldSpace) {
     /*jslint bitwise: true */
-    console.log('screenslice > repaint', slice);
 
     var ctr, ctrY, ctrX, value, thresholdAlpha, index = 0, layerAlpha, rgb, dti, dtiLines, dtiRGB, angle2,
         dtiXC, dtiYC, dtiX1, dtiX2, dtiY1, dtiY2, dtiX1T, dtiX2T, dtiY1T, dtiY2T, angle, s, c, dtiColors,
@@ -535,8 +530,8 @@ papaya.viewer.ScreenSlice.prototype.repaint = function (slice, force, worldSpace
     } else {
         this.updateSlice(slice, true);
     }
-    console.log('create3D call', this.sliceDirection);
-    this.create3D(this.sliceDirection, true);
+    // console.log('create3D call', this.sliceDirection);
+    // this.create3D(this.sliceDirection, true);
 };
 
 
