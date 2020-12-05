@@ -413,7 +413,7 @@ button.leftsidebar_accordion.active:after {
 .button_panel .button {
   display: inline-block;
   padding: 0.35rem 0.5rem;
-  margin-left: 60px;
+  margin-left: 10px;
   cursor: pointer;
   background-color: #cccccc;
   border-radius: 0.2rem;
@@ -594,8 +594,9 @@ button.leftsidebar_accordion.active:after {
 #annotation_editor_panel {
   position: fixed;
   display: none;
-  width: 100%;
-  left: 0;
+  width:80%;
+  height: 20%;
+  left: 10%;
   bottom: 0;
   background-color: white;
   border-top: 2px solid #cccccc;
@@ -621,11 +622,14 @@ button.leftsidebar_accordion.active:after {
 
 #annotation_editor {
   display: table;
+  width: 100px;
   margin-bottom: 3em;
   border-collapse: collapse;
   font-size: inherit;
   position: absolute;
   background-color: white;
+  z-index:100;
+  
 }
 
 #annotation_editor .row {
@@ -1263,10 +1267,14 @@ tools 테이블 css정의
   width: 200px;
 }
 #img_size img {
-  width: 30px;
+  /* width: 30px;
   height: 30px;
   margin-right: 10px;
-  margin-left: 10px;
+  margin-left: 10px; */
+}
+
+.papaya-toolbar span {
+  margin-left: 5px;
 }
 .leftsidebar1_button img {
   width: 40px;

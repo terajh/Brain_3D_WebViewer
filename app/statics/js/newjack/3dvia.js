@@ -303,23 +303,22 @@ function _set_attributes() {
 
     // When project_type = 'Brain(cv)'
 
-    if (firstTry === 5) {
-        $("#user_input_attribute_id").val('type');
-        $("#button_add_new_attribute").click();
+    $("#user_input_attribute_id").val('type');
+    $("#button_add_new_attribute").click();
 
-        attribute_property_on_update(document.getElementById('attribute_type'))
-        document.getElementById('attribute_type').options[0].removeAttribute('selected')
-        document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
-        attribute_property_on_update(document.getElementById('attribute_type'))
+    attribute_property_on_update(document.getElementById('attribute_type'))
+    document.getElementById('attribute_type').options[0].removeAttribute('selected')
+    document.getElementById('attribute_type').options[4].setAttribute('selected', 'selected')
+    attribute_property_on_update(document.getElementById('attribute_type'))
 
-        //dropbox 생성
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '0 (stenosis)')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '1 (occlusion)')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-        document.getElementById('_via_attribute_new_option_id').setAttribute('value', '2 (aneurysm)')
-        attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
-    }
+    //dropbox 생성
+    document.getElementById('_via_attribute_new_option_id').setAttribute('value', '0 (stenosis)')
+    attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
+    document.getElementById('_via_attribute_new_option_id').setAttribute('value', '1 (occlusion)')
+    attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
+    document.getElementById('_via_attribute_new_option_id').setAttribute('value', '2 (aneurysm)')
+    attribute_property_on_option_add(document.getElementById('_via_attribute_new_option_id'))
+    
 
     // File Annotation 추가
 
@@ -2048,7 +2047,14 @@ function _via_reg_canvas_mouseup_handler(e) {
                 }
                 set_region_select_state(nested_region_id, true);
                 annotation_editor_show();
-            } 
+            } else {
+                // user clicking inside an already selected region
+                // indicates that the user intends to draw a nested region
+                toggle_all_regions_selection(false);
+                _via_is_region_selected = false;
+
+                annotation_editor_update_content();
+            }
             
         }
         update_labelling_list();
@@ -2239,7 +2245,16 @@ function _via_reg_canvas_mouseup_handler(e) {
                 _via_canvas_regions[_via_current_polygon_region_id].shape_attributes['all_points_y'].push(canvas_y0);
             
             }
-        } else {
+                
+                if (!e.shiftKey) {
+                    annotation_editor_show();
+                } else {
+                    annotation_editor_hide();
+                }
+
+            
+        }
+        else {
             var region_id = is_inside_region(_via_click_x0, _via_click_y0);
             if (region_id >= 0) {
                 // first click selects region
@@ -2254,15 +2269,21 @@ function _via_reg_canvas_mouseup_handler(e) {
                     toggle_all_regions_selection(false);
                 }
                 set_region_select_state(region_id, true);
-                update_attributes_panel();
+                // update_attributes_panel();
+                if (!e.shiftKey) {
+                    annotation_editor_show();
+                } else {
+                    annotation_editor_hide();
+                }
 
-            } else {
+            } 
+            else {
                 if (_via_is_user_drawing_region) {
                     // clear all region selection
                     _via_is_user_drawing_region = false;
                     _via_is_region_selected = false;
                     toggle_all_regions_selection(false);
-                    update_attributes_panel();
+                    // update_attributes_panel();
 
                     annotation_editor_hide();
                 } else {
@@ -2492,9 +2513,8 @@ function _via_reg_canvas_mouseup_handler(e) {
 
                 case VIA_REGION_SHAPE.POLYLINE: // handled by case VIA_REGION_SHAPE.POLYGON
                 case VIA_REGION_SHAPE.POLYGON:
-                    console.log(canvas_img_region);
                     console.log("wow",original_img_region);
-
+                    new_region_added = true;
 
                     // 여기에 코드 추가 필요.
                     break;
@@ -5767,10 +5787,8 @@ function update_vertical_space() {
 //
 function attribute_update_panel_set_active_button() {
     console.log('attribute update panel set active button');
-    if (firstTry === 0 || firstTry === 3 || firstTry === 5) {
-        // new project 일때만 attributes 추가, 프로젝트 저장하면 입력한 attrs들이 json 파일에 추가되므로 프로젝트 로드할 때는 함수를 다시 호출할 필요 없음
-        _set_attributes();
-    }
+    // new project 일때만 attributes 추가, 프로젝트 저장하면 입력한 attrs들이 json 파일에 추가되므로 프로젝트 로드할 때는 함수를 다시 호출할 필요 없음
+    _set_attributes();
 
     var attribute_type;
     for (attribute_type in _via_attributes) {
@@ -6841,6 +6859,7 @@ function annotation_editor_get_placement(region_id) {
                 html_position.top = r['y'] + r['dy'] + Number(margins.split('p')[0]);
                 html_position.left = r['x'] + r['dx'] + Number(margins.split('p')[0]);
             }
+            break;
         case 'polygon':
         case 'polyline':
             var most_left =

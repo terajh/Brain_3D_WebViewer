@@ -1180,24 +1180,24 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
     this.context.save();
 
     if (skipUpdate) {
-        console.log('create 3d axial');
+        // console.log('create 3d axial');
 
-        for(let s = 0 ; s < 590; s += 1) {
-            this.axialSlice.create3D(s, true);
-        }
-        this.axialSlice.create3D(this.currentCoord.z, true);
-        console.log('create 3d coronal');
+        // for(let s = 0 ; s < 590; s += 1) {
+        //     this.axialSlice.create3D(s, true);
+        // }
+        // this.axialSlice.create3D(this.currentCoord.z, true);
+        // console.log('create 3d coronal');
 
-        for(let s = 0 ; s < 512; s += 1) {
-            this.coronalSlice.create3D(s, true);
-        }
-        this.coronalSlice.create3D(this.currentCoord.y, true);
+        // for(let s = 0 ; s < 512; s += 1) {
+        //     this.coronalSlice.create3D(s, true);
+        // }
+        // this.coronalSlice.create3D(this.currentCoord.y, true);
 
-        console.log('create 3d coronal');
-        for(let s = 0 ; s < 512; s += 1) {
-            this.coronalSlice.create3D(s, true);
-        }
-        this.coronalSlice.create3D(this.currentCoord.x, true);
+        // console.log('create 3d coronal');
+        // for(let s = 0 ; s < 512; s += 1) {
+        //     this.coronalSlice.create3D(s, true);
+        // }
+        // this.coronalSlice.create3D(this.currentCoord.x, true);
 
         this.axialSlice.repaint(this.currentCoord.z, force, this.worldSpace);
         this.coronalSlice.repaint(this.currentCoord.y, force, this.worldSpace);
