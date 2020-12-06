@@ -288,3 +288,14 @@ var _via_Loc = {x:0, y:0, z:0};
 
 var niftiHeader, niftiImage;
   
+
+
+var _via_all_width;
+var _via_all_height;
+var _via_coronal_x;
+var _via_coronal_y;
+var _via_axial_x;
+var _via_axial_y;
+var _via_sagittal_x;
+var _via_sagittal_y;
+

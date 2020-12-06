@@ -118,7 +118,7 @@ papaya.ui.Toolbar.MENU_DATA = {
                 {"label": "Surface Preferences", "action": "SurfacePreferences", "required" : "hasSurface"}
             ]
         },
-        {"label": "Help", "icons": ["statics/image/draw.png"],
+        {"label": "Help", "icons": ["statics/image/help.png"],
             "items": [
                 {"label": "Show Keyboard Reference", "action": "KeyboardRef"},
                 {"label": "Show Mouse Reference", "action": "MouseRef"}

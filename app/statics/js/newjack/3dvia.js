@@ -1435,26 +1435,31 @@ function select_region_shape(sel_shape_name) {
 }
 
 function set_all_canvas_size(w, h) {
-    _via_reg_canvas.height = (h - 20) * (0.7);
-    _via_reg_canvas.width = (w * 830 / 1247) * (0.7);
-    $('#region_canvas').css('margin-left', (w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('margin-right', (w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('margin-top', (w * 830 / 1247) * (0.15));
-    $('#region_canvas').css('margin-bottom', (w * 830 / 1247) * (0.15));
+    var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
+    console.log(w,h);
+    var all_width = current_viewer.canvas.width;
+    var all_height = current_viewer.canvas.height;
+    var half_height = all_height/2;
+    
+    _via_reg_canvas.height = (h) * (0.7);
+    _via_reg_canvas.width = (w * all_height / all_width) * (0.7);
+    $('#region_canvas').css('margin-left', (w * all_height / all_width) * (0.15));
+    $('#region_canvas').css('margin-right', (w * all_height / all_width) * (0.15));
+    $('#region_canvas').css('margin-top', (w * all_height / all_width) * (0.15));
+    $('#region_canvas').css('margin-bottom', (w * all_height / all_width) * (0.15));
 
-    _via_reg_canvas2.height = (h - 20) / 2 + 8;
-    _via_reg_canvas2.width = (w * 417 / 1247) * (0.7);
-    $('#region_canvas2').css('margin-left', (w * 417 / 1247) * (0.15));
-    $('#region_canvas2').css('margin-right', (w * 417 / 1247) * (0.15));
+    _via_reg_canvas2.height = (h ) / 2;
+    _via_reg_canvas2.width = (w * half_height / all_width) * (0.7);
+    $('#region_canvas2').css('margin-left', (w * half_height / all_width) * (0.15));
+    $('#region_canvas2').css('margin-right', (w * half_height / all_width) * (0.15));
 
-    _via_reg_canvas3.height = (h - 20) / 2 + 8;
-    _via_reg_canvas3.width = (w * 417 / 1247) * (0.7);
-    $('#region_canvas3').css('margin-left', (w * 417 / 1247) * (0.15));
-    $('#region_canvas3').css('margin-right', (w * 417 / 1247) * (0.15));
-    $('#region_canvas3').css('margin-top', 8);
+    _via_reg_canvas3.height = (h ) / 2 ;
+    _via_reg_canvas3.width = (w * half_height / all_width) * (0.7);
+    $('#region_canvas3').css('margin-left', (w * half_height / all_width) * (0.15));
+    $('#region_canvas3').css('margin-right', (w * half_height / all_width) * (0.15));
 
 
-    image_panel.style.height = h - 20;
+    image_panel.style.height = h ;
     image_panel.style.width = w;
 }
 
@@ -2377,11 +2382,13 @@ function _via_reg_canvas_mouseup_handler(e) {
                         }
                     }
 
-                    var x = Math.round(region_x0 * _via_canvas_scale);
-                    var y = Math.round(region_y0 * _via_canvas_scale);
+                    var x = Math.round(region_x0);
+                    var y = Math.round(region_y0);
                     var width = Math.round(region_dx * _via_canvas_scale);
                     var height = Math.round(region_dy * _via_canvas_scale);
+                    console.log(x,y,width,height);
                     var slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
+
                     var default_depth = 20;
                     if (slice === 'x') {
                         original_img_region.shape_attributes['name'] = 'cube';
@@ -3340,46 +3347,53 @@ function _via_draw_rect_region(x, y, w, h, is_selected) {
     }
 }
 
-async function _via_toggle_labelling_view() {
-    var case_slice = await $('#papayaContainer' + _via_current_file_num).attr('slice');
+function _via_toggle_labelling_view() {
+    var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
+    var main_canvas_width = _via_coronal_x;
+    var main_canvas_height = _via_all_height;
+    var sub_canvas_width = _via_all_width - _via_coronal_x;
+    var sub_canvas_height = _via_coronal_y;
+
     if (_via_zoom_degree === 1) {
         if (case_slice === 'x') {
-            var temp_margin = Number(await $('#region_canvas2').css('margin-top').split('p')[0]);
-            await $('#region_canvas2').css('margin-top', 0);
-            await $('#region_canvas2').css('margin-bottom', 0);
-            await $('#region_canvas2').css('height', Number((_via_reg_canvas2.height * 10) / 7));
-            await $('#region_canvas2').attr('height', Number($('#region_canvas2').css('height').split('p')[0]));
+            var temp_margin = Number($('#region_canvas2').css('margin-top').split('p')[0]);
+            $('#region_canvas2').css('margin-top', 0);
+            $('#region_canvas2').css('margin-bottom', 0);
+            $('#region_canvas2').css('height', Number((_via_reg_canvas2.height * 10) / 7));
+            $('#region_canvas2').attr('height', Number($('#region_canvas2').css('height').split('p')[0]));
 
-            await $('#region_canvas3').css('margin-top', Number(temp_margin));
-            await $('#region_canvas3').css('margin-bottom', Number(temp_margin));
-            await $('#region_canvas3').attr('height', Number($('#region_canvas3').css('height').split('p')[0]) * (0.7));
-            await $('#region_canvas3').css('height', Number(_via_reg_canvas3.height));
+            $('#region_canvas3').css('margin-top', Number(temp_margin));
+            $('#region_canvas3').css('margin-bottom', Number(temp_margin));
+            $('#region_canvas3').attr('height', Number($('#region_canvas3').css('height').split('p')[0]) * (0.7));
+            $('#region_canvas3').css('height', Number(_via_reg_canvas3.height));
         }
 
         else if (case_slice === 'y') {
-            var temp_margin = Number(await $('#region_canvas').css('margin-top').split('p')[0]);
-            await $('#region_canvas').css('margin-top', 0);
-            await $('#region_canvas').css('margin-bottom', 0);
-            await $('#region_canvas').css('height', Number((_via_reg_canvas.height * 10) / 7));
-            await $('#region_canvas').attr('height', Number($('#region_canvas').css('height').split('p')[0]));
+            var ratios = sub_canvas_height / main_canvas_height;
+            var temp_margin = Number($('#region_canvas').css('margin-top').split('p')[0]);
+            $('#region_canvas').css('margin-top', 0);
+            $('#region_canvas').css('margin-bottom', 0);
+            $('#region_canvas').css('height', Number((_via_reg_canvas.height * 10) / 7));
+            $('#region_canvas').attr('height', Number($('#region_canvas').css('height').split('p')[0]));
 
-            await $('#region_canvas2').css('margin-top', temp_margin * 417 / 830);
-            await $('#region_canvas2').css('margin-bottom', temp_margin * 417 / 830);
-            await $('#region_canvas2').attr('height', Math.round(Number(await $('#region_canvas2').attr('height')) * (0.7)));
-            await $('#region_canvas2').css('height', Number(_via_reg_canvas2.height));
+            $('#region_canvas2').css('margin-top', temp_margin * ratios);
+            $('#region_canvas2').css('margin-bottom', temp_margin * ratios);
+            $('#region_canvas2').attr('height', Math.round(Number($('#region_canvas2').attr('height')) * (0.7)));
+            $('#region_canvas2').css('height', Number(_via_reg_canvas2.height));
         }
 
         else if (case_slice === 'z') {
-            var temp_margin = Number(await $('#region_canvas3').css('margin-top').split('p')[0]);
-            await $('#region_canvas3').css('margin-top', 0);
-            await $('#region_canvas3').css('margin-bottom', 0);
-            await $('#region_canvas3').css('height', Number((_via_reg_canvas3.height * 10) / 7));
-            await $('#region_canvas3').attr('height', Number($('#region_canvas3').css('height').split('p')[0]));
+            var ratios =  main_canvas_height / sub_canvas_height;
 
-            await $('#region_canvas').css('margin-top', Number(temp_margin * 830 / 417));
-            await $('#region_canvas').css('margin-bottom', Number(temp_margin * 830 / 417));
-            await $('#region_canvas').attr('height', Number($('#region_canvas').css('height').split('p')[0] * (0.7)));
-            await $('#region_canvas').css('height', Number(_via_reg_canvas.height));
+            var temp_margin = Number($('#region_canvas3').css('margin-top').split('p')[0]);
+            $('#region_canvas3').css('margin-top', 0);
+            $('#region_canvas3').css('margin-bottom', 0);
+            $('#region_canvas3').css('height', Number((_via_reg_canvas3.height * 10) / 7));
+            $('#region_canvas3').attr('height', Number($('#region_canvas3').css('height').split('p')[0]));
+            $('#region_canvas').css('margin-top', Number(temp_margin * ratios));
+            $('#region_canvas').css('margin-bottom', Number(temp_margin * ratios));
+            $('#region_canvas').attr('height', Number($('#region_canvas').css('height').split('p')[0] * (0.7)));
+            $('#region_canvas').css('height', Number(_via_reg_canvas.height));
         }
         _via_redraw_reg_canvas();
     }
@@ -3394,36 +3408,22 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
 
     var case_slice = $('#papayaContainer' + _via_current_file_num).attr('slice');
     var current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
-
-    var ratio = (417 / 830);
-    var t_ratio = (291 / 581);
-    var height_ratio = $('#region_canvas').attr('height') / (592);
     _via_screen_ratio = (_via_reg_canvas.width + _via_reg_canvas2.width) / 1247;
 
+    
     if (is_selected) {
         if (case_slice === 'x') {
-            if (_via_zoom_degree != degree) {
-                if (_via_zoom_degree > degree) {
-                    console.log(x / height_ratio, y / height_ratio, z / height_ratio, _via_Loc);
-                    x = (_via_zoom_degree * x / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.x);
-                    x /= degree;
-                    y = (_via_zoom_degree * y / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.y);
-                    y /= degree;
-                    z = (_via_zoom_degree * z / height_ratio) - ((_via_zoom_degree - degree) * _via_Loc.z);
-                    z /= degree;
-                    dx *= _via_zoom_degree;
-                    dy *= _via_zoom_degree;
-                    dz *= _via_zoom_degree;
-                } else {
-                    x = ((degree * x / height_ratio) - (_via_zoom_degree * _via_Loc.x)) / (degree - _via_zoom_degree);
-                    y = ((degree * y / height_ratio) - (_via_zoom_degree * _via_Loc.y)) / (degree - _via_zoom_degree);
-                    z = ((degree * z / height_ratio) - (_via_zoom_degree * _via_Loc.z)) / (degree - _via_zoom_degree);
-                }
-            }
-            var x_ratio = (284 / 810);
+            var temp = Number($('#region_canvas2').attr('width')) / 506;
+
+            var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+            var height_ratio =  _via_all_height / 590;
+            var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+            var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
 
-            _via_draw_rect(y, z, dy, dz);
+            _via_draw_rect(y, _z, dy, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3435,17 +3435,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
 
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_point(y, z);
-            _via_draw_control_point(y + dy, z + dz);
-            _via_draw_control_point(y, z + dz);
-            _via_draw_control_point(y + dy, z);
-            _via_draw_control_point(y + dy / 2, z);
-            _via_draw_control_point(y + dy / 2, z + dz);
-            _via_draw_control_point(y, z + dz / 2);
-            _via_draw_control_point(y + dy, z + dz / 2);
-            var temp = Number(await $('#region_canvas2').attr('width')) / 506;
+            _via_draw_control_point(y, _z);
+            _via_draw_control_point(y + dy, _z + dz);
+            _via_draw_control_point(y, _z + dz);
+            _via_draw_control_point(y + dy, _z);
+            _via_draw_control_point(y + dy / 2, _z);
+            _via_draw_control_point(y + dy / 2, _z + dz);
+            _via_draw_control_point(y, _z + dz / 2);
+            _via_draw_control_point(y + dy, _z + dz / 2);
 
-            _via_draw_rect_sub((x) * temp, z * ratio, dx * ratio, dz * ratio, 2); // y
+            _via_draw_rect_sub(_x, _z * ratio, dx * ratio, dz * ratio, 2); // y
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3456,16 +3455,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x) * temp, z * ratio, 2);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio + dz * ratio, 2);
-            _via_draw_control_spoint_sub((x) * temp, z * ratio + dz * ratio, 2);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio, 2);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, z * ratio, 2);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, z * ratio + dz * ratio, 2);
-            _via_draw_control_spoint_sub((x) * temp, z * ratio + dz * ratio / 2, 2);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio + dz * ratio / 2, 2);
+            _via_draw_control_spoint_sub(_x, _z * ratio, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _z * ratio + dz * ratio, 2);
+            _via_draw_control_spoint_sub(_x, _z * ratio + dz * ratio, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _z * ratio, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z * ratio, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z * ratio + dz * ratio, 2);
+            _via_draw_control_spoint_sub(_x, _z * ratio + dz * ratio / 2, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _z * ratio + dz * ratio / 2, 2);
 
-            _via_draw_rect_sub((x) * temp, (y) * ratio, dx * ratio, dy * ratio, 3); // z
+            _via_draw_rect_sub(_x, _y, dx * ratio, dy * ratio, 3); // z
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3476,20 +3475,30 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x) * temp, (y) * ratio, 3);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio + dy * ratio, 3);
-            _via_draw_control_spoint_sub((x) * temp, (y) * ratio + dy * ratio, 3);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio, 3);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, (y) * ratio, 3);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, (y) * ratio + dy * ratio, 3);
-            _via_draw_control_spoint_sub((x) * temp, (y) * ratio + dy * ratio / 2, 3);
-            _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio + dy * ratio / 2, 3);
+            _via_draw_control_spoint_sub(_x, _y, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio, 3);
+            _via_draw_control_spoint_sub(_x, _y + dy * ratio, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _y, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y + dy * ratio, 3);
+            _via_draw_control_spoint_sub(_x, _y + dy * ratio / 2, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio / 2, 3);
         }
         else if (case_slice === 'y') {
+            console.log(current_viewer);
+            var temp = Number(await $('#region_canvas2').attr('height')) / 506;
+
+            var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+            var height_ratio =  _via_all_height / 590;
+            var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+            var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
+            var h_ratio = 590 / 512;
 
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
 
-            _via_draw_rect(x, z, dx, dz);
+            _via_draw_rect(x, _z, dx, dz);
 
             _via_reg_ctx.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3500,17 +3509,17 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx.fill();
             _via_reg_ctx.globalAlpha = 1.0;
 
-            _via_draw_control_point(x, z);
-            _via_draw_control_point(x + dx, z + dz);
-            _via_draw_control_point(x, z + dz);
-            _via_draw_control_point(x + dx, z);
-            _via_draw_control_point(x + dx / 2, z);
-            _via_draw_control_point(x + dx / 2, z + dz);
-            _via_draw_control_point(x, z + dz / 2);
-            _via_draw_control_point(x + dx, z + dz / 2);
+            
+            _via_draw_control_point(x, _z);
+            _via_draw_control_point(x + dx, _z + dz);
+            _via_draw_control_point(x, _z + dz);
+            _via_draw_control_point(x + dx, _z);
+            _via_draw_control_point(x + dx / 2, _z);
+            _via_draw_control_point(x + dx / 2, _z + dz);
+            _via_draw_control_point(x, _z + dz / 2);
+            _via_draw_control_point(x + dx, _z + dz / 2);
 
-            var temp = Number(await $('#region_canvas2').attr('height')) / 506;
-            _via_draw_rect_sub((x) * ratio, (y) * temp, dx * ratio, dy * ratio, 2); // z
+            _via_draw_rect_sub(_x, _y, dx * ratio, dy * ratio, 2); // z
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3521,16 +3530,16 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x) * ratio, y * temp, 2);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp + dy * ratio, 2);
-            _via_draw_control_spoint_sub((x) * ratio, y * temp + dy * ratio, 2);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp, 2);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, y * temp, 2);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, y * temp + dy * ratio, 2);
-            _via_draw_control_spoint_sub((x) * ratio, y * temp + dy * ratio / 2, 2);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp + dy * ratio / 2, 2);
+            _via_draw_control_spoint_sub(_x, _y, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio, 2);
+            _via_draw_control_spoint_sub(_x, _y + dy * ratio, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _y, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y + dy * ratio, 2);
+            _via_draw_control_spoint_sub(_x, _y + dy * ratio / 2, 2);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio / 2, 2);
 
-            _via_draw_rect_sub((y) * temp, z * ratio, dy * ratio, dz * ratio, 3); // x
+            _via_draw_rect_sub(_y, _z * ratio, dy * ratio, dz * ratio, 3); // x
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3541,19 +3550,31 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((y) * temp, z * ratio, 3);
-            _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio + dz * ratio, 3);
-            _via_draw_control_spoint_sub((y) * temp, z * ratio + dz * ratio, 3);
-            _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio, 3);
-            _via_draw_control_spoint_sub((y) * temp + dy * ratio / 2, z * ratio, 3);
-            _via_draw_control_spoint_sub((y) * temp + dy * ratio / 2, z * ratio + dz * ratio, 3);
-            _via_draw_control_spoint_sub((y) * temp, z * ratio + dz * ratio / 2, 3);
-            _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio + dz * ratio / 2, 3);
+            _via_draw_control_spoint_sub(_y,  _z * ratio, 3);
+            _via_draw_control_spoint_sub(_y + dy * ratio,  _z * ratio + dz * ratio, 3);
+            _via_draw_control_spoint_sub(_y,  _z * ratio + dz * ratio, 3);
+            _via_draw_control_spoint_sub(_y + dy * ratio,  _z * ratio, 3);
+            _via_draw_control_spoint_sub(_y + dy * ratio / 2,  _z * ratio, 3);
+            _via_draw_control_spoint_sub(_y + dy * ratio / 2,  _z * ratio + dz * ratio, 3);
+            _via_draw_control_spoint_sub(_y,  _z * ratio + dz * ratio / 2, 3);
+            _via_draw_control_spoint_sub(_y + dy * ratio,  _z * ratio + dz * ratio / 2, 3);
         }
         else if (case_slice === 'z') {
+            var temp = Number(await $('#region_canvas2').attr('height')) / 506;
 
-            var height_ratio = (398.5 / 567);
+            current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
+            _via_all_width = current_viewer.canvas.width;
+            _via_all_height = current_viewer.canvas.height;
+            _via_coronal_x = current_viewer.coronalSlice.screenOffsetX;
+            _via_coronal_y = current_viewer.coronalSlice.screenOffsetY;
+            _via_axial_x = current_viewer.axialSlice.screenOffsetX;
+            _via_axial_y = current_viewer.axialSlice.screenOffsetY;
+            _via_sagittal_x = current_viewer.sagittalSlice.screenOffsetX;
+            _via_sagittal_y = current_viewer.sagittalSlice.screenOffsetY;
 
+            var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+            var height_ratio =  _via_coronal_y / 590;
+            
             if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
             _via_draw_rect(x, y, dx, dy);
 
@@ -3575,7 +3596,9 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_draw_control_point(x, y + dy / 2);
             _via_draw_control_point(x + dx, y + dy / 2);
 
-            _via_draw_rect_sub((y) * ratio, z * height_ratio, dy * ratio, dz * height_ratio, 2); // x
+            var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+            _via_draw_rect_sub(_y ,_z , dy * ratio, dz * height_ratio, 2); // x
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3586,16 +3609,20 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx2.fill();
             _via_reg_ctx2.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((y) * ratio, z * height_ratio, 2);
-            _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio + dz * height_ratio, 2);
-            _via_draw_control_spoint_sub((y) * ratio, z * height_ratio + dz * height_ratio, 2);
-            _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio, 2);
-            _via_draw_control_spoint_sub((y) * ratio + dy * ratio / 2, z * height_ratio, 2);
-            _via_draw_control_spoint_sub((y) * ratio + dy * ratio / 2, z * height_ratio + dz * height_ratio, 2);
-            _via_draw_control_spoint_sub((y) * ratio, z * height_ratio + dz * height_ratio / 2, 2);
-            _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio + dz * height_ratio / 2, 2);
+            _via_draw_control_spoint_sub(_y, _z, 2);
+            _via_draw_control_spoint_sub(_y + dy * ratio, _z + dz * height_ratio, 2);
+            _via_draw_control_spoint_sub(_y, _z + dz * height_ratio, 2);
+            _via_draw_control_spoint_sub(_y + dy * ratio, _z, 2);
+            _via_draw_control_spoint_sub(_y + dy * ratio / 2, _z, 2);
+            _via_draw_control_spoint_sub(_y + dy * ratio / 2, _z + dz * height_ratio, 2);
+            _via_draw_control_spoint_sub(_y, _z + dz * height_ratio / 2, 2);
+            _via_draw_control_spoint_sub(_y + dy * ratio, _z + dz * height_ratio / 2, 2);
 
-            _via_draw_rect_sub((x) * ratio, z * height_ratio, dx * ratio, dz * height_ratio, 3); // y
+
+            var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+
+            _via_draw_rect_sub(_x, _z, dx * ratio, dz * height_ratio, 3); // y
 
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
@@ -3607,72 +3634,91 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.fill();
             _via_reg_ctx3.globalAlpha = 1.0;
 
-            _via_draw_control_spoint_sub((x) * ratio, z * height_ratio, 3);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio + dz * height_ratio, 3);
-            _via_draw_control_spoint_sub((x) * ratio, z * height_ratio + dz * height_ratio, 3);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio, 3);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, z * height_ratio, 3);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, z * height_ratio + dz * height_ratio, 3);
-            _via_draw_control_spoint_sub((x) * ratio, z * height_ratio + dz * height_ratio / 2, 3);
-            _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio + dz * height_ratio / 2, 3);
+            _via_draw_control_spoint_sub(_x, _z, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _z + dz * height_ratio, 3);
+            _via_draw_control_spoint_sub(_x, _z + dz * height_ratio, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _z, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z + dz * height_ratio, 3);
+            _via_draw_control_spoint_sub(_x, _z + dz * height_ratio / 2, 3);
+            _via_draw_control_spoint_sub(_x + dx * ratio, _z + dz * height_ratio / 2, 3);
         }
     } else {
         if (case_slice === 'x') {
+            var temp = Number(await $('#region_canvas2').attr('height')) / 512;
+            var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+            var height_ratio =  _via_all_height / 590;
+            var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+            var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
             if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
-            _via_draw_rect(y, z, dy, dz);
+            _via_draw_rect(y, _z, dy, dz);
             _via_reg_ctx.stroke();
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x) * ratio, z * ratio, dx * ratio, dz * ratio, 2); // y
+            _via_draw_rect_sub(_x, _z * ratio, dx * ratio, dz * ratio, 2); // y
             _via_reg_ctx2.stroke();
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x) * ratio, (y) * ratio, dx * ratio, dy * ratio, 3); // z
+            _via_draw_rect_sub(_x, _y, dx * ratio, dy * ratio, 3); // z
             _via_reg_ctx3.stroke();
 
         }
         else if (case_slice === 'y') {
             var temp = Number(await $('#region_canvas2').attr('height')) / 512;
+            var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+            var height_ratio =  _via_all_height / 590;
+            var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+            var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
 
             if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
 
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect(x, z, dx, dz);
+            _via_draw_rect(x, _z, dx, dz);
             _via_reg_ctx.stroke();
 
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x) * ratio, (y) * temp, dx * ratio, dy * ratio, 2); // z
+            _via_draw_rect_sub(_x, _y, dx * ratio, dy * ratio, 2); // z
             _via_reg_ctx2.stroke();
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((y) * temp, z * ratio, dy * ratio, dz * ratio, 3); // x
+            _via_draw_rect_sub(_y, _z * ratio, dy * ratio, dz * ratio, 3); // x
             _via_reg_ctx3.stroke();
         }
         else if (case_slice === 'z') {
-            var height_ratio = (398.5 / 567);
-            if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
+            var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+            var height_ratio =  _via_coronal_y / 590;
 
+            if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
+            
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_draw_rect(x, y, dx, dy);
             _via_reg_ctx.stroke();
 
+            // draw subcanvas
+            var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+            var _z = z * height_ratio;
+            var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
             _via_reg_ctx2.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((y) * ratio, z * height_ratio, dy * ratio, dz * height_ratio, 2); // x
+            _via_draw_rect_sub(_y, _z, dy * ratio, dz * height_ratio, 2); // x
             _via_reg_ctx2.stroke();
 
             _via_reg_ctx3.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
-            _via_draw_rect_sub((x) * ratio, z * height_ratio, dx * ratio, dz * height_ratio, 3); // y
+            _via_draw_rect_sub(_x, _z, dx * ratio, dz * height_ratio, 3); // y
             _via_reg_ctx3.stroke();
         }
     }
@@ -4326,11 +4372,8 @@ function _via_handle_global_keydown_event(e) {
         }
 
         if (e.key === "r" || e.key === "R") {
-            new Promise((res, rej) => {
-                papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
-                _via_toggle_labelling_view();
-                res();
-            })
+            papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
+            _via_toggle_labelling_view();
 
         }
 
