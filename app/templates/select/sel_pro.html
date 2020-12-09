@@ -58,12 +58,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% for _, rid, project_name, project_type, date in ownrecord %}
+                {% for item in ownrecord %}
                 <tr>
-                    <td><input name="RowCheck" type="checkbox" value="{{rid}}" /></td>
-                    <td><a href="/sel_project?filename={{project_name}}">{{project_name}}</a></td>
-                    <td>{{project_type}}</td>
-                    <td>{{date}}</td>
+                    <td><input name="RowCheck" type="checkbox" value="{{item.rid}}" /></td>
+                    <td><a href="/sel_project?filename={{item.project_name}}">{{item.project_name}}</a></td>
+                    <td>{{item.project_type}}</td>
+                    <td>{{item.date}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

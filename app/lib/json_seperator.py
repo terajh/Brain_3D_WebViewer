@@ -4,6 +4,7 @@
 # import json_seperator 추가할 것(labelling.py에)
 import json
 from collections import OrderedDict
+from app import BASE_DIR
 
 
 # 프로젝트의 json파일 전체를 파라미터로 받을것
@@ -12,8 +13,8 @@ class json_seperator():
     def seperate(project_json, img, user_id, _fname):
 
         whole_json = project_json
-        _dic_sep_json = "./statics/test_json/" + user_id + "/" + _fname + "/"
-
+        _dic_sep_json = BASE_DIR+"/statics/test_json/" + user_id + "/" + _fname + "/"
+        print(_dic_sep_json)
         # json 생성 위해 OrderedDict 타입 변수 생성
         file_data = OrderedDict()
         img_data = OrderedDict()
@@ -42,6 +43,7 @@ class json_seperator():
 
             # json file save
             # 필요시 경로 수정할 것
+        print(_dic_sep_json + file_name + ".json")
         with open(_dic_sep_json + file_name + ".json", "w") as make_file:
             json.dump(file_data, make_file)
 

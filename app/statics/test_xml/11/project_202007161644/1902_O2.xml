@@ -1,0 +1,26 @@
+<annotation>
+    <folder>&#48120;&#51221;</folder>
+    <filename>1902_O2.nii.gz</filename>
+    <path>/mnt/e/dev/Projects/NewJack3DViewer/NewJack_viewer/app/statics/test_img/11/project_202012070445/</path>
+    <source>
+        <database>Unknown</database>
+    </source>
+    <size>
+        <width>512</width>
+        <heigth>590</heigth>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name />
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>204</xmin>
+            <ymin>190</ymin>
+            <xmax>339</xmax>
+            <ymax>325</ymax>
+        </bndbox>
+    </object>
+</annotation>

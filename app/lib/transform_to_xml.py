@@ -6,7 +6,7 @@ from PIL import Image
 
 class transform_to_xml():
     def create_xml(content, x, _dic_img, _dic_xml, _first):
-        print('create xml function')
+        print('create xml function', x)
         c = content
         # xml 생성 부분
         anote = Element("annotation")
@@ -45,25 +45,19 @@ class transform_to_xml():
         # 아래는 object 태그 내부 / 0으로 설정한 값은 필요시 조정
         obj_list = [ob for ob in c['_via_img_metadata'][x]['regions']]
         print(obj_list)
-        if obj_list[0]['shape_attributes']['name'] == 'rect':
-
+        if obj_list[0]['shape_attributes']['name'] == 'rect' or obj_list[0]['shape_attributes']['name'] == 'cube' :
+            
             for y in range(len(obj_list)):
                 obj = Element('object')
                 anote.append(obj)
-                if _first==1 or _first==0:  
-                    # print([ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes'])
-                    region_attr = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']
-                    if '골절 판독 구분' in region_attr.keys():
-                        SubElement(obj, 'name').text = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']['골절 판독 구분']
-                    else:
-                        SubElement(obj, 'name').text=""
-                else: 
-                    SubElement(obj, 'name').text=""
+                
+                SubElement(obj, 'name').text=""
                 SubElement(obj, 'pose').text = 'Unspecified'
                 SubElement(obj, 'truncated').text = '0'
                 SubElement(obj, 'difficult').text = '0'
                 bndbox = Element('bndbox')
                 obj.append(bndbox)
+                print(c)
                 # via에서 넘겨주는 x,을 xml의 형식에 맞춤
                 SubElement(bndbox, 'xmin').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'x'])
@@ -72,10 +66,10 @@ class transform_to_xml():
                 
                 SubElement(bndbox, 'xmax').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'x']+[ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'width'])
+                    'dx'])
                 SubElement(bndbox, 'ymax').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'y']+[ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'height'])
+                    'dy'])
             
 
             # xml파일 보기좋게 정렬
@@ -99,40 +93,24 @@ class transform_to_xml():
             # filename이 333.jpg 형식으로 되어있기 때문에 slice해서 333.xml 형식으로 저장되게 함
             ElementTree(anote).write(_dic_xml + c['_via_img_metadata'][x]['filename'].split('.')[0]+'.xml')
 
-
-
-        else:
-
+        else: # polygon 형태의 labelling 인 경우
             for y in range(len(obj_list)):
                 obj = Element('object')
                 anote.append(obj)
-                if _first==1 or _first==0:  
-                    # print([ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes'])
-                    region_attr = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']
-                    if '골절 판독 구분' in region_attr.keys():
-                        SubElement(obj, 'name').text = [ob for ob in c['_via_img_metadata'][x]['regions']][y]['region_attributes']['골절 판독 구분']
-                    else:
-                        SubElement(obj, 'name').text=""
-                else: 
-                    SubElement(obj, 'name').text=""
+                SubElement(obj, 'name').text=""
                 SubElement(obj, 'pose').text = 'Unspecified'
                 SubElement(obj, 'truncated').text = '0'
                 SubElement(obj, 'difficult').text = '0'
                 bndbox = Element('bndbox')
                 obj.append(bndbox)
                 # via에서 넘겨주는 x,을 xml의 형식에 맞춤
-                SubElement(bndbox, 'xmin').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'x'])
-                SubElement(bndbox, 'ymin').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'y'])
+                print('###', y)
+                SubElement(bndbox, 'x_list').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
+                    'all_points_x'])
+                SubElement(bndbox, 'y_list').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
+                    'all_points_y'])
                 SubElement(bndbox, 'zmin').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'z'])
-                SubElement(bndbox, 'xmax').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'x']+[ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'dx'])
-                SubElement(bndbox, 'ymax').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'y']+[ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
-                    'dy'])
                 SubElement(bndbox, 'zmax').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'z']+[ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'dz'])

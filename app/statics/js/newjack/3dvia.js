@@ -53,7 +53,14 @@ function _via_draw_rect_sub_x(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     var _via_reg_ctx2 = _via_reg_canvas2.getContext('2d');
     var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
 
-    _via_draw_rect_sub((x) * temp, z * ratio, dx * ratio, dz * ratio, 2); // y
+    var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+    var height_ratio =  _via_all_height / 590;
+    var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+    var _z = z * height_ratio;
+    var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
+    _via_draw_rect_sub(_x, _z * ratio, dx * ratio, dz * ratio, 2); // y
+
     _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
     _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
     _via_reg_ctx2.stroke();
@@ -63,16 +70,17 @@ function _via_draw_rect_sub_x(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     _via_reg_ctx2.fill();
     _via_reg_ctx2.globalAlpha = 1.0;
 
-    _via_draw_control_spoint_sub((x) * temp, z * ratio, 2);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio + dz * ratio, 2);
-    _via_draw_control_spoint_sub((x) * temp, z * ratio + dz * ratio, 2);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio, 2);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, z * ratio, 2);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, z * ratio + dz * ratio, 2);
-    _via_draw_control_spoint_sub((x) * temp, z * ratio + dz * ratio / 2, 2);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio, z * ratio + dz * ratio / 2, 2);
+    _via_draw_control_spoint_sub(_x, _z * ratio, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _z * ratio + dz * ratio, 2);
+    _via_draw_control_spoint_sub(_x, _z * ratio + dz * ratio, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _z * ratio, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z * ratio, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z * ratio + dz * ratio, 2);
+    _via_draw_control_spoint_sub(_x, _z * ratio + dz * ratio / 2, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _z * ratio + dz * ratio / 2, 2);
 
-    _via_draw_rect_sub((x) * temp, (y) * ratio, dx * ratio, dy * ratio, 3); // z
+    _via_draw_rect_sub(_x, _y, dx * ratio, dy * ratio, 3); // z
+
 
     _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
     _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -83,21 +91,31 @@ function _via_draw_rect_sub_x(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     _via_reg_ctx3.fill();
     _via_reg_ctx3.globalAlpha = 1.0;
 
-    _via_draw_control_spoint_sub((x) * temp, (y) * ratio, 3);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio + dy * ratio, 3);
-    _via_draw_control_spoint_sub((x) * temp, (y) * ratio + dy * ratio, 3);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio, 3);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, (y) * ratio, 3);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio / 2, (y) * ratio + dy * ratio, 3);
-    _via_draw_control_spoint_sub((x) * temp, (y) * ratio + dy * ratio / 2, 3);
-    _via_draw_control_spoint_sub((x) * temp + dx * ratio, (y) * ratio + dy * ratio / 2, 3);
+    _via_draw_control_spoint_sub(_x, _y, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio, 3);
+    _via_draw_control_spoint_sub(_x, _y + dy * ratio, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _y, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y + dy * ratio, 3);
+    _via_draw_control_spoint_sub(_x, _y + dy * ratio / 2, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio / 2, 3);
 
 }
 function _via_draw_rect_sub_y(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     var _via_reg_ctx = _via_reg_canvas.getContext('2d');
     var _via_reg_ctx2 = _via_reg_canvas2.getContext('2d');
     var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');
-    _via_draw_rect_sub((x) * ratio, (y) * temp, dx * ratio, dy * ratio, 2); // z
+
+    
+    var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+    var height_ratio =  _via_all_height / 590;
+    var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+    var _z = z * height_ratio;
+    var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
+
+    _via_draw_rect_sub(_x, _y, dx * ratio, dy * ratio, 2); // z
+
 
     _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
     _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -108,16 +126,16 @@ function _via_draw_rect_sub_y(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     _via_reg_ctx2.fill();
     _via_reg_ctx2.globalAlpha = 1.0;
 
-    _via_draw_control_spoint_sub((x) * ratio, y * temp, 2);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp + dy * ratio, 2);
-    _via_draw_control_spoint_sub((x) * ratio, y * temp + dy * ratio, 2);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp, 2);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, y * temp, 2);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, y * temp + dy * ratio, 2);
-    _via_draw_control_spoint_sub((x) * ratio, y * temp + dy * ratio / 2, 2);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio, y * temp + dy * ratio / 2, 2);
+    _via_draw_control_spoint_sub(_x, _y, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio, 2);
+    _via_draw_control_spoint_sub(_x, _y + dy * ratio, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _y, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _y + dy * ratio, 2);
+    _via_draw_control_spoint_sub(_x, _y + dy * ratio / 2, 2);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _y + dy * ratio / 2, 2);
 
-    _via_draw_rect_sub((y) * temp, z * ratio, dy * ratio, dz * ratio, 3); // x
+    _via_draw_rect_sub(_y, _z * ratio, dy * ratio, dz * ratio, 3); // x
 
     _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
     _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -128,14 +146,14 @@ function _via_draw_rect_sub_y(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     _via_reg_ctx3.fill();
     _via_reg_ctx3.globalAlpha = 1.0;
 
-    _via_draw_control_spoint_sub((y) * temp, z * ratio, 3);
-    _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio + dz * ratio, 3);
-    _via_draw_control_spoint_sub((y) * temp, z * ratio + dz * ratio, 3);
-    _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio, 3);
-    _via_draw_control_spoint_sub((y) * temp + dy * ratio / 2, z * ratio, 3);
-    _via_draw_control_spoint_sub((y) * temp + dy * ratio / 2, z * ratio + dz * ratio, 3);
-    _via_draw_control_spoint_sub((y) * temp, z * ratio + dz * ratio / 2, 3);
-    _via_draw_control_spoint_sub((y) * temp + dy * ratio, z * ratio + dz * ratio / 2, 3);
+    _via_draw_control_spoint_sub(_y,  _z * ratio, 3);
+    _via_draw_control_spoint_sub(_y + dy * ratio,  _z * ratio + dz * ratio, 3);
+    _via_draw_control_spoint_sub(_y,  _z * ratio + dz * ratio, 3);
+    _via_draw_control_spoint_sub(_y + dy * ratio,  _z * ratio, 3);
+    _via_draw_control_spoint_sub(_y + dy * ratio / 2,  _z * ratio, 3);
+    _via_draw_control_spoint_sub(_y + dy * ratio / 2,  _z * ratio + dz * ratio, 3);
+    _via_draw_control_spoint_sub(_y,  _z * ratio + dz * ratio / 2, 3);
+    _via_draw_control_spoint_sub(_y + dy * ratio,  _z * ratio + dz * ratio / 2, 3);
 
 }
 function _via_draw_rect_sub_z(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
@@ -144,7 +162,25 @@ function _via_draw_rect_sub_z(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     var _via_reg_ctx3 = _via_reg_canvas3.getContext('2d');  
     var height_ratio = (398.5 / 567);
 
-    _via_draw_rect_sub((y) * ratio, z * height_ratio, dy * ratio, dz * height_ratio, 2); // x
+    current_viewer = papaya.Container.getObject(_via_current_file_num).viewer;
+    _via_all_width = current_viewer.canvas.width;
+    _via_all_height = current_viewer.canvas.height;
+    _via_coronal_x = current_viewer.coronalSlice.screenOffsetX;
+    _via_coronal_y = current_viewer.coronalSlice.screenOffsetY;
+    _via_axial_x = current_viewer.axialSlice.screenOffsetX;
+    _via_axial_y = current_viewer.axialSlice.screenOffsetY;
+    _via_sagittal_x = current_viewer.sagittalSlice.screenOffsetX;
+    _via_sagittal_y = current_viewer.sagittalSlice.screenOffsetY;
+
+    var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
+    var height_ratio =  _via_coronal_y / 590;
+
+    var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+    var _z = z * height_ratio;
+    var _y = y * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
+
+
+    _via_draw_rect_sub(_y ,_z , dy * ratio, dz * height_ratio, 2); // x
 
     _via_reg_ctx2.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
     _via_reg_ctx2.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -155,17 +191,17 @@ function _via_draw_rect_sub_z(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     _via_reg_ctx2.fill();
     _via_reg_ctx2.globalAlpha = 1.0;
 
-    _via_draw_control_spoint_sub((y) * ratio, z * height_ratio, 2);
-    _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio + dz * height_ratio, 2);
-    _via_draw_control_spoint_sub((y) * ratio, z * height_ratio + dz * height_ratio, 2);
-    _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio, 2);
-    _via_draw_control_spoint_sub((y) * ratio + dy * ratio / 2, z * height_ratio, 2);
-    _via_draw_control_spoint_sub((y) * ratio + dy * ratio / 2, z * height_ratio + dz * height_ratio, 2);
-    _via_draw_control_spoint_sub((y) * ratio, z * height_ratio + dz * height_ratio / 2, 2);
-    _via_draw_control_spoint_sub((y) * ratio + dy * ratio, z * height_ratio + dz * height_ratio / 2, 2);
+    _via_draw_control_spoint_sub(_y, _z, 2);
+    _via_draw_control_spoint_sub(_y + dy * ratio, _z + dz * height_ratio, 2);
+    _via_draw_control_spoint_sub(_y, _z + dz * height_ratio, 2);
+    _via_draw_control_spoint_sub(_y + dy * ratio, _z, 2);
+    _via_draw_control_spoint_sub(_y + dy * ratio / 2, _z, 2);
+    _via_draw_control_spoint_sub(_y + dy * ratio / 2, _z + dz * height_ratio, 2);
+    _via_draw_control_spoint_sub(_y, _z + dz * height_ratio / 2, 2);
+    _via_draw_control_spoint_sub(_y + dy * ratio, _z + dz * height_ratio / 2, 2);
 
-    _via_draw_rect_sub((x) * ratio, z * height_ratio, dx * ratio, dz * height_ratio, 3); // y
 
+    _via_draw_rect_sub(_x, _z, dx * ratio, dz * height_ratio, 3); // y
 
     _via_reg_ctx3.strokeStyle = VIA_THEME_SEL_REGION_FILL_BOUNDARY_COLOR;
     _via_reg_ctx3.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -176,16 +212,17 @@ function _via_draw_rect_sub_z(x, y, z, dx, dy, dz, temp, ratio, height_ratio) {
     _via_reg_ctx3.fill();
     _via_reg_ctx3.globalAlpha = 1.0;
 
-    _via_draw_control_spoint_sub((x) * ratio, z * height_ratio, 3);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio + dz * height_ratio, 3);
-    _via_draw_control_spoint_sub((x) * ratio, z * height_ratio + dz * height_ratio, 3);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio, 3);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, z * height_ratio, 3);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio / 2, z * height_ratio + dz * height_ratio, 3);
-    _via_draw_control_spoint_sub((x) * ratio, z * height_ratio + dz * height_ratio / 2, 3);
-    _via_draw_control_spoint_sub((x) * ratio + dx * ratio, z * height_ratio + dz * height_ratio / 2, 3);
+    _via_draw_control_spoint_sub(_x, _z, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _z + dz * height_ratio, 3);
+    _via_draw_control_spoint_sub(_x, _z + dz * height_ratio, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _z, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio / 2, _z + dz * height_ratio, 3);
+    _via_draw_control_spoint_sub(_x, _z + dz * height_ratio / 2, 3);
+    _via_draw_control_spoint_sub(_x + dx * ratio, _z + dz * height_ratio / 2, 3);
 
 }
+
 function save_current_data_to_browser_cache() {
     setTimeout(function() {
       if ( _via_is_local_storage_available &&
@@ -292,6 +329,12 @@ function uploadImg() {
         }
     });
 }
+
+function rotateViews() {
+    papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
+    _via_toggle_labelling_view();
+}
+
 
 function _set_attributes() {
     ////
@@ -3645,6 +3688,7 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
         }
     } else {
         if (case_slice === 'x') {
+            if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
             var temp = Number(await $('#region_canvas2').attr('height')) / 512;
             var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
             var height_ratio =  _via_all_height / 590;
@@ -3652,7 +3696,6 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             var _z = z * height_ratio;
             var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
 
-            if (Math.abs(cx - current_viewer.currentCoord.x) > dx) return;
 
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
@@ -3671,6 +3714,7 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
 
         }
         else if (case_slice === 'y') {
+            if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
             var temp = Number(await $('#region_canvas2').attr('height')) / 512;
             var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
             var height_ratio =  _via_all_height / 590;
@@ -3678,7 +3722,6 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             var _z = z * height_ratio;
             var _x = x * (_via_all_width - _via_coronal_x)/(_via_coronal_x);
 
-            if (Math.abs(cy - current_viewer.currentCoord.y) > dy) return;
 
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -3696,10 +3739,10 @@ async function _via_draw_cube_region(x, y, z, dx, dy, dz, cx, cy, cz, degree, is
             _via_reg_ctx3.stroke();
         }
         else if (case_slice === 'z') {
+            if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
             var ratio = (_via_all_width - _via_coronal_x) / _via_coronal_x;
             var height_ratio =  _via_coronal_y / 590;
-
-            if (Math.abs(cz - current_viewer.currentCoord.z) > dz) return;
+            
             
             _via_reg_ctx.strokeStyle = VIA_THEME_BOUNDARY_FILL_COLOR;
             _via_reg_ctx.lineWidth = VIA_THEME_REGION_BOUNDARY_WIDTH / 2;
@@ -4374,7 +4417,7 @@ function _via_handle_global_keydown_event(e) {
         if (e.key === "r" || e.key === "R") {
             papaya.Container.getObject(_via_current_file_num).viewer.rotateViews();
             _via_toggle_labelling_view();
-
+            return;
         }
 
         if (e.key === "g" || e.key === "G") {
@@ -5767,7 +5810,7 @@ function img_fn_list_ith_entry_html(i) {
             htmli += ' class="sel"';
         }
     }
-    htmli += ' onclick="jump_to_image(' + (i) + ')" title="' + _via_image_filename_list[i] + '">[' + (i + 1) + '] ' + filename + '</li>';
+    htmli += ' title="' + _via_image_filename_list[i] + '"> ' + filename + '</li>';
     return htmli;
 }
 
@@ -6791,6 +6834,7 @@ function show_user_input_panel() {
 
 function hide_user_input_panel() {
     document.getElementById('user_input_panel').style.display = 'none';
+    console.log('w');
 }
 
 //
@@ -8097,17 +8141,19 @@ function project_import_settings(s) {
 }
 
 function project_file_remove_with_confirm() {
-    var img_id = _via_image_id_list[_via_image_index];
-    var filename = _via_img_metadata[img_id].filename;
-    var region_count = _via_img_metadata[img_id].regions.length;
+    location.reload();
+    // var img_id = _via_image_id_list[_via_image_index];
+    // var filename = _via_img_metadata[img_id].filename;
+    // var region_count = _via_img_metadata[img_id].regions.length;
+    // var config = { 'title': 'Remove File from Project' };
+    // var input = {
+    //     'img_index': { type: 'text', name: 'File Id', value: (_via_image_index + 1), disabled: true, size: 8 },
+    //     'filename': { type: 'text', name: 'Filename', value: filename, disabled: true, size: 30 },
+    //     'region_count': { type: 'text', name: 'Number of regions', disabled: true, value: region_count, size: 8 }
+    // };
+    // papaya.Container.resetViewer(papaya.Container.getObject(_via_current_file_num).containerIndex, {});
 
-    var config = { 'title': 'Remove File from Project' };
-    var input = {
-        'img_index': { type: 'text', name: 'File Id', value: (_via_image_index + 1), disabled: true, size: 8 },
-        'filename': { type: 'text', name: 'Filename', value: filename, disabled: true, size: 30 },
-        'region_count': { type: 'text', name: 'Number of regions', disabled: true, value: region_count, size: 8 }
-    };
-    invoke_with_user_inputs(project_file_remove_confirmed, input, config);
+    // invoke_with_user_inputs(project_file_remove_confirmed, input, config);
 }
 
 
@@ -8243,12 +8289,6 @@ function project_add_new_file(filename, size, file_id) {
 async function project_file_add_local(event) {
     //
     console.log('123');
-    if (_via_current_file_num != -1) {
-        document.getElementById('papayaContainer' + _via_current_file_num).classList.add('display_none');
-        document.getElementById('bim' + _via_current_file_num).classList.add('display_none');
-        document.getElementById('papayaContainer' + (_via_max_file_num)).classList.remove('display_none');
-    }
-
 
     var user_selected_images = event.target.files;
     var original_image_count = _via_img_count;
@@ -8312,7 +8352,7 @@ async function project_file_add_local(event) {
                 new_img_index_list.push(_via_image_id_list.indexOf(img_id));
 
                 if (_via_current_temp_num === -1) {
-                    _via_current_temp_num = _via_current_file_num + 1;
+                    _via_current_temp_num = _via_current_file_num ;
 
                     await new Promise((res, rej) => {
                         $('#File').click();
@@ -8336,7 +8376,7 @@ async function project_file_add_local(event) {
                         })
                 }
                 else if (_via_current_temp_num === 0) {
-                    _via_current_temp_num = _via_current_file_num + 1;
+                    _via_current_temp_num = _via_current_file_num;
                     var filechoosers;
                     await new Promise((res, rej) => {
                         $('#File').click();
@@ -8357,7 +8397,7 @@ async function project_file_add_local(event) {
                         })
                 }
                 else {
-                    _via_current_temp_num = _via_current_file_num + 1;
+                    _via_current_temp_num = _via_current_file_num;
                     var filechoosers;
                     await new Promise((res, rej) => {
                         $('#File' + _via_current_temp_num).click();

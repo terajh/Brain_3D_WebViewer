@@ -1140,7 +1140,7 @@ papaya.viewer.Viewer.prototype.drawEmptyViewer = function () {
         fontSize = 18;
         this.context.font = fontSize + "px sans-serif";
         locY = this.canvas.height - 22;
-        text = "Drop here or click the File menu";
+        text = "click the File menu";
         metrics = this.context.measureText(text);
         textWidth = metrics.width;
         this.context.fillText(text, (this.canvas.width / 2) - (textWidth / 2), locY);
@@ -1159,7 +1159,7 @@ papaya.viewer.Viewer.prototype.drawEmptyViewer = function () {
         this.context.font = fontSize + "px sans-serif";
         locY = this.canvas.height - 20;
 
-        text = "NewJack viewer";
+        text = "NewJack Viewer (feat. Crescom)";
         metrics = this.context.measureText(text);
         textWidth = metrics.width;
         this.context.fillText(text, this.canvas.width - textWidth - 20, locY);
