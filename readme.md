@@ -1,6 +1,6 @@
 # 배포용 페이지
 
-![실행UI](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/88356683-66b6-46d1-a6f5-d250d183ee1b/newjack1.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210506%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210506T050603Z&X-Amz-Expires=86400&X-Amz-Signature=9afbd2b464d1366a9290f7bacd21bbc104037782a98a71dca6f8870741d21006&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22newjack1.gif%22)
+<img src='https://s3.us-west-2.amazonaws.com/secure.notion-static.com/88356683-66b6-46d1-a6f5-d250d183ee1b/newjack1.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210506%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210506T050603Z&X-Amz-Expires=86400&X-Amz-Signature=9afbd2b464d1366a9290f7bacd21bbc104037782a98a71dca6f8870741d21006&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22newjack1.gif%22'>
 
 파일 다운로드 -> [1902_O2.nii.gz](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4171af7f-98f0-4fe7-a30f-e6dcb2dcfb77/1902_O2.nii.gz)
 
