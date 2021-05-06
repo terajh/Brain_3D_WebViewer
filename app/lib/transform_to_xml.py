@@ -44,7 +44,6 @@ class transform_to_xml():
         # 사각형이 여러개 일때 object 태그도 여러개 생성 -> json의 regions와 대칭
         # 아래는 object 태그 내부 / 0으로 설정한 값은 필요시 조정
         obj_list = [ob for ob in c['_via_img_metadata'][x]['regions']]
-        print(obj_list)
         if obj_list[0]['shape_attributes']['name'] == 'rect' or obj_list[0]['shape_attributes']['name'] == 'cube' :
             
             for y in range(len(obj_list)):
@@ -57,7 +56,6 @@ class transform_to_xml():
                 SubElement(obj, 'difficult').text = '0'
                 bndbox = Element('bndbox')
                 obj.append(bndbox)
-                print(c)
                 # via에서 넘겨주는 x,을 xml의 형식에 맞춤
                 SubElement(bndbox, 'xmin').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'x'])
@@ -104,7 +102,6 @@ class transform_to_xml():
                 bndbox = Element('bndbox')
                 obj.append(bndbox)
                 # via에서 넘겨주는 x,을 xml의 형식에 맞춤
-                print('###', y)
                 SubElement(bndbox, 'x_list').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][
                     'all_points_x'])
                 SubElement(bndbox, 'y_list').text = str([ob for ob in c['_via_img_metadata'][x]['regions']][y]['shape_attributes'][

@@ -14,7 +14,6 @@ class json_seperator():
 
         whole_json = project_json
         _dic_sep_json = BASE_DIR+"/statics/test_json/" + user_id + "/" + _fname + "/"
-        print(_dic_sep_json)
         # json 생성 위해 OrderedDict 타입 변수 생성
         file_data = OrderedDict()
         img_data = OrderedDict()

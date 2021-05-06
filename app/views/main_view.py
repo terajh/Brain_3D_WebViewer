@@ -99,6 +99,7 @@ def sel_project():
 def save_project():
     print("save project render")
     if request.method == 'POST':
+        print(request)
         project_content = request.json['_via_project']
         print(project_content)
         _filename = request.json['filename']
@@ -148,12 +149,12 @@ def save_project():
                 db.commit()
             else:
                 data = db.executeAll(    #기존에 프로젝트를 생성한 적 있던 사용자가 새 프로젝트를 만들 때
-                    "INSERT INTO user_info(email, project_name, project_type, date) VALUES('" + str(_email) + "', '" + str(_project_name) + "','" + str(project_type) + "'," + str(_nowdate) + ");")
+                    "INSERT INTO user_info(email, project_name, project_type, date, filename) VALUES('" + str(_email) + "', '" + str(_project_name) + "','" + str(project_type) + "'," + str(_nowdate) + ",'"+str(_fname)+"');")
                 
                 db.commit()
         else:
             print(str(_email),str(_project_name),str(project_type),_nowdate)
-            data = db.executeAll("INSERT INTO user_info(email, project_name, project_type, date) VALUES('" + str(_email) + "', '" + str(_project_name) + "','" + str(project_type) + "','" + _nowdate + "');")
+            data = db.executeAll("INSERT INTO user_info(email, project_name, project_type, date, filename) VALUES('" + str(_email) + "', '" + str(_project_name) + "','" + str(project_type) + "','" + _nowdate + "','"+str(_fname)+"');")
             db.commit()
 
         # temp_img => test_img
@@ -303,7 +304,7 @@ def record():
 
         page = request.args.get(get_page_parameter(), type=int, default=1)
         start_article = (page - 1) * NumArticle
-        ownrecord = db.executeAll("SELECT SUBSTRING_INDEX(project_name, '.', 1) as project_name_print, rid, project_name, project_type, date FROM user_info WHERE email = '" + str(
+        ownrecord = db.executeAll("SELECT SUBSTRING_INDEX(project_name, '.', 1) as project_name_print, rid, project_name, project_type, date, filename FROM user_info WHERE email = '" + str(
             userId) + "' ORDER BY rid DESC" + " LIMIT " + str(
             start_article) + ", " + str(NumArticle) + ";")
 
@@ -314,6 +315,7 @@ def record():
         total_cnt = total_cnt[0]['COUNT(*)']
         pagination = Pagination(page=page, total=total_cnt, search=search, per_page=NumArticle,
                                 record_name='ownrecord', css_framework='bootstrap3')
+        print("record", ownrecord)
         return render_template('select/sel_pro.html', ownrecord=ownrecord, pagination=pagination)
     else:
         return render_template('error.html', error='Unauthorized Access')

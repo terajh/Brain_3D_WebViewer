@@ -1,7 +1,7 @@
 <annotation>
     <folder>&#48120;&#51221;</folder>
     <filename>1902_O2.nii.gz</filename>
-    <path>/mnt/e/dev/Projects/NewJack3DViewer/NewJack_viewer/app/statics/test_img/11/project_202012070445/</path>
+    <path>/mnt/e/dev/Projects/NewJack3DViewer/NewJack_viewer/app/statics/test_img/11/project_202012111827/</path>
     <source>
         <database>Unknown</database>
     </source>
@@ -17,10 +17,10 @@
         <truncated>0</truncated>
         <difficult>0</difficult>
         <bndbox>
-            <xmin>204</xmin>
-            <ymin>190</ymin>
-            <xmax>339</xmax>
-            <ymax>325</ymax>
+            <xmin>177</xmin>
+            <ymin>179</ymin>
+            <xmax>325</xmax>
+            <ymax>321</ymax>
         </bndbox>
     </object>
 </annotation>

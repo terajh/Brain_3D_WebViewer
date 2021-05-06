@@ -1180,24 +1180,24 @@ papaya.viewer.Viewer.prototype.drawViewer = function (force, skipUpdate) {
     this.context.save();
 
     if (skipUpdate) {
-        // console.log('create 3d axial');
+        console.log('create 3d axial');
 
-        // for(let s = 0 ; s < 590; s += 1) {
-        //     this.axialSlice.create3D(s, true);
-        // }
-        // this.axialSlice.create3D(this.currentCoord.z, true);
-        // console.log('create 3d coronal');
+        for(let s = 0 ; s < 590; s += 1) {
+            this.axialSlice.create3D(s, true);
+        }
+        this.axialSlice.create3D(this.currentCoord.z, true);
+        console.log('create 3d coronal');
 
-        // for(let s = 0 ; s < 512; s += 1) {
-        //     this.coronalSlice.create3D(s, true);
-        // }
-        // this.coronalSlice.create3D(this.currentCoord.y, true);
+        for(let s = 0 ; s < 512; s += 1) {
+            this.coronalSlice.create3D(s, true);
+        }
+        this.coronalSlice.create3D(this.currentCoord.y, true);
 
-        // console.log('create 3d coronal');
-        // for(let s = 0 ; s < 512; s += 1) {
-        //     this.coronalSlice.create3D(s, true);
-        // }
-        // this.coronalSlice.create3D(this.currentCoord.x, true);
+        console.log('create 3d coronal');
+        for(let s = 0 ; s < 512; s += 1) {
+            this.coronalSlice.create3D(s, true);
+        }
+        this.coronalSlice.create3D(this.currentCoord.x, true);
 
         this.axialSlice.repaint(this.currentCoord.z, force, this.worldSpace);
         this.coronalSlice.repaint(this.currentCoord.y, force, this.worldSpace);
@@ -1820,7 +1820,7 @@ papaya.viewer.Viewer.prototype.keyUpEvent = function (ke) {
 
 papaya.viewer.Viewer.prototype.rotateViews = function () {
     var temp;
-
+    
     if (this.container.contextManager && this.container.contextManager.clearContext) {
         this.container.contextManager.clearContext();
     }
@@ -1839,13 +1839,13 @@ papaya.viewer.Viewer.prototype.rotateViews = function () {
     }
 
     // 회전하기 위해 code 추가 
-    var slice = $('#papayaContainer' + _via_current_temp_num).attr('slice');
+    var slice = $('#papayaContainer0').attr('slice');
     if (slice === 'x'){
-        $('#papayaContainer' + _via_current_temp_num).attr('slice', 'z');
+        $('#papayaContainer0').attr('slice', 'z');
     }else if (slice === 'y'){
-        $('#papayaContainer' + _via_current_temp_num).attr('slice', 'x');
+        $('#papayaContainer0').attr('slice', 'x');
     }else{
-        $('#papayaContainer' + _via_current_temp_num).attr('slice', 'y');
+        $('#papayaContainer0').attr('slice', 'y');
     }
     _via_redraw_reg_canvas();
 
